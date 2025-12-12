@@ -1,0 +1,1088 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Sentence Drilling Pro - Language Learning</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            background: #f5f5f7;
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: #1d1d1f;
+            -webkit-font-smoothing: antialiased;
+            -moz-osx-font-smoothing: grayscale;
+        }
+
+        .container {
+            background: rgba(255, 255, 255, 0.95);
+            border-radius: 18px;
+            padding: 40px;
+            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.06);
+            max-width: 900px;
+            width: 90%;
+            backdrop-filter: blur(20px);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+        }
+
+        .setup-screen {
+            text-align: center;
+        }
+
+        .study-screen {
+            display: none;
+            text-align: center;
+            min-height: 60vh;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+        }
+
+        h1 {
+            font-size: 2.75rem;
+            margin-bottom: 8px;
+            color: #1d1d1f;
+            font-weight: 700;
+            letter-spacing: -0.02em;
+        }
+
+        .subtitle {
+            font-size: 1.1rem;
+            color: #86868b;
+            margin-bottom: 40px;
+            font-weight: 400;
+        }
+
+        .setup-options {
+            display: grid;
+            gap: 28px;
+            margin-bottom: 40px;
+        }
+
+        .option-group {
+            text-align: left;
+        }
+
+        .option-label {
+            display: block;
+            font-weight: 600;
+            margin-bottom: 10px;
+            color: #1d1d1f;
+            font-size: 1.1rem;
+            letter-spacing: -0.01em;
+        }
+
+        .option-input {
+            width: 100%;
+            padding: 14px 18px;
+            border: 1px solid #d2d2d7;
+            border-radius: 12px;
+            font-size: 1rem;
+            transition: all 0.2s ease;
+            background: #ffffff;
+            color: #1d1d1f;
+        }
+
+        .option-input:focus {
+            outline: none;
+            border-color: #007aff;
+            box-shadow: 0 0 0 3px rgba(0, 122, 255, 0.1);
+        }
+
+        .voice-options {
+            display: grid;
+            grid-template-columns: 1fr 1fr 1fr;
+            gap: 16px;
+            margin-top: 12px;
+        }
+
+        .voice-option {
+            padding: 16px;
+            border: 1px solid #d2d2d7;
+            border-radius: 12px;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            text-align: center;
+            background: #ffffff;
+        }
+
+        .voice-option:hover {
+            border-color: #007aff;
+            background: rgba(0, 122, 255, 0.04);
+        }
+
+        .voice-option.selected {
+            border-color: #007aff;
+            background: rgba(0, 122, 255, 0.08);
+        }
+
+        .voice-option .flag {
+            font-size: 1.5rem;
+            margin-bottom: 6px;
+        }
+
+        .voice-option .name {
+            font-weight: 600;
+            color: #1d1d1f;
+            font-size: 0.95rem;
+        }
+
+        .voice-option .lang {
+            font-size: 0.85rem;
+            color: #86868b;
+        }
+
+        .no-voice {
+            background: #f2f2f7;
+        }
+
+        .no-voice.selected {
+            background: rgba(0, 122, 255, 0.08);
+            border-color: #007aff;
+        }
+
+        .file-upload {
+            position: relative;
+            display: inline-block;
+            width: 100%;
+        }
+
+        .file-input {
+            display: none;
+        }
+
+        .file-upload-btn {
+            background: #007aff;
+            color: white;
+            border: none;
+            padding: 14px 24px;
+            border-radius: 12px;
+            font-size: 1rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+            width: 100%;
+        }
+
+        .file-upload-btn:hover {
+            background: #0056cc;
+            transform: translateY(-1px);
+        }
+
+        .text-selector {
+            margin-top: 20px;
+        }
+
+        .text-options {
+            display: grid;
+            gap: 12px;
+            margin-top: 12px;
+        }
+
+        .text-option {
+            padding: 16px;
+            border: 1px solid #d2d2d7;
+            border-radius: 12px;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            background: #ffffff;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+
+        .text-option:hover {
+            border-color: #007aff;
+            background: rgba(0, 122, 255, 0.04);
+        }
+
+        .text-option.selected {
+            border-color: #007aff;
+            background: rgba(0, 122, 255, 0.08);
+        }
+
+        .text-icon {
+            font-size: 1.5rem;
+        }
+
+        .text-info {
+            flex: 1;
+        }
+
+        .text-name {
+            font-weight: 600;
+            color: #1d1d1f;
+            font-size: 1rem;
+        }
+
+        .text-stats {
+            font-size: 0.85rem;
+            color: #86868b;
+        }
+
+        .start-button {
+            background: linear-gradient(135deg, #007aff 0%, #0056cc 100%);
+            color: white;
+            border: none;
+            padding: 18px 44px;
+            border-radius: 50px;
+            font-size: 1.2rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            box-shadow: 0 4px 16px rgba(0, 122, 255, 0.3);
+            letter-spacing: -0.01em;
+        }
+
+        .start-button:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 24px rgba(0, 122, 255, 0.4);
+        }
+
+        .sentence-display {
+            margin-bottom: 40px;
+        }
+
+        .chinese-sentence {
+            font-size: 3.75rem;
+            font-weight: 700;
+            color: #1d1d1f;
+            margin-bottom: 24px;
+            line-height: 1.25;
+            min-height: 120px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            letter-spacing: -0.02em;
+        }
+
+        .english-sentence {
+            font-size: 2.25rem;
+            color: #424245;
+            font-weight: 400;
+            line-height: 1.35;
+            min-height: 80px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            letter-spacing: -0.01em;
+        }
+
+        .controls {
+            display: flex;
+            justify-content: center;
+            gap: 20px;
+            margin-top: 40px;
+        }
+
+        .control-btn {
+            background: rgba(0, 122, 255, 0.1);
+            border: 1px solid #007aff;
+            color: #007aff;
+            padding: 14px 28px;
+            border-radius: 50px;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            font-size: 1rem;
+            font-weight: 600;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .control-btn:hover {
+            background: #007aff;
+            color: white;
+            transform: translateY(-1px);
+        }
+
+        .control-btn.active {
+            background: #007aff;
+            color: white;
+        }
+
+        .progress-bar {
+            width: 100%;
+            height: 6px;
+            background: rgba(0, 122, 255, 0.2);
+            border-radius: 3px;
+            margin-bottom: 30px;
+            overflow: hidden;
+        }
+
+        .progress-fill {
+            height: 100%;
+            background: linear-gradient(90deg, #007aff 0%, #0056cc 100%);
+            border-radius: 3px;
+            transition: width 0.5s ease;
+        }
+
+        .progress-text {
+            font-size: 1rem;
+            color: #86868b;
+            margin-bottom: 20px;
+            font-weight: 500;
+        }
+
+        .repetition-counter {
+            font-size: 1.3rem;
+            color: #007aff;
+            font-weight: 600;
+            margin-bottom: 24px;
+            letter-spacing: -0.01em;
+        }
+
+        .sentence-navigation {
+            display: flex;
+            justify-content: center;
+            gap: 16px;
+            margin-top: 30px;
+        }
+
+        .nav-btn {
+            background: rgba(0, 122, 255, 0.1);
+            border: 1px solid #007aff;
+            color: #007aff;
+            padding: 12px 20px;
+            border-radius: 50px;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            font-size: 0.95rem;
+            font-weight: 600;
+            display: flex;
+            align-items: center;
+            gap: 6px;
+        }
+
+        .nav-btn:hover {
+            background: #007aff;
+            color: white;
+            transform: translateY(-1px);
+        }
+
+        .nav-btn:disabled {
+            opacity: 0.3;
+            cursor: not-allowed;
+            transform: none;
+        }
+
+        .set-navigation {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-top: 40px;
+        }
+
+        .nav-arrow {
+            background: rgba(0, 122, 255, 0.1);
+            border: 1px solid #007aff;
+            color: #007aff;
+            width: 50px;
+            height: 50px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            font-size: 1.2rem;
+        }
+
+        .nav-arrow:hover:not(:disabled) {
+            background: #007aff;
+            color: white;
+            transform: translateY(-1px);
+        }
+
+        .nav-arrow:disabled {
+            opacity: 0.3;
+            cursor: not-allowed;
+        }
+
+        .nav-text {
+            font-size: 1.1rem;
+            color: #1d1d1f;
+            font-weight: 600;
+            letter-spacing: -0.01em;
+        }
+
+        @media (max-width: 768px) {
+            .container {
+                padding: 30px 20px;
+            }
+            
+            .chinese-sentence {
+                font-size: 2.75rem;
+            }
+            
+            .english-sentence {
+                font-size: 1.75rem;
+            }
+            
+            .voice-options {
+                grid-template-columns: 1fr 1fr;
+            }
+            
+            .controls {
+                flex-direction: column;
+                gap: 12px;
+            }
+            
+            .control-btn {
+                width: 100%;
+                justify-content: center;
+            }
+        }
+
+        .fade-in {
+            animation: fadeIn 0.5s ease-in-out;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <!-- Setup Screen -->
+        <div class="setup-screen" id="setupScreen">
+            <h1>Sentence Drilling Pro</h1>
+            <p class="subtitle">Master languages through intelligent repetition learning</p>
+            
+            <div class="setup-options">
+                <div class="option-group">
+                    <label class="option-label">Repetitions per sentence</label>
+                    <select class="option-input" id="repetitions">
+                        <option value="3">3 times (Glossika standard)</option>
+                        <option value="1">1 time</option>
+                        <option value="2">2 times</option>
+                        <option value="4">4 times</option>
+                        <option value="5">5 times</option>
+                    </select>
+                </div>
+                
+                <div class="option-group">
+                    <label class="option-label">Starting position</label>
+                    <select class="option-input" id="startPosition">
+                        <option value="beginning">Start from beginning</option>
+                        <option value="continue">Continue where I left off</option>
+                    </select>
+                </div>
+                
+                <div class="option-group">
+                    <label class="option-label">Text Selection</label>
+                    <div class="file-upload">
+                        <input type="file" id="fileInput" class="file-input" accept=".txt">
+                        <button class="file-upload-btn" onclick="document.getElementById('fileInput').click()">
+                            <i class="fas fa-upload"></i>
+                            Upload New Text File
+                        </button>
+                    </div>
+                    
+                    <div class="text-selector">
+                        <div class="text-options" id="textOptions">
+                            <div class="text-option selected" data-text="monkeyKing">
+                                <div class="text-icon">🐒</div>
+                                <div class="text-info">
+                                    <div class="text-name">Monkey King Story</div>
+                                    <div class="text-stats">129 sentences • Bilingual Chinese/English</div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="option-group">
+                    <label class="option-label">Text-to-Speech Voices</label>
+                    <div class="voice-options">
+                        <div class="voice-option selected" data-voice="chinese-female">
+                            <div class="flag">🇨🇳</div>
+                            <div class="name">Chinese Female</div>
+                            <div class="lang">普通话</div>
+                        </div>
+                        <div class="voice-option" data-voice="chinese-male">
+                            <div class="flag">🇨🇳</div>
+                            <div class="name">Chinese Male</div>
+                            <div class="lang">普通话</div>
+                        </div>
+                        <div class="voice-option no-voice" data-voice="chinese-none">
+                            <div class="flag">🔇</div>
+                            <div class="name">No Voice</div>
+                            <div class="lang">Silent</div>
+                        </div>
+                        <div class="voice-option selected" data-voice="english-female">
+                            <div class="flag">🇺🇸</div>
+                            <div class="name">English Female</div>
+                            <div class="lang">US English</div>
+                        </div>
+                        <div class="voice-option" data-voice="english-male">
+                            <div class="flag">🇺🇸</div>
+                            <div class="name">English Male</div>
+                            <div class="lang">US English</div>
+                        </div>
+                        <div class="voice-option no-voice" data-voice="english-none">
+                            <div class="flag">🔇</div>
+                            <div class="name">No Voice</div>
+                            <div class="lang">Silent</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <button class="start-button" onclick="startStudy()">
+                <i class="fas fa-play"></i> Start Learning Session
+            </button>
+        </div>
+        
+        <!-- Study Screen -->
+        <div class="study-screen" id="studyScreen">
+            <div class="progress-text" id="progressText">Sentence 1 of 129</div>
+            <div class="progress-bar">
+                <div class="progress-fill" id="progressFill" style="width: 0.78%"></div>
+            </div>
+            
+            <div class="repetition-counter" id="repetitionCounter"> repetition 1 of 3</div>
+            
+            <div class="sentence-display">
+                <div class="chinese-sentence" id="chineseSentence">
+                    猴王的诞生猴王的诞生      我 亲爱的孩子，我知道时间很晚了。
+                </div>
+                <div class="english-sentence" id="englishSentence">
+                    The Rise of the Monkey King The Rise of the Monkey King M y dear child, I know that the hour is late.
+                </div>
+            </div>
+            
+            <div class="sentence-navigation">
+                <button class="nav-btn" id="prevSentenceBtn" onclick="previousSentence()">
+                    <i class="fas fa-chevron-left"></i>
+                    Previous
+                </button>
+                <button class="nav-btn" id="nextSentenceBtn" onclick="nextSentence()">
+                    Next
+                    <i class="fas fa-chevron-right"></i>
+                </button>
+            </div>
+            
+            <div class="controls">
+                <button class="control-btn" id="playPauseBtn" onclick="togglePlayPause()">
+                    <i class="fas fa-play"></i> Play
+                </button>
+                <button class="control-btn" onclick="stopStudy()">
+                    <i class="fas fa-stop"></i> Stop
+                </button>
+            </div>
+            
+            <div class="set-navigation">
+                <div class="nav-arrow" id="prevArrow" onclick="previousSet()">
+                    <i class="fas fa-step-backward"></i>
+                </div>
+                <div class="nav-text" id="setInfo">Sentences 1-5 of 129</div>
+                <div class="nav-arrow" id="nextArrow" onclick="nextSet()">
+                    <i class="fas fa-step-forward"></i>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Default sentence data (Monkey King)
+        let sentencePairs = [
+            {"chinese": "猴王的诞生猴王的诞生      我 亲爱的孩子，我知道时间很晚了。", "english": "The Rise of the Monkey King The Rise of the Monkey King M y dear child, I know that the hour is late."},
+            {"chinese": "你玩了一天，累了，现在是睡觉的时候了。", "english": "You've been playing all day and you are tired, and now it is bedtime."},
+            {"chinese": "但是你说你想在睡觉前听一个故事  。", "english": "But you say you want to hear a story before you sleep."},
+            {"chinese": "所以现在我给你讲一个很老的关于猴子的故事。", "english": "So now I will tell you an old story about a monkey."},
+            {"chinese": "这只猴子很强大，也很聪明，但是有的时候他也很淘气。", "english": "He was very strong and very smart, but sometimes he was also very naughty."},
+            {"chinese": "他需要去学习什么是爱，去学习怎么去帮助别人。", "english": "He needed to learn about love and helping others."},
+            {"chinese": "几千年以前这只猴子生活在中国的北方。", "english": "This monkey lived a thousand years ago in northern China."},
+            {"chinese": "在他很长的一生中他有很多名字，但是他最有名的名字是孙悟空。", "english": "He had many names during his long life, but most people know him as Sun Wukong."},
+            {"chinese": "人们讲了很多关于孙悟空的故事。", "english": "People tell many stories about Sun Wukong."},
+            {"chinese": "如果我告诉你所有 这些故事，需要讲很多天！", "english": "If I told you all those stories, I would have to talk for many days!"},
+            {"chinese": "所以今天晚上我会告诉你一点点关于他的出生 和他怎么成为一个大王的故事。", "english": "So tonight I will just tell you a little bit about his birth and how he became a great king."},
+            {"chinese": "很久很久以前，在中国的一座高山上，有一块神奇的石头。", "english": "Long, long ago, on a high mountain in China, there was a magical stone."},
+            {"chinese": "这块石头很大，很漂亮，它在山顶上站了很多很多年。", "english": "This stone was very large and very beautiful, and it stood on the mountain peak for many, many years."},
+            {"chinese": "它每天吸收太阳和月亮的能量。", "english": "Every day it absorbed the energy of the sun and the moon."},
+            {"chinese": "过了一百年，这块石头开始发生变化。", "english": "After one hundred years, the stone began to change."},
+            {"chinese": "它开始动起来，就像有一个生命在里面。", "english": "It began to move, as if there was a life inside it."},
+            {"chinese": "然后有一天，突然，石头裂开了！", "english": "Then one day, suddenly, the stone cracked open!"},
+            {"chinese": "从石头里跳出来一只小猴子。", "english": "Out jumped a little monkey."},
+            {"chinese": "这只猴子不是普通的猴子，他是一个有魔法的猴子。", "english": "This was no ordinary monkey - he was a magical monkey."},
+            {"chinese": "他天生就有神奇的力量。", "english": "He was born with magical powers."},
+            {"chinese": "小猴子睁开眼睛，第一次看到这个世界。", "english": "The little monkey opened his eyes and saw the world for the first time."},
+            {"chinese": "他看看天空，看看山，看看树。", "english": "He looked at the sky, the mountains, and the trees."},
+            {"chinese": "然后他做了第一件 事：他深深地吸了一口气，然后开始跳跃和欢笑。", "english": "Then he did the first thing: he took a deep breath and began to jump and laugh."},
+            {"chinese": "其他的猴子都来看这个新来的小猴子。", "english": "All the other monkeys came to see this new little monkey."},
+            {"chinese": "他们从来没有见过这么有活力的猴子。", "english": "They had never seen such an energetic monkey before."},
+            {"chinese": "小猴子很快就学会了怎么爬树和怎么跳跃。", "english": "The little monkey quickly learned how to climb trees and how to jump."},
+            {"chinese": "他比其他任何猴子跳得都高。", "english": "He could jump higher than any other monkey."},
+            {"chinese": "他比其他任何猴子跑得都快。", "english": "He could run faster than any other monkey."},
+            {"chinese": "其他的猴子都说：\"这只小猴子真特别！\"", "english": "The other monkeys said: \"This little monkey is really special!\""},
+            {"chinese": "小猴子每天都在山上玩耍。", "english": "The little monkey played on the mountain every day."},
+            {"chinese": "他跟其他猴子一起玩耍，一起吃饭，一起睡觉。", "english": "He played with the other monkeys, ate with them, and slept with them."},
+            {"chinese": "他过得很快乐。", "english": "He lived a very happy life."},
+            {"chinese": "但是小猴子不知道，他将来会成为一个伟大的王。", "english": "But the little monkey did not know that he would become a great king in the future."},
+            {"chinese": "一天，小猴子跟其他的猴子一起在山上玩。", "english": "One day, the little monkey was playing with the other monkeys on the mountain."},
+            {"chinese": "他们发现了一个瀑布。", "english": "They discovered a waterfall."},
+            {"chinese": "这个瀑布很漂亮，水从很高的地方流下来。", "english": "This waterfall was very beautiful, with water flowing down from a very high place."},
+            {"chinese": "猴子们都想知道瀑布后面有什么。", "english": "The monkeys all wanted to know what was behind the waterfall."},
+            {"chinese": "但是水太大了，他们不敢过去。", "english": "But the water was too strong, and they did not dare to go through it."},
+            {"chinese": "小猴子说：\"让我来试试！\"", "english": "The little monkey said: \"Let me try!\""},
+            {"chinese": "其他的猴子都很担心。", "english": "The other monkeys were very worried."},
+            {"chinese": "他们喊：\"小心点！\"", "english": "They shouted: \"Be careful!\""},
+            {"chinese": "小猴子勇敢地走向瀑布。", "english": "The little monkey bravely walked toward the waterfall."},
+            {"chinese": "他穿过瀑布的水，发现瀑布后面有一个洞。", "english": "He passed through the waterfall's water and discovered there was a cave behind it."},
+            {"chinese": "这个洞很大，很干燥，非常适合居住。", "english": "This cave was very large, very dry, and perfect for living in."},
+            {"chinese": "小猴子很高兴，他跑回去告诉其他的猴子。", "english": "The little monkey was very happy, and he ran back to tell the other monkeys."},
+            {"chinese": "所有的猴子都很兴奋。", "english": "All the monkeys were very excited."},
+            {"chinese": "他们跟着小猴子穿过瀑布，进入洞里。", "english": "They followed the little monkey through the waterfall and into the cave."},
+            {"chinese": "这个洞成了他们的新家。", "english": "This cave became their new home."},
+            {"chinese": "猴子们都很感谢小猴子。", "english": "The monkeys were all very grateful to the little monkey."},
+            {"chinese": "他们说：\"小猴子，你真勇敢！\"", "english": "They said: \"Little monkey, you are so brave!\""},
+            {"chinese": "从那天开始，猴子们叫小猴子\"美猴王\"。", "english": "From that day on, the monkeys called the little monkey \"Beautiful Monkey King.\""},
+            {"chinese": "小猴子很高兴有这个新名字。", "english": "The little monkey was very happy to have this new name."},
+            {"chinese": "他跳起来说：\"我是美猴王！\"", "english": "He jumped up and said: \"I am the Beautiful Monkey King!\""},
+            {"chinese": "所有的猴子都欢呼起来。", "english": "All the monkeys cheered."},
+            {"chinese": "美猴王成了所有猴子的领导者。", "english": "The Beautiful Monkey King became the leader of all the monkeys."},
+            {"chinese": "他教猴子们怎么找到更多的食物。", "english": "He taught the monkeys how to find more food."},
+            {"chinese": "他教猴子们怎么保护自己。", "english": "He taught the monkeys how to protect themselves."},
+            {"chinese": "他教猴子们怎么一起工作。", "english": "He taught the monkeys how to work together."},
+            {"chinese": "所有的猴子都很尊敬美猴王。", "english": "All the monkeys respected the Beautiful Monkey King very much."},
+            {"chinese": "但是美猴王开始思考更深层次的问题。", "english": "But the Beautiful Monkey King began to think about deeper questions."},
+            {"chinese": "他想知道：\"我会不会死呢？\"", "english": "He wondered: \"Will I die someday?\""},
+            {"chinese": "他想知道：\"有没有办法永远活着？\"", "english": "He wondered: \"Is there a way to live forever?\""},
+            {"chinese": "他想知道：\"我怎样才能变得更强大？\"", "english": "He wondered: \"How can I become even stronger?\""},
+            {"chinese": "美猴王决定离开山去寻找答案。", "english": "The Beautiful Monkey King decided to leave the mountain to find answers."},
+            {"chinese": "他把猴子们叫到一起。", "english": "He gathered all the monkeys together."},
+            {"chinese": "他说：\"我要离开一段时间。\"", "english": "He said: \"I need to leave for a while.\""},
+            {"chinese": "猴子们都很伤心。", "english": "The monkeys were all very sad."},
+            {"chinese": "他们说：\"请不要离开我们！\"", "english": "They said: \"Please don't leave us!\""},
+            {"chinese": "美猴王说：\"我必须去寻找智慧。\"", "english": "The Beautiful Monkey King said: \"I must go to seek wisdom.\""},
+            {"chinese": "他说：\"当我回来的时候，我会变得更强大，能更好地保护你们。\"", "english": "He said: \"When I return, I will be stronger and better able to protect you.\""},
+            {"chinese": "猴子们理解了他的决定。", "english": "The monkeys understood his decision."},
+            {"chinese": "他们为美猴王准备食物和水。", "english": "They prepared food and water for the Beautiful Monkey King."},
+            {"chinese": "他们给了他一个温暖的告别。", "english": "They gave him a warm farewell."},
+            {"chinese": "美猴王开始了他的旅程。", "english": "The Beautiful Monkey King began his journey."},
+            {"chinese": "他走过了很多山。", "english": "He walked over many mountains."},
+            {"chinese": "他走过了很多河。", "english": "He crossed many rivers."},
+            {"chinese": "他遇到了很多人。", "english": "He met many people."},
+            {"chinese": "他学到了很多东西。", "english": "He learned many things."},
+            {"chinese": "但是他还 没有找到他想要的答案。", "english": "But he still had not found the answers he sought."},
+            {"chinese": "美猴王听说有一个神仙住在很远的地方。", "english": "The Beautiful Monkey King heard that there was an immortal being living in a distant place."},
+            {"chinese": "这个神仙知道所有关于生命和死亡的秘密。", "english": "This immortal being knew all the secrets about life and death."},
+            {"chinese": "美猴王决定去找这个神仙。", "english": "The Beautiful Monkey King decided to find this immortal being."},
+            {"chinese": "他知道这将是一个很长的旅程。", "english": "He knew this would be a very long journey."},
+            {"chinese": "但是他准备好了。", "english": "But he was ready."},
+            {"chinese": "美猴王继续向前走。", "english": "The Beautiful Monkey King continued walking forward."},
+            {"chinese": "他走了好几天。", "english": "He walked for many days."},
+            {"chinese": "他走了好几个月。", "english": "He walked for many months."},
+            {"chinese": "他走了好几年。", "english": "He walked for many years."},
+            {"chinese": "最后，他找到了神仙住的地方。", "english": "Finally, he found where the immortal being lived."},
+            {"chinese": "这是一个美丽的山洞，周围有很多花和很多树。", "english": "It was a beautiful mountain cave, surrounded by many flowers and many trees."},
+            {"chinese": "美猴王很兴奋，但是他也很紧张。", "english": "The Beautiful Monkey King was very excited, but also very nervous."},
+            {"chinese": "他深吸一口气，走向洞口。", "english": "He took a deep breath and walked toward the cave entrance."},
+            {"chinese": "他不知道接下来会发生什么。", "english": "He did not know what would happen next."},
+            {"chinese": "但是他知道，他的生活将永远改变。", "english": "But he knew that his life would change forever."}
+        ];
+
+        // Available texts storage
+        let availableTexts = {
+            monkeyKing: {
+                name: "Monkey King Story",
+                sentences: sentencePairs,
+                icon: "🐒"
+            }
+        };
+
+        let currentTextKey = 'monkeyKing';
+        let currentSentenceIndex = 0;
+        let currentRepetition = 0;
+        let isPlaying = false;
+        let repetitionsPerSentence = 3;
+        let sentencesPerSet = 5;
+        let selectedVoices = {
+            chinese: 'chinese-female',
+            english: 'english-female'
+        };
+
+        // Initialize voices
+        let chineseVoices = [];
+        let englishVoices = [];
+
+        // Load available voices
+        function loadVoices() {
+            const voices = speechSynthesis.getVoices();
+            
+            // Filter Chinese voices
+            chineseVoices = voices.filter(voice => 
+                voice.lang.includes('zh') || voice.lang.includes('cn') || voice.name.includes('Chinese')
+            );
+            
+            // Filter English voices
+            englishVoices = voices.filter(voice => 
+                voice.lang.includes('en') && !voice.lang.includes('zh')
+            );
+
+            console.log('Available Chinese voices:', chineseVoices.length);
+            console.log('Available English voices:', englishVoices.length);
+        }
+
+        // Initialize voices on page load
+        if (speechSynthesis.getVoices().length > 0) {
+            loadVoices();
+        } else {
+            speechSynthesis.addEventListener('voiceschanged', loadVoices);
+        }
+
+        // File upload functionality
+        document.getElementById('fileInput').addEventListener('change', function(e) {
+            const file = e.target.files[0];
+            if (file && file.type === 'text/plain') {
+                const reader = new FileReader();
+                reader.onload = function(e) {
+                    const content = e.target.result;
+                    const newSentences = parseTextFile(content);
+                    
+                    if (newSentences.length > 0) {
+                        const textKey = 'custom_' + Date.now();
+                        availableTexts[textKey] = {
+                            name: file.name.replace('.txt', ''),
+                            sentences: newSentences,
+                            icon: '📄'
+                        };
+                        
+                        updateTextOptions();
+                        currentTextKey = textKey;
+                        sentencePairs = newSentences;
+                        
+                        // Show success message
+                        alert(`Successfully loaded ${newSentences.length} sentences from ${file.name}`);
+                    } else {
+                        alert('Could not parse the text file. Please ensure it follows the format: Chinese sentence, English sentence, empty line.');
+                    }
+                };
+                reader.readAsText(file);
+            }
+        });
+
+        function parseTextFile(content) {
+            const lines = content.split('\n').map(line => line.trim()).filter(line => line);
+            const sentences = [];
+            
+            for (let i = 0; i < lines.length - 1; i += 2) {
+                const chinese = lines[i];
+                const english = lines[i + 1];
+                
+                if (chinese && english && 
+                    /[\u4e00-\u9fff]/.test(chinese) && 
+                    !/[\u4e00-\u9fff]/.test(english)) {
+                    sentences.push({
+                        chinese: chinese,
+                        english: english
+                    });
+                }
+            }
+            
+            return sentences;
+        }
+
+        function updateTextOptions() {
+            const container = document.getElementById('textOptions');
+            container.innerHTML = '';
+            
+            Object.keys(availableTexts).forEach(key => {
+                const text = availableTexts[key];
+                const option = document.createElement('div');
+                option.className = `text-option ${key === currentTextKey ? 'selected' : ''}`;
+                option.dataset.text = key;
+                option.innerHTML = `
+                    <div class="text-icon">${text.icon}</div>
+                    <div class="text-info">
+                        <div class="text-name">${text.name}</div>
+                        <div class="text-stats">${text.sentences.length} sentences</div>
+                    </div>
+                `;
+                
+                option.addEventListener('click', function() {
+                    document.querySelectorAll('.text-option').forEach(opt => opt.classList.remove('selected'));
+                    this.classList.add('selected');
+                    currentTextKey = key;
+                    sentencePairs = text.sentences;
+                });
+                
+                container.appendChild(option);
+            });
+        }
+
+        // Voice selection with "No Voice" options
+        document.querySelectorAll('.voice-option').forEach(option => {
+            option.addEventListener('click', function() {
+                const voiceType = this.dataset.voice;
+                const isChinese = voiceType.includes('chinese');
+                
+                if (isChinese) {
+                    document.querySelectorAll('[data-voice*="chinese"]').forEach(opt => opt.classList.remove('selected'));
+                    selectedVoices.chinese = voiceType;
+                } else {
+                    document.querySelectorAll('[data-voice*="english"]').forEach(opt => opt.classList.remove('selected'));
+                    selectedVoices.english = voiceType;
+                }
+                
+                this.classList.add('selected');
+            });
+        });
+
+        function startStudy() {
+            repetitionsPerSentence = parseInt(document.getElementById('repetitions').value);
+            
+            // Load saved progress if continuing
+            if (document.getElementById('startPosition').value === 'continue') {
+                const savedProgress = localStorage.getItem('sentenceDrillingProgress_' + currentTextKey);
+                if (savedProgress) {
+                    currentSentenceIndex = parseInt(savedProgress);
+                }
+            } else {
+                currentSentenceIndex = 0;
+            }
+            
+            document.getElementById('setupScreen').style.display = 'none';
+            document.getElementById('studyScreen').style.display = 'flex';
+            
+            updateDisplay();
+            startCurrentSentence();
+        }
+
+        function updateDisplay() {
+            const currentPair = sentencePairs[currentSentenceIndex];
+            
+            // Add fade-in animation
+            const chineseElement = document.getElementById('chineseSentence');
+            const englishElement = document.getElementById('englishSentence');
+            
+            chineseElement.classList.add('fade-in');
+            englishElement.classList.add('fade-in');
+            
+            chineseElement.textContent = currentPair.chinese;
+            englishElement.textContent = currentPair.english;
+            
+            // Remove animation class after animation completes
+            setTimeout(() => {
+                chineseElement.classList.remove('fade-in');
+                englishElement.classList.remove('fade-in');
+            }, 500);
+            
+            const progress = ((currentSentenceIndex + 1) / sentencePairs.length) * 100;
+            document.getElementById('progressText').textContent = `Sentence ${currentSentenceIndex + 1} of ${sentencePairs.length}`;
+            document.getElementById('progressFill').style.width = `${progress}%`;
+            
+            document.getElementById('repetitionCounter').textContent = `repetition ${currentRepetition + 1} of ${repetitionsPerSentence}`;
+            
+            // Update set navigation info
+            const currentSet = Math.floor(currentSentenceIndex / sentencesPerSet) + 1;
+            const totalSets = Math.ceil(sentencePairs.length / sentencesPerSet);
+            const setStart = Math.floor(currentSentenceIndex / sentencesPerSet) * sentencesPerSet + 1;
+            const setEnd = Math.min(setStart + sentencesPerSet - 1, sentencePairs.length);
+            
+            document.getElementById('setInfo').textContent = `Sentences ${setStart}-${setEnd} of ${sentencePairs.length}`;
+            
+            // Update navigation buttons
+            document.getElementById('prevSentenceBtn').disabled = currentSentenceIndex === 0;
+            document.getElementById('nextSentenceBtn').disabled = currentSentenceIndex >= sentencePairs.length - 1;
+            document.getElementById('prevArrow').disabled = currentSet === 1;
+            document.getElementById('nextArrow').disabled = currentSet >= totalSets;
+        }
+
+        function speakText(text, lang) {
+            return new Promise((resolve) => {
+                const utterance = new SpeechSynthesisUtterance(text);
+                utterance.rate = 0.8;
+                utterance.pitch = 1;
+                
+                if (lang === 'zh') {
+                    if (chineseVoices.length > 0) {
+                        utterance.voice = chineseVoices[0];
+                    }
+                    utterance.lang = 'zh-CN';
+                } else {
+                    if (englishVoices.length > 0) {
+                        utterance.voice = englishVoices[0];
+                    }
+                    utterance.lang = 'en-US';
+                }
+                
+                utterance.onend = resolve;
+                speechSynthesis.speak(utterance);
+            });
+        }
+
+        async function startCurrentSentence() {
+            if (!isPlaying) return;
+            
+            const currentPair = sentencePairs[currentSentenceIndex];
+            
+            // Speak Chinese if not set to "No Voice"
+            if (selectedVoices.chinese !== 'chinese-none') {
+                await speakText(currentPair.chinese, 'zh');
+            }
+            
+            // Speak English if not set to "No Voice"
+            if (selectedVoices.english !== 'english-none') {
+                await speakText(currentPair.english, 'en');
+            }
+            
+            currentRepetition++;
+            
+            if (currentRepetition >= repetitionsPerSentence) {
+                // Move to next sentence automatically
+                currentRepetition = 0;
+                
+                if (currentSentenceIndex < sentencePairs.length - 1) {
+                    currentSentenceIndex++;
+                    updateDisplay();
+                    
+                    // Continue with next sentence after a short pause
+                    setTimeout(() => startCurrentSentence(), 1000);
+                } else {
+                    // Study complete
+                    alert('Congratulations! You have completed all sentences!');
+                    stopStudy();
+                }
+            } else {
+                document.getElementById('repetitionCounter').textContent = `repetition ${currentRepetition + 1} of ${repetitionsPerSentence}`;
+                
+                // Continue with next repetition
+                setTimeout(() => startCurrentSentence(), 1000);
+            }
+        }
+
+        function togglePlayPause() {
+            isPlaying = !isPlaying;
+            const btn = document.getElementById('playPauseBtn');
+            
+            if (isPlaying) {
+                btn.innerHTML = '<i class="fas fa-pause"></i> Pause';
+                btn.classList.add('active');
+                startCurrentSentence();
+            } else {
+                btn.innerHTML = '<i class="fas fa-play"></i> Play';
+                btn.classList.remove('active');
+                speechSynthesis.cancel();
+            }
+        }
+
+        function stopStudy() {
+            isPlaying = false;
+            speechSynthesis.cancel();
+            
+            // Save progress
+            localStorage.setItem('sentenceDrillingProgress_' + currentTextKey, currentSentenceIndex);
+            
+            document.getElementById('studyScreen').style.display = 'none';
+            document.getElementById('setupScreen').style.display = 'block';
+            
+            // Reset state
+            currentSentenceIndex = 0;
+            currentRepetition = 0;
+            
+            document.getElementById('playPauseBtn').innerHTML = '<i class="fas fa-play"></i> Play';
+            document.getElementById('playPauseBtn').classList.remove('active');
+        }
+
+        function nextSentence() {
+            if (currentSentenceIndex < sentencePairs.length - 1) {
+                currentSentenceIndex++;
+                currentRepetition = 0;
+                updateDisplay();
+                
+                if (isPlaying) {
+                    speechSynthesis.cancel();
+                    setTimeout(() => startCurrentSentence(), 500);
+                }
+            }
+        }
+
+        function previousSentence() {
+            if (currentSentenceIndex > 0) {
+                currentSentenceIndex--;
+                currentRepetition = 0;
+                updateDisplay();
+                
+                if (isPlaying) {
+                    speechSynthesis.cancel();
+                    setTimeout(() => startCurrentSentence(), 500);
+                }
+            }
+        }
+
+        function nextSet() {
+            const nextSetStart = Math.ceil((currentSentenceIndex + 1) / sentencesPerSet) * sentencesPerSet;
+            if (nextSetStart < sentencePairs.length) {
+                currentSentenceIndex = nextSetStart;
+                currentRepetition = 0;
+                updateDisplay();
+                
+                if (isPlaying) {
+                    speechSynthesis.cancel();
+                    setTimeout(() => startCurrentSentence(), 500);
+                }
+            }
+        }
+
+        function previousSet() {
+            const currentSet = Math.floor(currentSentenceIndex / sentencesPerSet);
+            if (currentSet > 0) {
+                currentSentenceIndex = (currentSet - 1) * sentencesPerSet;
+                currentRepetition = 0;
+                updateDisplay();
+                
+                if (isPlaying) {
+                    speechSynthesis.cancel();
+                    setTimeout(() => startCurrentSentence(), 500);
+                }
+            }
+        }
+
+        // Keyboard shortcuts
+        document.addEventListener('keydown', function(e) {
+            if (document.getElementById('studyScreen').style.display === 'flex') {
+                switch(e.code) {
+                    case 'Space':
+                        e.preventDefault();
+                        togglePlayPause();
+                        break;
+                    case 'ArrowRight':
+                        e.preventDefault();
+                        nextSentence();
+                        break;
+                    case 'ArrowLeft':
+                        e.preventDefault();
+                        previousSentence();
+                        break;
+                    case 'Escape':
+                        e.preventDefault();
+                        stopStudy();
+                        break;
+                }
+            }
+        });
+
+        // Initialize
+        updateDisplay();
+    </script>
+</body>
+</html>
