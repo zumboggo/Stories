@@ -15,7 +15,7 @@
 
         body {
             font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
-            background: #f5f5f7;
+            background: linear-gradient(135deg, #e3f2fd 0%, #bbdefb 50%, #90caf9 100%);
             min-height: 100vh;
             display: flex;
             align-items: center;
@@ -100,6 +100,85 @@
             box-shadow: 0 0 0 3px rgba(0, 122, 255, 0.1);
         }
 
+        .text-display-options {
+            display: flex;
+            gap: 16px;
+            margin-top: 12px;
+        }
+
+        .text-toggle {
+            flex: 1;
+            padding: 16px;
+            border: 1px solid #d2d2d7;
+            border-radius: 12px;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            background: #ffffff;
+            text-align: center;
+            font-weight: 600;
+            font-size: 1rem;
+        }
+
+        .text-toggle:hover {
+            border-color: #007aff;
+            background: rgba(0, 122, 255, 0.04);
+        }
+
+        .text-toggle.active {
+            border-color: #007aff;
+            background: rgba(0, 122, 255, 0.08);
+            color: #007aff;
+        }
+
+        .text-toggle.inactive {
+            opacity: 0.5;
+            background: #f2f2f7;
+            color: #86868b;
+        }
+
+        .speed-control {
+            margin-top: 12px;
+        }
+
+        .speed-slider {
+            width: 100%;
+            height: 6px;
+            border-radius: 3px;
+            background: #e2e8f0;
+            outline: none;
+            -webkit-appearance: none;
+            appearance: none;
+        }
+
+        .speed-slider::-webkit-slider-thumb {
+            -webkit-appearance: none;
+            appearance: none;
+            width: 20px;
+            height: 20px;
+            border-radius: 50%;
+            background: #007aff;
+            cursor: pointer;
+            box-shadow: 0 2px 6px rgba(0, 122, 255, 0.3);
+        }
+
+        .speed-slider::-moz-range-thumb {
+            width: 20px;
+            height: 20px;
+            border-radius: 50%;
+            background: #007aff;
+            cursor: pointer;
+            border: none;
+            box-shadow: 0 2px 6px rgba(0, 122, 255, 0.3);
+        }
+
+        .speed-display {
+            text-align: center;
+            margin-top: 8px;
+            font-size: 0.9rem;
+            color: #86868b;
+            font-weight: 500;
+        }
+
         .voice-options {
             display: grid;
             grid-template-columns: 1fr 1fr 1fr;
@@ -113,8 +192,8 @@
             border-radius: 12px;
             cursor: pointer;
             transition: all 0.2s ease;
-            text-align: center;
             background: #ffffff;
+            text-align: center;
         }
 
         .voice-option:hover {
@@ -235,6 +314,75 @@
             color: #86868b;
         }
 
+        .toggle-switch {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 16px;
+            border: 1px solid #d2d2d7;
+            border-radius: 12px;
+            background: #ffffff;
+            margin-top: 12px;
+        }
+
+        .toggle-switch .label {
+            font-weight: 600;
+            color: #1d1d1f;
+            font-size: 1rem;
+        }
+
+        .toggle-switch .description {
+            font-size: 0.85rem;
+            color: #86868b;
+            margin-top: 4px;
+        }
+
+        .switch {
+            position: relative;
+            display: inline-block;
+            width: 50px;
+            height: 30px;
+        }
+
+        .switch input {
+            opacity: 0;
+            width: 0;
+            height: 0;
+        }
+
+        .slider {
+            position: absolute;
+            cursor: pointer;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background-color: #ccc;
+            transition: .4s;
+            border-radius: 30px;
+        }
+
+        .slider:before {
+            position: absolute;
+            content: "";
+            height: 22px;
+            width: 22px;
+            left: 4px;
+            bottom: 4px;
+            background-color: white;
+            transition: .4s;
+            border-radius: 50%;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.2);
+        }
+
+        input:checked + .slider {
+            background-color: #007aff;
+        }
+
+        input:checked + .slider:before {
+            transform: translateX(20px);
+        }
+
         .start-button {
             background: linear-gradient(135deg, #007aff 0%, #0056cc 100%);
             color: white;
@@ -281,6 +429,14 @@
             align-items: center;
             justify-content: center;
             letter-spacing: -0.01em;
+        }
+
+        .sentence.hidden {
+            display: none;
+        }
+
+        .sentence.dimmed {
+            opacity: 0.3;
         }
 
         .controls {
@@ -438,6 +594,10 @@
                 grid-template-columns: 1fr 1fr;
             }
             
+            .text-display-options {
+                flex-direction: column;
+            }
+            
             .controls {
                 flex-direction: column;
                 gap: 12px;
@@ -468,6 +628,28 @@
             
             <div class="setup-options">
                 <div class="option-group">
+                    <label class="option-label">Text Display</label>
+                    <div class="text-display-options">
+                        <div class="text-toggle active" id="chineseToggle" onclick="toggleTextDisplay('chinese')">
+                            <i class="fas fa-language"></i><br>
+                            Chinese
+                        </div>
+                        <div class="text-toggle active" id="englishToggle" onclick="toggleTextDisplay('english')">
+                            <i class="fas fa-language"></i><br>
+                            English
+                        </div>
+                    </div>
+                </div>
+
+                <div class="option-group">
+                    <label class="option-label">Speaking Speed</label>
+                    <div class="speed-control">
+                        <input type="range" class="speed-slider" id="speedSlider" min="0.5" max="1.5" step="0.1" value="0.8">
+                        <div class="speed-display" id="speedDisplay">0.8x (Normal)</div>
+                    </div>
+                </div>
+                
+                <div class="option-group">
                     <label class="option-label">Repetitions per sentence</label>
                     <select class="option-input" id="repetitions">
                         <option value="3">3 times (Glossika standard)</option>
@@ -484,6 +666,20 @@
                         <option value="beginning">Start from beginning</option>
                         <option value="continue">Continue where I left off</option>
                     </select>
+                </div>
+                
+                <div class="option-group">
+                    <label class="option-label">Autoplay Mode</label>
+                    <div class="toggle-switch">
+                        <div>
+                            <div class="label">Autoplay</div>
+                            <div class="description">Automatically play through all sentences</div>
+                        </div>
+                        <label class="switch">
+                            <input type="checkbox" id="autoplayToggle">
+                            <span class="slider"></span>
+                        </label>
+                    </div>
                 </div>
                 
                 <div class="option-group">
@@ -719,6 +915,12 @@
             chinese: 'chinese-female',
             english: 'english-female'
         };
+        let textDisplay = {
+            chinese: true,
+            english: true
+        };
+        let speakingSpeed = 0.8;
+        let autoplayMode = false;
 
         // Initialize voices
         let chineseVoices = [];
@@ -748,6 +950,34 @@
         } else {
             speechSynthesis.addEventListener('voiceschanged', loadVoices);
         }
+
+        // Text display toggle functionality
+        function toggleTextDisplay(language) {
+            textDisplay[language] = !textDisplay[language];
+            const toggle = document.getElementById(language + 'Toggle');
+            
+            if (textDisplay[language]) {
+                toggle.classList.add('active');
+                toggle.classList.remove('inactive');
+            } else {
+                toggle.classList.remove('active');
+                toggle.classList.add('inactive');
+            }
+        }
+
+        // Speed slider functionality
+        document.getElementById('speedSlider').addEventListener('input', function(e) {
+            speakingSpeed = parseFloat(e.target.value);
+            const display = document.getElementById('speedDisplay');
+            
+            if (speakingSpeed < 0.8) {
+                display.textContent = speakingSpeed.toFixed(1) + 'x (Slower)';
+            } else if (speakingSpeed > 0.8) {
+                display.textContent = speakingSpeed.toFixed(1) + 'x (Faster)';
+            } else {
+                display.textContent = speakingSpeed.toFixed(1) + 'x (Normal)';
+            }
+        });
 
         // File upload functionality
         document.getElementById('fileInput').addEventListener('change', function(e) {
@@ -849,6 +1079,7 @@
 
         function startStudy() {
             repetitionsPerSentence = parseInt(document.getElementById('repetitions').value);
+            autoplayMode = document.getElementById('autoplayToggle').checked;
             
             // Load saved progress if continuing
             if (document.getElementById('startPosition').value === 'continue') {
@@ -864,7 +1095,9 @@
             document.getElementById('studyScreen').style.display = 'flex';
             
             updateDisplay();
-            startCurrentSentence();
+            if (autoplayMode) {
+                togglePlayPause(); // Start autoplay automatically
+            }
         }
 
         function updateDisplay() {
@@ -877,8 +1110,20 @@
             chineseElement.classList.add('fade-in');
             englishElement.classList.add('fade-in');
             
-            chineseElement.textContent = currentPair.chinese;
-            englishElement.textContent = currentPair.english;
+            // Update text display based on toggles
+            if (textDisplay.chinese) {
+                chineseElement.textContent = currentPair.chinese;
+                chineseElement.classList.remove('hidden');
+            } else {
+                chineseElement.classList.add('hidden');
+            }
+            
+            if (textDisplay.english) {
+                englishElement.textContent = currentPair.english;
+                englishElement.classList.remove('hidden');
+            } else {
+                englishElement.classList.add('hidden');
+            }
             
             // Remove animation class after animation completes
             setTimeout(() => {
@@ -910,7 +1155,7 @@
         function speakText(text, lang) {
             return new Promise((resolve) => {
                 const utterance = new SpeechSynthesisUtterance(text);
-                utterance.rate = 0.8;
+                utterance.rate = speakingSpeed;
                 utterance.pitch = 1;
                 
                 if (lang === 'zh') {
@@ -935,13 +1180,13 @@
             
             const currentPair = sentencePairs[currentSentenceIndex];
             
-            // Speak Chinese if not set to "No Voice"
-            if (selectedVoices.chinese !== 'chinese-none') {
+            // Speak Chinese if not set to "No Voice" and text is displayed
+            if (selectedVoices.chinese !== 'chinese-none' && textDisplay.chinese) {
                 await speakText(currentPair.chinese, 'zh');
             }
             
-            // Speak English if not set to "No Voice"
-            if (selectedVoices.english !== 'english-none') {
+            // Speak English if not set to "No Voice" and text is displayed
+            if (selectedVoices.english !== 'english-none' && textDisplay.english) {
                 await speakText(currentPair.english, 'en');
             }
             
@@ -959,7 +1204,9 @@
                     setTimeout(() => startCurrentSentence(), 1000);
                 } else {
                     // Study complete
-                    alert('Congratulations! You have completed all sentences!');
+                    if (autoplayMode) {
+                        alert('Congratulations! You have completed all sentences!');
+                    }
                     stopStudy();
                 }
             } else {
