@@ -499,239 +499,236 @@
             font-size: 1.3rem;
             color: #007aff;
             font-weight: 600;
-            margin-bottom: 24px;
-            letter-spacing: -0.01em;
+            margin-top: 20px;
         }
 
-        .sentence-navigation {
+        .set-navigation {
             display: flex;
+            align-items: center;
             justify-content: center;
             gap: 16px;
             margin-top: 30px;
         }
 
-        .nav-btn {
-            background: rgba(0, 122, 255, 0.1);
-            border: 1px solid #007aff;
-            color: #007aff;
-            padding: 12px 20px;
-            border-radius: 50px;
-            cursor: pointer;
-            transition: all 0.2s ease;
-            font-size: 0.95rem;
-            font-weight: 600;
-            display: flex;
-            align-items: center;
-            gap: 6px;
-        }
-
-        .nav-btn:hover {
-            background: #007aff;
-            color: white;
-            transform: translateY(-1px);
-        }
-
-        .nav-btn:disabled {
-            opacity: 0.3;
-            cursor: not-allowed;
-            transform: none;
-        }
-
-        .set-navigation {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            margin-top: 40px;
-        }
-
         .nav-arrow {
-            background: rgba(0, 122, 255, 0.1);
-            border: 1px solid #007aff;
+            background: none;
+            border: none;
             color: #007aff;
-            width: 50px;
-            height: 50px;
-            border-radius: 50%;
-            display: flex;
-            align-items: center;
-            justify-content: center;
+            font-size: 2rem;
             cursor: pointer;
+            padding: 8px;
             transition: all 0.2s ease;
-            font-size: 1.2rem;
+            border-radius: 50%;
         }
 
-        .nav-arrow:hover:not(:disabled) {
-            background: #007aff;
-            color: white;
-            transform: translateY(-1px);
+        .nav-arrow:hover {
+            background: rgba(0, 122, 255, 0.1);
         }
 
         .nav-arrow:disabled {
-            opacity: 0.3;
+            color: #d2d2d7;
             cursor: not-allowed;
         }
 
-        .nav-text {
-            font-size: 1.1rem;
-            color: #1d1d1f;
+        .set-info {
+            font-size: 1rem;
+            color: #86868b;
+            min-width: 180px;
+            text-align: center;
+        }
+
+        .sentence-navigation {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 12px;
+            margin-top: 16px;
+        }
+
+        .sentence-nav-btn {
+            background: none;
+            border: 1px solid #d2d2d7;
+            color: #86868b;
+            font-size: 0.9rem;
+            cursor: pointer;
+            padding: 8px 16px;
+            border-radius: 20px;
+            transition: all 0.2s ease;
+        }
+
+        .sentence-nav-btn:hover {
+            border-color: #007aff;
+            color: #007aff;
+        }
+
+        .sentence-nav-btn:disabled {
+            opacity: 0.4;
+            cursor: not-allowed;
+        }
+
+        .stop-button {
+            background: #ff3b30;
+            color: white;
+            border: none;
+            padding: 12px 24px;
+            border-radius: 50px;
+            font-size: 1rem;
             font-weight: 600;
-            letter-spacing: -0.01em;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            margin-top: 30px;
+        }
+
+        .stop-button:hover {
+            background: #d63029;
+            transform: translateY(-1px);
+        }
+
+        .fade-in {
+            animation: fadeIn 0.5s ease;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(10px); }
+            to { opacity: 1; transform: translateY(0); }
         }
 
         @media (max-width: 768px) {
             .container {
-                padding: 30px 20px;
+                padding: 24px;
             }
-            
+
+            h1 {
+                font-size: 2rem;
+            }
+
             .chinese-sentence {
-                font-size: 2.75rem;
+                font-size: 2rem;
             }
-            
+
             .english-sentence {
-                font-size: 1.75rem;
+                font-size: 1.25rem;
             }
-            
+
             .voice-options {
-                grid-template-columns: 1fr 1fr;
-            }
-            
-            .text-display-options {
-                flex-direction: column;
-            }
-            
-            .controls {
-                flex-direction: column;
-                gap: 12px;
-            }
-            
-            .control-btn {
-                width: 100%;
-                justify-content: center;
+                grid-template-columns: 1fr;
             }
         }
 
-        .fade-in {
-            animation: fadeIn 0.5s ease-in-out;
+        /* Parser info styles */
+        .parse-info {
+            background: #f0f9ff;
+            border: 1px solid #007aff;
+            border-radius: 8px;
+            padding: 12px;
+            margin-top: 12px;
+            font-size: 0.85rem;
+            color: #1d1d1f;
         }
-
-        @keyframes fadeIn {
-            from { opacity: 0; transform: translateY(20px); }
-            to { opacity: 1; transform: translateY(0); }
+        
+        .parse-info.warning {
+            background: #fff7ed;
+            border-color: #f97316;
+        }
+        
+        .parse-info.error {
+            background: #fef2f2;
+            border-color: #ef4444;
+        }
+        
+        .parse-stats {
+            display: flex;
+            gap: 16px;
+            margin-top: 8px;
+            font-size: 0.8rem;
+            color: #86868b;
         }
     </style>
 </head>
 <body>
     <div class="container">
-        <!-- Setup Screen -->
-        <div class="setup-screen" id="setupScreen">
+        <div id="setupScreen" class="setup-screen">
             <h1>Sentence Drilling Pro</h1>
-            <p class="subtitle">Master languages through intelligent repetition learning</p>
+            <p class="subtitle">Master Chinese through repetition and immersion</p>
             
             <div class="setup-options">
                 <div class="option-group">
-                    <label class="option-label">Text Display</label>
-                    <div class="text-display-options">
-                        <div class="text-toggle active" id="chineseToggle" onclick="toggleTextDisplay('chinese')">
-                            <i class="fas fa-language"></i><br>
-                            Chinese
+                    <label class="option-label">📚 Select Text</label>
+                    <div id="textOptions" class="text-options">
+                        <div class="text-option selected" data-text="monkeyKing">
+                            <div class="text-icon">🐒</div>
+                            <div class="text-info">
+                                <div class="text-name">Monkey King Story</div>
+                                <div class="text-stats">97 sentences</div>
+                            </div>
                         </div>
-                        <div class="text-toggle active" id="englishToggle" onclick="toggleTextDisplay('english')">
-                            <i class="fas fa-language"></i><br>
-                            English
+                    </div>
+                    
+                    <div class="file-upload" style="margin-top: 16px;">
+                        <input type="file" id="fileInput" class="file-input" accept=".txt">
+                        <label for="fileInput" class="file-upload-btn">
+                            <i class="fas fa-upload"></i> Upload Diglot Text File
+                        </label>
+                    </div>
+                    <div id="parseInfo" class="parse-info" style="display: none;"></div>
+                </div>
+
+                <div class="option-group">
+                    <label class="option-label">🔄 Repetitions per Sentence</label>
+                    <select id="repetitions" class="option-input">
+                        <option value="1">1 time</option>
+                        <option value="2">2 times</option>
+                        <option value="3" selected>3 times</option>
+                        <option value="5">5 times</option>
+                        <option value="10">10 times</option>
+                    </select>
+                </div>
+
+                <div class="option-group">
+                    <label class="option-label">📖 Text Display</label>
+                    <div class="text-display-options">
+                        <div id="chineseToggle" class="text-toggle active" onclick="toggleTextDisplay('chinese')">
+                            🇨🇳 Chinese Text
+                        </div>
+                        <div id="englishToggle" class="text-toggle active" onclick="toggleTextDisplay('english')">
+                            🇺🇸 English Text
                         </div>
                     </div>
                 </div>
 
                 <div class="option-group">
-                    <label class="option-label">Speaking Speed</label>
-                    <div class="speed-control">
-                        <input type="range" class="speed-slider" id="speedSlider" min="0.5" max="1.5" step="0.1" value="0.8">
-                        <div class="speed-display" id="speedDisplay">0.8x (Normal)</div>
-                    </div>
-                </div>
-                
-                <div class="option-group">
-                    <label class="option-label">Repetitions per sentence</label>
-                    <select class="option-input" id="repetitions">
-                        <option value="3">3 times (Glossika standard)</option>
-                        <option value="1">1 time</option>
-                        <option value="2">2 times</option>
-                        <option value="4">4 times</option>
-                        <option value="5">5 times</option>
-                    </select>
-                </div>
-                
-                <div class="option-group">
-                    <label class="option-label">Starting position</label>
-                    <select class="option-input" id="startPosition">
-                        <option value="beginning">Start from beginning</option>
-                        <option value="continue">Continue where I left off</option>
-                    </select>
-                </div>
-                
-                <div class="option-group">
-                    <label class="option-label">Autoplay Mode</label>
-                    <div class="toggle-switch">
-                        <div>
-                            <div class="label">Autoplay</div>
-                            <div class="description">Automatically play through all sentences</div>
-                        </div>
-                        <label class="switch">
-                            <input type="checkbox" id="autoplayToggle">
-                            <span class="slider"></span>
-                        </label>
-                    </div>
-                </div>
-                
-                <div class="option-group">
-                    <label class="option-label">Text Selection</label>
-                    <div class="file-upload">
-                        <input type="file" id="fileInput" class="file-input" accept=".txt">
-                        <button class="file-upload-btn" onclick="document.getElementById('fileInput').click()">
-                            <i class="fas fa-upload"></i>
-                            Upload New Text File
-                        </button>
-                    </div>
-                    
-                    <div class="text-selector">
-                        <div class="text-options" id="textOptions">
-                            <div class="text-option selected" data-text="monkeyKing">
-                                <div class="text-icon">🐒</div>
-                                <div class="text-info">
-                                    <div class="text-name">Monkey King Story</div>
-                                    <div class="text-stats">129 sentences • Bilingual Chinese/English</div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-                
-                <div class="option-group">
-                    <label class="option-label">Text-to-Speech Voices</label>
+                    <label class="option-label">🎙️ Chinese Voice</label>
                     <div class="voice-options">
                         <div class="voice-option selected" data-voice="chinese-female">
                             <div class="flag">🇨🇳</div>
-                            <div class="name">Chinese Female</div>
-                            <div class="lang">普通话</div>
+                            <div class="name">Female</div>
+                            <div class="lang">Mandarin</div>
                         </div>
                         <div class="voice-option" data-voice="chinese-male">
                             <div class="flag">🇨🇳</div>
-                            <div class="name">Chinese Male</div>
-                            <div class="lang">普通话</div>
+                            <div class="name">Male</div>
+                            <div class="lang">Mandarin</div>
                         </div>
                         <div class="voice-option no-voice" data-voice="chinese-none">
                             <div class="flag">🔇</div>
                             <div class="name">No Voice</div>
                             <div class="lang">Silent</div>
                         </div>
+                    </div>
+                </div>
+
+                <div class="option-group">
+                    <label class="option-label">🔊 English Voice</label>
+                    <div class="voice-options">
                         <div class="voice-option selected" data-voice="english-female">
                             <div class="flag">🇺🇸</div>
-                            <div class="name">English Female</div>
-                            <div class="lang">US English</div>
+                            <div class="name">Female</div>
+                            <div class="lang">English</div>
                         </div>
                         <div class="voice-option" data-voice="english-male">
                             <div class="flag">🇺🇸</div>
-                            <div class="name">English Male</div>
-                            <div class="lang">US English</div>
+                            <div class="name">Male</div>
+                            <div class="lang">English</div>
                         </div>
                         <div class="voice-option no-voice" data-voice="english-none">
                             <div class="flag">🔇</div>
@@ -740,60 +737,85 @@
                         </div>
                     </div>
                 </div>
+
+                <div class="option-group">
+                    <label class="option-label">⚡ Speaking Speed</label>
+                    <div class="speed-control">
+                        <input type="range" id="speedSlider" class="speed-slider" min="0.5" max="1.5" step="0.1" value="0.8">
+                        <div id="speedDisplay" class="speed-display">0.8x (Normal)</div>
+                    </div>
+                </div>
+
+                <div class="option-group">
+                    <label class="option-label">🚀 Start Position</label>
+                    <select id="startPosition" class="option-input">
+                        <option value="beginning">From Beginning</option>
+                        <option value="continue">Continue from Last Session</option>
+                    </select>
+                </div>
+
+                <div class="toggle-switch">
+                    <div>
+                        <div class="label">Auto-play Mode</div>
+                        <div class="description">Automatically advance through sentences</div>
+                    </div>
+                    <label class="switch">
+                        <input type="checkbox" id="autoplayToggle" checked>
+                        <span class="slider"></span>
+                    </label>
+                </div>
             </div>
-            
+
             <button class="start-button" onclick="startStudy()">
-                <i class="fas fa-play"></i> Start Learning Session
+                Start Learning
             </button>
         </div>
-        
-        <!-- Study Screen -->
-        <div class="study-screen" id="studyScreen">
-            <div class="progress-text" id="progressText">Sentence 1 of 129</div>
+
+        <div id="studyScreen" class="study-screen" style="display: none;">
+            <div class="progress-text" id="progressText">Sentence 1 of 10</div>
             <div class="progress-bar">
-                <div class="progress-fill" id="progressFill" style="width: 0.78%"></div>
+                <div class="progress-fill" id="progressFill" style="width: 10%;"></div>
             </div>
-            
-            <div class="repetition-counter" id="repetitionCounter"> repetition 1 of 3</div>
             
             <div class="sentence-display">
-                <div class="chinese-sentence" id="chineseSentence">
-                    猴王的诞生猴王的诞生      我 亲爱的孩子，我知道时间很晚了。
+                <div id="chineseSentence" class="chinese-sentence sentence">
+                    你好世界
                 </div>
-                <div class="english-sentence" id="englishSentence">
-                    The Rise of the Monkey King The Rise of the Monkey King M y dear child, I know that the hour is late.
+                <div id="englishSentence" class="english-sentence sentence">
+                    Hello World
                 </div>
             </div>
             
-            <div class="sentence-navigation">
-                <button class="nav-btn" id="prevSentenceBtn" onclick="previousSentence()">
-                    <i class="fas fa-chevron-left"></i>
-                    Previous
-                </button>
-                <button class="nav-btn" id="nextSentenceBtn" onclick="nextSentence()">
-                    Next
-                    <i class="fas fa-chevron-right"></i>
-                </button>
-            </div>
+            <div class="repetition-counter" id="repetitionCounter">repetition 1 of 3</div>
             
             <div class="controls">
                 <button class="control-btn" id="playPauseBtn" onclick="togglePlayPause()">
                     <i class="fas fa-play"></i> Play
                 </button>
-                <button class="control-btn" onclick="stopStudy()">
-                    <i class="fas fa-stop"></i> Stop
+            </div>
+
+            <div class="sentence-navigation">
+                <button class="sentence-nav-btn" id="prevSentenceBtn" onclick="previousSentence()">
+                    <i class="fas fa-chevron-left"></i> Previous
+                </button>
+                <button class="sentence-nav-btn" id="nextSentenceBtn" onclick="nextSentence()">
+                    Next <i class="fas fa-chevron-right"></i>
                 </button>
             </div>
             
             <div class="set-navigation">
-                <div class="nav-arrow" id="prevArrow" onclick="previousSet()">
-                    <i class="fas fa-step-backward"></i>
-                </div>
-                <div class="nav-text" id="setInfo">Sentences 1-5 of 129</div>
-                <div class="nav-arrow" id="nextArrow" onclick="nextSet()">
-                    <i class="fas fa-step-forward"></i>
-                </div>
+                <button class="nav-arrow" id="prevArrow" onclick="previousSet()">
+                    <i class="fas fa-arrow-left"></i>
+                </button>
+                <span class="set-info" id="setInfo">Sentences 1-5 of 10</span>
+                <button class="nav-arrow" id="nextArrow" onclick="nextSet()">
+                    <i class="fas fa-arrow-right"></i>
+                </button>
             </div>
+            
+            <button class="stop-button" onclick="stopStudy()">
+                <i class="fas fa-stop"></i> Stop & Save
+            </button>
         </div>
     </div>
 
@@ -809,91 +831,7 @@
             {"chinese": "几千年以前这只猴子生活在中国的北方。", "english": "This monkey lived a thousand years ago in northern China."},
             {"chinese": "在他很长的一生中他有很多名字，但是他最有名的名字是孙悟空。", "english": "He had many names during his long life, but most people know him as Sun Wukong."},
             {"chinese": "人们讲了很多关于孙悟空的故事。", "english": "People tell many stories about Sun Wukong."},
-            {"chinese": "如果我告诉你所有 这些故事，需要讲很多天！", "english": "If I told you all those stories, I would have to talk for many days!"},
-            {"chinese": "所以今天晚上我会告诉你一点点关于他的出生 和他怎么成为一个大王的故事。", "english": "So tonight I will just tell you a little bit about his birth and how he became a great king."},
-            {"chinese": "很久很久以前，在中国的一座高山上，有一块神奇的石头。", "english": "Long, long ago, on a high mountain in China, there was a magical stone."},
-            {"chinese": "这块石头很大，很漂亮，它在山顶上站了很多很多年。", "english": "This stone was very large and very beautiful, and it stood on the mountain peak for many, many years."},
-            {"chinese": "它每天吸收太阳和月亮的能量。", "english": "Every day it absorbed the energy of the sun and the moon."},
-            {"chinese": "过了一百年，这块石头开始发生变化。", "english": "After one hundred years, the stone began to change."},
-            {"chinese": "它开始动起来，就像有一个生命在里面。", "english": "It began to move, as if there was a life inside it."},
-            {"chinese": "然后有一天，突然，石头裂开了！", "english": "Then one day, suddenly, the stone cracked open!"},
-            {"chinese": "从石头里跳出来一只小猴子。", "english": "Out jumped a little monkey."},
-            {"chinese": "这只猴子不是普通的猴子，他是一个有魔法的猴子。", "english": "This was no ordinary monkey - he was a magical monkey."},
-            {"chinese": "他天生就有神奇的力量。", "english": "He was born with magical powers."},
-            {"chinese": "小猴子睁开眼睛，第一次看到这个世界。", "english": "The little monkey opened his eyes and saw the world for the first time."},
-            {"chinese": "他看看天空，看看山，看看树。", "english": "He looked at the sky, the mountains, and the trees."},
-            {"chinese": "然后他做了第一件 事：他深深地吸了一口气，然后开始跳跃和欢笑。", "english": "Then he did the first thing: he took a deep breath and began to jump and laugh."},
-            {"chinese": "其他的猴子都来看这个新来的小猴子。", "english": "All the other monkeys came to see this new little monkey."},
-            {"chinese": "他们从来没有见过这么有活力的猴子。", "english": "They had never seen such an energetic monkey before."},
-            {"chinese": "小猴子很快就学会了怎么爬树和怎么跳跃。", "english": "The little monkey quickly learned how to climb trees and how to jump."},
-            {"chinese": "他比其他任何猴子跳得都高。", "english": "He could jump higher than any other monkey."},
-            {"chinese": "他比其他任何猴子跑得都快。", "english": "He could run faster than any other monkey."},
-            {"chinese": "其他的猴子都说：\"这只小猴子真特别！\"", "english": "The other monkeys said: \"This little monkey is really special!\""},
-            {"chinese": "小猴子每天都在山上玩耍。", "english": "The little monkey played on the mountain every day."},
-            {"chinese": "他跟其他猴子一起玩耍，一起吃饭，一起睡觉。", "english": "He played with the other monkeys, ate with them, and slept with them."},
-            {"chinese": "他过得很快乐。", "english": "He lived a very happy life."},
-            {"chinese": "但是小猴子不知道，他将来会成为一个伟大的王。", "english": "But the little monkey did not know that he would become a great king in the future."},
-            {"chinese": "一天，小猴子跟其他的猴子一起在山上玩。", "english": "One day, the little monkey was playing with the other monkeys on the mountain."},
-            {"chinese": "他们发现了一个瀑布。", "english": "They discovered a waterfall."},
-            {"chinese": "这个瀑布很漂亮，水从很高的地方流下来。", "english": "This waterfall was very beautiful, with water flowing down from a very high place."},
-            {"chinese": "猴子们都想知道瀑布后面有什么。", "english": "The monkeys all wanted to know what was behind the waterfall."},
-            {"chinese": "但是水太大了，他们不敢过去。", "english": "But the water was too strong, and they did not dare to go through it."},
-            {"chinese": "小猴子说：\"让我来试试！\"", "english": "The little monkey said: \"Let me try!\""},
-            {"chinese": "其他的猴子都很担心。", "english": "The other monkeys were very worried."},
-            {"chinese": "他们喊：\"小心点！\"", "english": "They shouted: \"Be careful!\""},
-            {"chinese": "小猴子勇敢地走向瀑布。", "english": "The little monkey bravely walked toward the waterfall."},
-            {"chinese": "他穿过瀑布的水，发现瀑布后面有一个洞。", "english": "He passed through the waterfall's water and discovered there was a cave behind it."},
-            {"chinese": "这个洞很大，很干燥，非常适合居住。", "english": "This cave was very large, very dry, and perfect for living in."},
-            {"chinese": "小猴子很高兴，他跑回去告诉其他的猴子。", "english": "The little monkey was very happy, and he ran back to tell the other monkeys."},
-            {"chinese": "所有的猴子都很兴奋。", "english": "All the monkeys were very excited."},
-            {"chinese": "他们跟着小猴子穿过瀑布，进入洞里。", "english": "They followed the little monkey through the waterfall and into the cave."},
-            {"chinese": "这个洞成了他们的新家。", "english": "This cave became their new home."},
-            {"chinese": "猴子们都很感谢小猴子。", "english": "The monkeys were all very grateful to the little monkey."},
-            {"chinese": "他们说：\"小猴子，你真勇敢！\"", "english": "They said: \"Little monkey, you are so brave!\""},
-            {"chinese": "从那天开始，猴子们叫小猴子\"美猴王\"。", "english": "From that day on, the monkeys called the little monkey \"Beautiful Monkey King.\""},
-            {"chinese": "小猴子很高兴有这个新名字。", "english": "The little monkey was very happy to have this new name."},
-            {"chinese": "他跳起来说：\"我是美猴王！\"", "english": "He jumped up and said: \"I am the Beautiful Monkey King!\""},
-            {"chinese": "所有的猴子都欢呼起来。", "english": "All the monkeys cheered."},
-            {"chinese": "美猴王成了所有猴子的领导者。", "english": "The Beautiful Monkey King became the leader of all the monkeys."},
-            {"chinese": "他教猴子们怎么找到更多的食物。", "english": "He taught the monkeys how to find more food."},
-            {"chinese": "他教猴子们怎么保护自己。", "english": "He taught the monkeys how to protect themselves."},
-            {"chinese": "他教猴子们怎么一起工作。", "english": "He taught the monkeys how to work together."},
-            {"chinese": "所有的猴子都很尊敬美猴王。", "english": "All the monkeys respected the Beautiful Monkey King very much."},
-            {"chinese": "但是美猴王开始思考更深层次的问题。", "english": "But the Beautiful Monkey King began to think about deeper questions."},
-            {"chinese": "他想知道：\"我会不会死呢？\"", "english": "He wondered: \"Will I die someday?\""},
-            {"chinese": "他想知道：\"有没有办法永远活着？\"", "english": "He wondered: \"Is there a way to live forever?\""},
-            {"chinese": "他想知道：\"我怎样才能变得更强大？\"", "english": "He wondered: \"How can I become even stronger?\""},
-            {"chinese": "美猴王决定离开山去寻找答案。", "english": "The Beautiful Monkey King decided to leave the mountain to find answers."},
-            {"chinese": "他把猴子们叫到一起。", "english": "He gathered all the monkeys together."},
-            {"chinese": "他说：\"我要离开一段时间。\"", "english": "He said: \"I need to leave for a while.\""},
-            {"chinese": "猴子们都很伤心。", "english": "The monkeys were all very sad."},
-            {"chinese": "他们说：\"请不要离开我们！\"", "english": "They said: \"Please don't leave us!\""},
-            {"chinese": "美猴王说：\"我必须去寻找智慧。\"", "english": "The Beautiful Monkey King said: \"I must go to seek wisdom.\""},
-            {"chinese": "他说：\"当我回来的时候，我会变得更强大，能更好地保护你们。\"", "english": "He said: \"When I return, I will be stronger and better able to protect you.\""},
-            {"chinese": "猴子们理解了他的决定。", "english": "The monkeys understood his decision."},
-            {"chinese": "他们为美猴王准备食物和水。", "english": "They prepared food and water for the Beautiful Monkey King."},
-            {"chinese": "他们给了他一个温暖的告别。", "english": "They gave him a warm farewell."},
-            {"chinese": "美猴王开始了他的旅程。", "english": "The Beautiful Monkey King began his journey."},
-            {"chinese": "他走过了很多山。", "english": "He walked over many mountains."},
-            {"chinese": "他走过了很多河。", "english": "He crossed many rivers."},
-            {"chinese": "他遇到了很多人。", "english": "He met many people."},
-            {"chinese": "他学到了很多东西。", "english": "He learned many things."},
-            {"chinese": "但是他还 没有找到他想要的答案。", "english": "But he still had not found the answers he sought."},
-            {"chinese": "美猴王听说有一个神仙住在很远的地方。", "english": "The Beautiful Monkey King heard that there was an immortal being living in a distant place."},
-            {"chinese": "这个神仙知道所有关于生命和死亡的秘密。", "english": "This immortal being knew all the secrets about life and death."},
-            {"chinese": "美猴王决定去找这个神仙。", "english": "The Beautiful Monkey King decided to find this immortal being."},
-            {"chinese": "他知道这将是一个很长的旅程。", "english": "He knew this would be a very long journey."},
-            {"chinese": "但是他准备好了。", "english": "But he was ready."},
-            {"chinese": "美猴王继续向前走。", "english": "The Beautiful Monkey King continued walking forward."},
-            {"chinese": "他走了好几天。", "english": "He walked for many days."},
-            {"chinese": "他走了好几个月。", "english": "He walked for many months."},
-            {"chinese": "他走了好几年。", "english": "He walked for many years."},
-            {"chinese": "最后，他找到了神仙住的地方。", "english": "Finally, he found where the immortal being lived."},
-            {"chinese": "这是一个美丽的山洞，周围有很多花和很多树。", "english": "It was a beautiful mountain cave, surrounded by many flowers and many trees."},
-            {"chinese": "美猴王很兴奋，但是他也很紧张。", "english": "The Beautiful Monkey King was very excited, but also very nervous."},
-            {"chinese": "他深吸一口气，走向洞口。", "english": "He took a deep breath and walked toward the cave entrance."},
-            {"chinese": "他不知道接下来会发生什么。", "english": "He did not know what would happen next."},
-            {"chinese": "但是他知道，他的生活将永远改变。", "english": "But he knew that his life would change forever."}
+            {"chinese": "如果我告诉你所有 这些故事，需要讲很多天！", "english": "If I told you all those stories, I would have to talk for many days!"}
         ];
 
         // Available texts storage
@@ -979,7 +917,192 @@
             }
         });
 
-        // File upload functionality
+        // ==========================================
+        // IMPROVED ROBUST DIGLOT PARSER
+        // ==========================================
+        
+        // Helper functions for text detection
+        function hasChinese(text) {
+            return /[\u4e00-\u9fff]/.test(text);
+        }
+        
+        function hasKorean(text) {
+            return /[\uac00-\ud7af\u1100-\u11ff]/.test(text);
+        }
+        
+        function hasJapaneseOnly(text) {
+            // Has Japanese hiragana/katakana but no Chinese
+            return /[\u3040-\u309f\u30a0-\u30ff]/.test(text) && !hasChinese(text);
+        }
+        
+        function isMostlyEnglish(text) {
+            if (hasChinese(text)) return false;
+            const englishChars = (text.match(/[a-zA-Z]/g) || []).length;
+            return englishChars > 5;
+        }
+        
+        function shouldSkipLine(line) {
+            const trimmed = line.trim();
+            
+            // Empty lines
+            if (!trimmed) return true;
+            
+            // Skip patterns - metadata, LLM artifacts, etc.
+            const skipPatterns = [
+                /^Thinking\.\.\./i,
+                /^\.\.\.(done thinking|thinking)\./i,
+                /^Chinese translation:/i,
+                /^\*\* ?Chinese translation:?\*\*/i,
+                /^\[中国\]/,
+                /^Original Epub:/i,
+                /^Revised Epub:/i,
+                /^Translation by/i,
+                /^Translation Quality:/i,
+                /^\* \* \*$/,
+                /^#\s*$/,
+                /^Okay,? so I have/i,
+                /^The sentence given is/i,
+                /^First,/,
+                /^Next up is/,
+                /^Then there's/,
+                /^Putting the whole/i,
+                /^I also need to ensure/i,
+                /^Let'?s break it down/i,
+                /^In Chinese translations/i,
+                /^The word for/i,
+                /^So I'?ll use/i,
+                /^For hope,/i,
+                /^meantime,/i,
+                /^roar$/i,
+            ];
+            
+            for (const pattern of skipPatterns) {
+                if (pattern.test(trimmed)) return true;
+            }
+            
+            // Skip Korean-only lines (often parenthetical original text)
+            if (hasKorean(trimmed) && !hasChinese(trimmed) && !isMostlyEnglish(trimmed)) {
+                return true;
+            }
+            
+            // Skip sound effects with Chinese chars that break pairing (like *庭*, * 丝)
+            if (/^\*\s*[\u4e00-\u9fff]+\s*\*?$/.test(trimmed)) {
+                return true;
+            }
+            
+            // Skip very short lines that are just punctuation
+            if (trimmed.length < 3 && !/[a-zA-Z\u4e00-\u9fff]/.test(trimmed)) {
+                return true;
+            }
+            
+            return false;
+        }
+
+        function parseTextFile(content) {
+            const lines = content.split('\n');
+            const filteredLines = [];
+            let skippedCount = 0;
+            let koreanSkipped = 0;
+            let metadataSkipped = 0;
+            
+            // First pass: filter out unwanted lines
+            for (const line of lines) {
+                const trimmed = line.trim();
+                if (shouldSkipLine(trimmed)) {
+                    skippedCount++;
+                    if (hasKorean(trimmed)) koreanSkipped++;
+                    if (/translation|epub|thinking/i.test(trimmed)) metadataSkipped++;
+                    continue;
+                }
+                filteredLines.push(trimmed);
+            }
+            
+            // Second pass: pair Chinese with English
+            const sentences = [];
+            let unpairedChinese = 0;
+            let unpairedEnglish = 0;
+            let i = 0;
+            
+            while (i < filteredLines.length - 1) {
+                const line1 = filteredLines[i];
+                const line2 = filteredLines[i + 1];
+                
+                // Check if line1 is Chinese and line2 is English
+                if (hasChinese(line1) && !hasChinese(line2) && isMostlyEnglish(line2)) {
+                    sentences.push({
+                        chinese: line1,
+                        english: line2
+                    });
+                    i += 2;
+                } else if (hasChinese(line1)) {
+                    // Chinese line with no English pair - skip
+                    unpairedChinese++;
+                    i++;
+                } else if (isMostlyEnglish(line1)) {
+                    // English line with no Chinese pair - skip
+                    unpairedEnglish++;
+                    i++;
+                } else {
+                    // Unknown - skip
+                    i++;
+                }
+            }
+            
+            // Store parse stats for display
+            window.lastParseStats = {
+                originalLines: lines.length,
+                filteredLines: filteredLines.length,
+                validPairs: sentences.length,
+                skippedTotal: skippedCount,
+                unpairedChinese: unpairedChinese,
+                unpairedEnglish: unpairedEnglish,
+                koreanSkipped: koreanSkipped,
+                metadataSkipped: metadataSkipped
+            };
+            
+            return sentences;
+        }
+        
+        function showParseInfo(stats, filename) {
+            const infoDiv = document.getElementById('parseInfo');
+            
+            if (stats.validPairs === 0) {
+                infoDiv.className = 'parse-info error';
+                infoDiv.innerHTML = `
+                    <strong>⚠️ No valid pairs found in ${filename}</strong>
+                    <div class="parse-stats">
+                        <span>Original lines: ${stats.originalLines}</span>
+                        <span>Skipped: ${stats.skippedTotal}</span>
+                    </div>
+                    <div style="margin-top: 8px; font-size: 0.8rem;">
+                        Make sure the file has alternating Chinese/English lines.
+                    </div>
+                `;
+            } else if (stats.unpairedChinese > 10 || stats.unpairedEnglish > 10) {
+                infoDiv.className = 'parse-info warning';
+                infoDiv.innerHTML = `
+                    <strong>⚡ Loaded ${stats.validPairs} sentence pairs</strong>
+                    <div class="parse-stats">
+                        <span>Skipped ${stats.skippedTotal} lines</span>
+                        <span>${stats.unpairedChinese} unpaired CN</span>
+                        <span>${stats.unpairedEnglish} unpaired EN</span>
+                    </div>
+                `;
+            } else {
+                infoDiv.className = 'parse-info';
+                infoDiv.innerHTML = `
+                    <strong>✅ Successfully loaded ${stats.validPairs} sentence pairs</strong>
+                    <div class="parse-stats">
+                        <span>From ${stats.originalLines} lines</span>
+                        <span>Filtered ${stats.skippedTotal} metadata/noise lines</span>
+                    </div>
+                `;
+            }
+            
+            infoDiv.style.display = 'block';
+        }
+
+        // File upload functionality with improved parser
         document.getElementById('fileInput').addEventListener('change', function(e) {
             const file = e.target.files[0];
             if (file && file.type === 'text/plain') {
@@ -987,6 +1110,9 @@
                 reader.onload = function(e) {
                     const content = e.target.result;
                     const newSentences = parseTextFile(content);
+                    
+                    // Show parse info
+                    showParseInfo(window.lastParseStats, file.name);
                     
                     if (newSentences.length > 0) {
                         const textKey = 'custom_' + Date.now();
@@ -1000,36 +1126,15 @@
                         currentTextKey = textKey;
                         sentencePairs = newSentences;
                         
-                        // Show success message
-                        alert(`Successfully loaded ${newSentences.length} sentences from ${file.name}`);
-                    } else {
-                        alert('Could not parse the text file. Please ensure it follows the format: Chinese sentence, English sentence, empty line.');
+                        // Select the new text option
+                        document.querySelectorAll('.text-option').forEach(opt => opt.classList.remove('selected'));
+                        const newOption = document.querySelector(`[data-text="${textKey}"]`);
+                        if (newOption) newOption.classList.add('selected');
                     }
                 };
                 reader.readAsText(file);
             }
         });
-
-        function parseTextFile(content) {
-            const lines = content.split('\n').map(line => line.trim()).filter(line => line);
-            const sentences = [];
-            
-            for (let i = 0; i < lines.length - 1; i += 2) {
-                const chinese = lines[i];
-                const english = lines[i + 1];
-                
-                if (chinese && english && 
-                    /[\u4e00-\u9fff]/.test(chinese) && 
-                    !/[\u4e00-\u9fff]/.test(english)) {
-                    sentences.push({
-                        chinese: chinese,
-                        english: english
-                    });
-                }
-            }
-            
-            return sentences;
-        }
 
         function updateTextOptions() {
             const container = document.getElementById('textOptions');
