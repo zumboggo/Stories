@@ -4,7 +4,6 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Sentence Drilling Pro - Language Learning</title>
-    <link rel="icon" type="image/x-icon" href="favicon.png">
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
     <style>
@@ -299,6 +298,190 @@
         .text-option.loading {
             opacity: 0.6;
             pointer-events: none;
+        }
+
+        /* Section selector styles */
+        .section-selector {
+            margin-top: 16px;
+            padding: 20px;
+            background: linear-gradient(135deg, #f8fafc 0%, #f1f5f9 100%);
+            border: 1px solid #e2e8f0;
+            border-radius: 16px;
+            display: none;
+            box-shadow: inset 0 1px 2px rgba(0, 0, 0, 0.02);
+        }
+
+        .section-selector.visible {
+            display: block;
+            animation: slideDown 0.3s ease;
+        }
+
+        @keyframes slideDown {
+            from { opacity: 0; transform: translateY(-10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .section-header {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            margin-bottom: 16px;
+            font-weight: 600;
+            color: #374151;
+            font-size: 0.95rem;
+            padding-bottom: 12px;
+            border-bottom: 1px solid #e5e7eb;
+        }
+
+        .section-header i {
+            color: #007aff;
+        }
+
+        .section-list {
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+            max-height: 280px;
+            overflow-y: auto;
+            padding-right: 8px;
+        }
+
+        /* Custom scrollbar */
+        .section-list::-webkit-scrollbar {
+            width: 6px;
+        }
+
+        .section-list::-webkit-scrollbar-track {
+            background: #f1f5f9;
+            border-radius: 3px;
+        }
+
+        .section-list::-webkit-scrollbar-thumb {
+            background: #cbd5e1;
+            border-radius: 3px;
+        }
+
+        .section-list::-webkit-scrollbar-thumb:hover {
+            background: #94a3b8;
+        }
+
+        .section-item {
+            padding: 14px 16px;
+            background: #ffffff;
+            border: 1px solid #e5e7eb;
+            border-radius: 12px;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            text-align: left;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .section-item::before {
+            content: '';
+            position: absolute;
+            left: 0;
+            top: 0;
+            bottom: 0;
+            width: 4px;
+            background: transparent;
+            transition: background 0.2s ease;
+            border-radius: 4px 0 0 4px;
+        }
+
+        .section-item:hover {
+            border-color: #007aff;
+            background: #fafcff;
+            transform: translateX(2px);
+            box-shadow: 0 2px 8px rgba(0, 122, 255, 0.08);
+        }
+
+        .section-item:hover::before {
+            background: rgba(0, 122, 255, 0.3);
+        }
+
+        .section-item.selected {
+            border-color: #007aff;
+            background: linear-gradient(135deg, #eff6ff 0%, #dbeafe 100%);
+            box-shadow: 0 2px 12px rgba(0, 122, 255, 0.15);
+        }
+
+        .section-item.selected::before {
+            background: #007aff;
+        }
+
+        .section-title {
+            font-weight: 600;
+            color: #1f2937;
+            font-size: 0.95rem;
+            margin-bottom: 6px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .section-number {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            width: 22px;
+            height: 22px;
+            background: linear-gradient(135deg, #007aff 0%, #0056cc 100%);
+            color: white;
+            font-size: 0.75rem;
+            font-weight: 700;
+            border-radius: 6px;
+            flex-shrink: 0;
+        }
+
+        .section-item.selected .section-number {
+            background: linear-gradient(135deg, #0056cc 0%, #003d99 100%);
+            box-shadow: 0 2px 4px rgba(0, 86, 204, 0.3);
+        }
+
+        .section-preview {
+            font-size: 1rem;
+            color: #1f2937;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            padding-left: 30px;
+            margin-bottom: 2px;
+        }
+
+        .section-english-preview {
+            font-size: 0.8rem;
+            color: #6b7280;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            padding-left: 30px;
+            font-style: italic;
+        }
+
+        .section-meta {
+            font-size: 0.75rem;
+            color: #9ca3af;
+            margin-top: 6px;
+            padding-left: 30px;
+            display: flex;
+            align-items: center;
+            gap: 4px;
+        }
+
+        .section-meta::before {
+            content: '📄';
+            font-size: 0.7rem;
+        }
+
+        .section-count {
+            margin-left: auto;
+            background: #e0e7ff;
+            color: #4f46e5;
+            font-size: 0.75rem;
+            font-weight: 600;
+            padding: 4px 10px;
+            border-radius: 12px;
         }
 
         .text-icon {
@@ -717,6 +900,18 @@
                         </div>
                     </div>
                     
+                    <!-- Section Selector (appears after book selection) -->
+                    <div id="sectionSelector" class="section-selector">
+                        <div class="section-header">
+                            <i class="fas fa-bookmark"></i> 
+                            <span>Start from Section</span>
+                            <span id="sectionCount" class="section-count"></span>
+                        </div>
+                        <div id="sectionList" class="section-list">
+                            <!-- Sections will be populated here -->
+                        </div>
+                    </div>
+                    
                     <div class="or-divider">— or upload your own —</div>
                     
                     <!-- Custom Upload Section -->
@@ -994,6 +1189,7 @@
         };
         let speakingSpeed = 0.8;
         let autoplayMode = false;
+        let selectedSectionStart = 0;  // Track which section to start from
 
         // Initialize voices
         let chineseVoices = [];
@@ -1019,6 +1215,111 @@
             loadVoices();
         } else {
             speechSynthesis.addEventListener('voiceschanged', loadVoices);
+        }
+
+        // ==========================================
+        // SECTION DETECTION
+        // ==========================================
+        
+        function detectSections(sentences) {
+            const sections = [];
+            let hasExplicitSections = false;
+            
+            // First pass: look for explicit section markers in the text
+            for (let i = 0; i < sentences.length; i++) {
+                const chinese = sentences[i].chinese.toLowerCase();
+                const english = sentences[i].english.toLowerCase();
+                
+                // Check for section markers (case insensitive)
+                const sectionMatch = english.match(/^(section|chapter|part|第.*[章节部分])\s*(\d+|[一二三四五六七八九十]+)?[:\s]*/i) ||
+                                    chinese.match(/^(第.*[章节部分]|section|chapter|part)\s*(\d+|[一二三四五六七八九十]+)?[:\s]*/i);
+                
+                if (sectionMatch || english.includes('section ') || chinese.includes('第') && (chinese.includes('章') || chinese.includes('节') || chinese.includes('部分'))) {
+                    hasExplicitSections = true;
+                    sections.push({
+                        startIndex: i,
+                        title: sentences[i].english.substring(0, 50) + (sentences[i].english.length > 50 ? '...' : ''),
+                        preview: sentences[i].chinese.substring(0, 30),
+                        isExplicit: true
+                    });
+                }
+            }
+            
+            // If explicit sections found, return them
+            if (hasExplicitSections && sections.length > 0) {
+                // Calculate sentence counts for each section
+                for (let i = 0; i < sections.length; i++) {
+                    const nextStart = i < sections.length - 1 ? sections[i + 1].startIndex : sentences.length;
+                    sections[i].sentenceCount = nextStart - sections[i].startIndex;
+                }
+                return sections;
+            }
+            
+            // Second pass: create automatic sections every 10 sentences
+            const SENTENCES_PER_SECTION = 10;
+            
+            for (let i = 0; i < sentences.length; i += SENTENCES_PER_SECTION) {
+                const endIndex = Math.min(i + SENTENCES_PER_SECTION, sentences.length);
+                const chinesePreview = sentences[i].chinese.substring(0, 20);
+                const englishPreview = sentences[i].english.substring(0, 35);
+                
+                sections.push({
+                    startIndex: i,
+                    title: `Sentences ${i + 1}-${endIndex}`,
+                    preview: chinesePreview + (sentences[i].chinese.length > 20 ? '…' : ''),
+                    englishPreview: englishPreview + (sentences[i].english.length > 35 ? '…' : ''),
+                    sentenceCount: endIndex - i,
+                    isExplicit: false
+                });
+            }
+            
+            return sections;
+        }
+        
+        function displaySectionSelector(sections) {
+            const container = document.getElementById('sectionList');
+            const selectorDiv = document.getElementById('sectionSelector');
+            
+            if (!sections || sections.length <= 1) {
+                selectorDiv.classList.remove('visible');
+                selectedSectionStart = 0;
+                return;
+            }
+            
+            container.innerHTML = '';
+            
+            sections.forEach((section, index) => {
+                const item = document.createElement('div');
+                item.className = 'section-item' + (index === 0 ? ' selected' : '');
+                item.dataset.startIndex = section.startIndex;
+                
+                const englishLine = section.englishPreview ? 
+                    `<div class="section-english-preview">${section.englishPreview}</div>` : '';
+                
+                item.innerHTML = `
+                    <div class="section-title">
+                        <span class="section-number">${index + 1}</span>
+                        ${section.title}
+                    </div>
+                    <div class="section-preview">${section.preview}</div>
+                    ${englishLine}
+                    <div class="section-meta">${section.sentenceCount} sentences</div>
+                `;
+                
+                item.addEventListener('click', () => {
+                    document.querySelectorAll('.section-item').forEach(s => s.classList.remove('selected'));
+                    item.classList.add('selected');
+                    selectedSectionStart = section.startIndex;
+                });
+                
+                container.appendChild(item);
+            });
+            
+            selectorDiv.classList.add('visible');
+            selectedSectionStart = sections[0].startIndex;
+            
+            // Update section count badge
+            document.getElementById('sectionCount').textContent = `${sections.length} sections`;
         }
 
         // ==========================================
@@ -1291,6 +1592,10 @@
             currentTextKey = bookId;
             sentencePairs = book.sentences;
             
+            // Detect and display sections
+            const sections = detectSections(sentencePairs);
+            displaySectionSelector(sections);
+            
             // Enable start button
             document.getElementById('startButton').disabled = sentencePairs.length === 0;
         }
@@ -1339,6 +1644,11 @@
                         
                         currentTextKey = textKey;
                         sentencePairs = newSentences;
+                        
+                        // Detect and display sections for uploaded file
+                        const sections = detectSections(sentencePairs);
+                        displaySectionSelector(sections);
+                        
                         document.getElementById('startButton').disabled = false;
                     }
                 };
@@ -1403,16 +1713,22 @@
             repetitionsPerSentence = parseInt(document.getElementById('repetitions').value);
             autoplayMode = document.getElementById('autoplayToggle').checked;
             
-            if (document.getElementById('startPosition').value === 'continue') {
+            // Determine starting position
+            const startPositionSetting = document.getElementById('startPosition').value;
+            
+            if (startPositionSetting === 'continue') {
                 const savedProgress = localStorage.getItem('sentenceDrillingProgress_' + currentTextKey);
                 if (savedProgress) {
                     currentSentenceIndex = parseInt(savedProgress);
                     if (currentSentenceIndex >= sentencePairs.length) {
                         currentSentenceIndex = 0;
                     }
+                } else {
+                    currentSentenceIndex = selectedSectionStart;
                 }
             } else {
-                currentSentenceIndex = 0;
+                // Use the selected section start
+                currentSentenceIndex = selectedSectionStart;
             }
             
             document.getElementById('setupScreen').style.display = 'none';
