@@ -179,56 +179,49 @@
             font-weight: 500;
         }
 
-        .voice-options {
-            display: grid;
-            grid-template-columns: 1fr 1fr 1fr;
-            gap: 16px;
+        .voice-select-container {
             margin-top: 12px;
         }
 
-        .voice-option {
-            padding: 16px;
+        .voice-select {
+            width: 100%;
+            padding: 14px 18px;
             border: 1px solid #d2d2d7;
             border-radius: 12px;
-            cursor: pointer;
+            font-size: 1rem;
             transition: all 0.2s ease;
             background: #ffffff;
-            text-align: center;
-        }
-
-        .voice-option:hover {
-            border-color: #007aff;
-            background: rgba(0, 122, 255, 0.04);
-        }
-
-        .voice-option.selected {
-            border-color: #007aff;
-            background: rgba(0, 122, 255, 0.08);
-        }
-
-        .voice-option .flag {
-            font-size: 1.5rem;
-            margin-bottom: 6px;
-        }
-
-        .voice-option .name {
-            font-weight: 600;
             color: #1d1d1f;
-            font-size: 0.95rem;
+            cursor: pointer;
         }
 
-        .voice-option .lang {
-            font-size: 0.85rem;
-            color: #86868b;
-        }
-
-        .no-voice {
-            background: #f2f2f7;
-        }
-
-        .no-voice.selected {
-            background: rgba(0, 122, 255, 0.08);
+        .voice-select:focus {
+            outline: none;
             border-color: #007aff;
+            box-shadow: 0 0 0 3px rgba(0, 122, 255, 0.1);
+        }
+
+        .voice-select:disabled {
+            background: #f2f2f7;
+            color: #86868b;
+            cursor: not-allowed;
+        }
+
+        .no-voice-toggle {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            margin-top: 12px;
+            padding: 12px 16px;
+            border: 1px solid #d2d2d7;
+            border-radius: 12px;
+            background: #ffffff;
+        }
+
+        .no-voice-toggle label {
+            font-size: 0.95rem;
+            color: #1d1d1f;
+            cursor: pointer;
         }
 
         .file-upload {
@@ -602,7 +595,7 @@
             margin-bottom: 40px;
         }
 
-        .chinese-sentence {
+        .target-sentence {
             font-size: 3.75rem;
             font-weight: 700;
             color: #1d1d1f;
@@ -762,6 +755,40 @@
             cursor: not-allowed;
         }
 
+        .skip-controls {
+            display: flex;
+            justify-content: center;
+            gap: 16px;
+            margin-top: 20px;
+        }
+
+        .skip-btn {
+            background: rgba(255, 149, 0, 0.1);
+            border: 1px solid #ff9500;
+            color: #ff9500;
+            padding: 12px 24px;
+            border-radius: 50px;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            font-size: 0.95rem;
+            font-weight: 600;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .skip-btn:hover {
+            background: #ff9500;
+            color: white;
+            transform: translateY(-1px);
+        }
+
+        .skip-btn:disabled {
+            opacity: 0.4;
+            cursor: not-allowed;
+            transform: none;
+        }
+
         .stop-button {
             background: #ff3b30;
             color: white;
@@ -798,16 +825,12 @@
                 font-size: 2rem;
             }
 
-            .chinese-sentence {
+            .target-sentence {
                 font-size: 2rem;
             }
 
             .english-sentence {
                 font-size: 1.25rem;
-            }
-
-            .voice-options {
-                grid-template-columns: 1fr;
             }
         }
 
@@ -884,9 +907,36 @@
     <div class="container">
         <div id="setupScreen" class="setup-screen">
             <h1>Sentence Drilling Pro</h1>
-            <p class="subtitle">Master Chinese through repetition and immersion</p>
+            <p class="subtitle">Master languages through repetition and immersion</p>
             
             <div class="setup-options">
+                <!-- Target Language Selection - at the top -->
+                <div class="option-group">
+                    <label class="option-label">🌍 Target Language</label>
+                    <select id="targetLanguage" class="option-input">
+                        <option value="zh-CN">Simplified Mandarin (Chinese)</option>
+                        <option value="zh-TW">Traditional Chinese (Taiwan)</option>
+                        <option value="ja-JP">Japanese</option>
+                        <option value="ko-KR">Korean</option>
+                        <option value="es-ES">Spanish (Spain)</option>
+                        <option value="es-MX">Spanish (Mexico)</option>
+                        <option value="fr-FR">French</option>
+                        <option value="de-DE">German</option>
+                        <option value="it-IT">Italian</option>
+                        <option value="pt-BR">Portuguese (Brazil)</option>
+                        <option value="pt-PT">Portuguese (Portugal)</option>
+                        <option value="ru-RU">Russian</option>
+                        <option value="ar-SA">Arabic</option>
+                        <option value="hi-IN">Hindi</option>
+                        <option value="th-TH">Thai</option>
+                        <option value="vi-VN">Vietnamese</option>
+                        <option value="nl-NL">Dutch</option>
+                        <option value="pl-PL">Polish</option>
+                        <option value="tr-TR">Turkish</option>
+                        <option value="sv-SE">Swedish</option>
+                    </select>
+                </div>
+
                 <div class="option-group">
                     <label class="option-label">📚 Select Text</label>
                     
@@ -938,8 +988,8 @@
                 <div class="option-group">
                     <label class="option-label">📖 Text Display</label>
                     <div class="text-display-options">
-                        <div id="chineseToggle" class="text-toggle active" onclick="toggleTextDisplay('chinese')">
-                            🇨🇳 Chinese Text
+                        <div id="targetToggle" class="text-toggle active" onclick="toggleTextDisplay('target')">
+                            🎯 Target Language
                         </div>
                         <div id="englishToggle" class="text-toggle active" onclick="toggleTextDisplay('english')">
                             🇺🇸 English Text
@@ -948,44 +998,28 @@
                 </div>
 
                 <div class="option-group">
-                    <label class="option-label">🎙️ Chinese Voice</label>
-                    <div class="voice-options">
-                        <div class="voice-option selected" data-voice="chinese-female">
-                            <div class="flag">🇨🇳</div>
-                            <div class="name">Female</div>
-                            <div class="lang">Mandarin</div>
-                        </div>
-                        <div class="voice-option" data-voice="chinese-male">
-                            <div class="flag">🇨🇳</div>
-                            <div class="name">Male</div>
-                            <div class="lang">Mandarin</div>
-                        </div>
-                        <div class="voice-option no-voice" data-voice="chinese-none">
-                            <div class="flag">🔇</div>
-                            <div class="name">No Voice</div>
-                            <div class="lang">Silent</div>
-                        </div>
+                    <label class="option-label">🎙️ Target Language Voice</label>
+                    <div class="voice-select-container">
+                        <select id="targetVoiceSelect" class="voice-select">
+                            <option value="">Loading voices...</option>
+                        </select>
+                    </div>
+                    <div class="no-voice-toggle">
+                        <input type="checkbox" id="targetVoiceDisabled">
+                        <label for="targetVoiceDisabled">🔇 Disable target language voice</label>
                     </div>
                 </div>
 
                 <div class="option-group">
                     <label class="option-label">🔊 English Voice</label>
-                    <div class="voice-options">
-                        <div class="voice-option selected" data-voice="english-female">
-                            <div class="flag">🇺🇸</div>
-                            <div class="name">Female</div>
-                            <div class="lang">English</div>
-                        </div>
-                        <div class="voice-option" data-voice="english-male">
-                            <div class="flag">🇺🇸</div>
-                            <div class="name">Male</div>
-                            <div class="lang">English</div>
-                        </div>
-                        <div class="voice-option no-voice" data-voice="english-none">
-                            <div class="flag">🔇</div>
-                            <div class="name">No Voice</div>
-                            <div class="lang">Silent</div>
-                        </div>
+                    <div class="voice-select-container">
+                        <select id="englishVoiceSelect" class="voice-select">
+                            <option value="">Loading voices...</option>
+                        </select>
+                    </div>
+                    <div class="no-voice-toggle">
+                        <input type="checkbox" id="englishVoiceDisabled">
+                        <label for="englishVoiceDisabled">🔇 Disable English voice</label>
                     </div>
                 </div>
 
@@ -1029,7 +1063,7 @@
             </div>
             
             <div class="sentence-display">
-                <div id="chineseSentence" class="chinese-sentence sentence">
+                <div id="targetSentence" class="target-sentence sentence">
                     你好世界
                 </div>
                 <div id="englishSentence" class="english-sentence sentence">
@@ -1042,6 +1076,15 @@
             <div class="controls">
                 <button class="control-btn" id="playPauseBtn" onclick="togglePlayPause()">
                     <i class="fas fa-play"></i> Play
+                </button>
+            </div>
+
+            <div class="skip-controls">
+                <button class="skip-btn" id="skip1Btn" onclick="skipSentences(1)">
+                    <i class="fas fa-forward-step"></i> Skip 1
+                </button>
+                <button class="skip-btn" id="skip5Btn" onclick="skipSentences(5)">
+                    <i class="fas fa-forward-fast"></i> Skip 5
                 </button>
             </div>
 
@@ -1093,12 +1136,6 @@
                 icon: '⚔️',
                 file: 'Legendary_Moonlight_Sculptor_Vol02_cleaned.txt'
             },
-            {
-                id: 'short-stories',
-                name: 'Short Stories Collection',
-                icon: '📚',
-                file: 'ShortStories.txt'
-            },
             // ==========================================
             // ADD MORE BOOKS HERE:
             // ==========================================
@@ -1112,65 +1149,65 @@
 
         // Built-in Monkey King data
         const monkeyKingData = [
-            {"chinese": "猴王的诞生      我亲爱的孩子，我知道时间很晚了。", "english": "The Rise of the Monkey King. My dear child, I know that the hour is late."},
-            {"chinese": "你玩了一天，累了，现在是睡觉的时候了。", "english": "You've been playing all day and you are tired, and now it is bedtime."},
-            {"chinese": "但是你说你想在睡觉前听一个故事。", "english": "But you say you want to hear a story before you sleep."},
-            {"chinese": "所以现在我给你讲一个很老的关于猴子的故事。", "english": "So now I will tell you an old story about a monkey."},
-            {"chinese": "这只猴子很强大，也很聪明，但是有的时候他也很淘气。", "english": "He was very strong and very smart, but sometimes he was also very naughty."},
-            {"chinese": "他需要去学习什么是爱，去学习怎么去帮助别人。", "english": "He needed to learn about love and helping others."},
-            {"chinese": "几千年以前这只猴子生活在中国的北方。", "english": "This monkey lived a thousand years ago in northern China."},
-            {"chinese": "在他很长的一生中他有很多名字，但是他最有名的名字是孙悟空。", "english": "He had many names during his long life, but most people know him as Sun Wukong."},
-            {"chinese": "人们讲了很多关于孙悟空的故事。", "english": "People tell many stories about Sun Wukong."},
-            {"chinese": "如果我告诉你所有这些故事，需要讲很多天！", "english": "If I told you all those stories, I would have to talk for many days!"},
-            {"chinese": "所以今天晚上我会告诉你一点点关于他的出生和他怎么成为一个大王的故事。", "english": "So tonight I will just tell you a little bit about his birth and how he became a great king."},
-            {"chinese": "很久很久以前，在中国的一座高山上，有一块神奇的石头。", "english": "Long, long ago, on a high mountain in China, there was a magical stone."},
-            {"chinese": "这块石头很大，很漂亮，它在山顶上站了很多很多年。", "english": "This stone was very large and very beautiful, and it stood on the mountain peak for many, many years."},
-            {"chinese": "它每天吸收太阳和月亮的能量。", "english": "Every day it absorbed the energy of the sun and the moon."},
-            {"chinese": "过了一百年，这块石头开始发生变化。", "english": "After one hundred years, the stone began to change."},
-            {"chinese": "它开始动起来，就像有一个生命在里面。", "english": "It began to move, as if there was a life inside it."},
-            {"chinese": "然后有一天，突然，石头裂开了！", "english": "Then one day, suddenly, the stone cracked open!"},
-            {"chinese": "从石头里跳出来一只小猴子。", "english": "Out jumped a little monkey."},
-            {"chinese": "这只猴子不是普通的猴子，他是一个有魔法的猴子。", "english": "This was no ordinary monkey - he was a magical monkey."},
-            {"chinese": "他天生就有神奇的力量。", "english": "He was born with magical powers."},
-            {"chinese": "小猴子睁开眼睛，第一次看到这个世界。", "english": "The little monkey opened his eyes and saw the world for the first time."},
-            {"chinese": "他看看天空，看看山，看看树。", "english": "He looked at the sky, the mountains, and the trees."},
-            {"chinese": "然后他做了第一件事：他深深地吸了一口气，然后开始跳跃和欢笑。", "english": "Then he did the first thing: he took a deep breath and began to jump and laugh."},
-            {"chinese": "其他的猴子都来看这个新来的小猴子。", "english": "All the other monkeys came to see this new little monkey."},
-            {"chinese": "他们从来没有见过这么有活力的猴子。", "english": "They had never seen such an energetic monkey before."},
-            {"chinese": "小猴子很快就学会了怎么爬树和怎么跳跃。", "english": "The little monkey quickly learned how to climb trees and how to jump."},
-            {"chinese": "他比其他任何猴子跳得都高。", "english": "He could jump higher than any other monkey."},
-            {"chinese": "他比其他任何猴子跑得都快。", "english": "He could run faster than any other monkey."},
-            {"chinese": "其他的猴子都说：\"这只小猴子真特别！\"", "english": "The other monkeys said: \"This little monkey is really special!\""},
-            {"chinese": "小猴子每天都在山上玩耍。", "english": "The little monkey played on the mountain every day."},
-            {"chinese": "他跟其他猴子一起玩耍，一起吃饭，一起睡觉。", "english": "He played with the other monkeys, ate with them, and slept with them."},
-            {"chinese": "他过得很快乐。", "english": "He lived a very happy life."},
-            {"chinese": "但是小猴子不知道，他将来会成为一个伟大的王。", "english": "But the little monkey did not know that he would become a great king in the future."},
-            {"chinese": "一天，小猴子跟其他的猴子一起在山上玩。", "english": "One day, the little monkey was playing with the other monkeys on the mountain."},
-            {"chinese": "他们发现了一个瀑布。", "english": "They discovered a waterfall."},
-            {"chinese": "这个瀑布很漂亮，水从很高的地方流下来。", "english": "This waterfall was very beautiful, with water flowing down from a very high place."},
-            {"chinese": "猴子们都想知道瀑布后面有什么。", "english": "The monkeys all wanted to know what was behind the waterfall."},
-            {"chinese": "但是水太大了，他们不敢过去。", "english": "But the water was too strong, and they did not dare to go through it."},
-            {"chinese": "小猴子说：\"让我来试试！\"", "english": "The little monkey said: \"Let me try!\""},
-            {"chinese": "其他的猴子都很担心。", "english": "The other monkeys were very worried."},
-            {"chinese": "他们喊：\"小心点！\"", "english": "They shouted: \"Be careful!\""},
-            {"chinese": "小猴子勇敢地走向瀑布。", "english": "The little monkey bravely walked toward the waterfall."},
-            {"chinese": "他穿过瀑布的水，发现瀑布后面有一个洞。", "english": "He passed through the waterfall's water and discovered there was a cave behind it."},
-            {"chinese": "这个洞很大，很干燥，非常适合居住。", "english": "This cave was very large, very dry, and perfect for living in."},
-            {"chinese": "小猴子很高兴，他跑回去告诉其他的猴子。", "english": "The little monkey was very happy, and he ran back to tell the other monkeys."},
-            {"chinese": "所有的猴子都很兴奋。", "english": "All the monkeys were very excited."},
-            {"chinese": "他们跟着小猴子穿过瀑布，进入洞里。", "english": "They followed the little monkey through the waterfall and into the cave."},
-            {"chinese": "这个洞成了他们的新家。", "english": "This cave became their new home."},
-            {"chinese": "猴子们都很感谢小猴子。", "english": "The monkeys were all very grateful to the little monkey."},
-            {"chinese": "他们说：\"小猴子，你真勇敢！\"", "english": "They said: \"Little monkey, you are so brave!\""},
-            {"chinese": "从那天开始，猴子们叫小猴子\"美猴王\"。", "english": "From that day on, the monkeys called the little monkey \"Beautiful Monkey King.\""},
-            {"chinese": "小猴子很高兴有这个新名字。", "english": "The little monkey was very happy to have this new name."},
-            {"chinese": "他跳起来说：\"我是美猴王！\"", "english": "He jumped up and said: \"I am the Beautiful Monkey King!\""},
-            {"chinese": "所有的猴子都欢呼起来。", "english": "All the monkeys cheered."},
-            {"chinese": "美猴王成了所有猴子的领导者。", "english": "The Beautiful Monkey King became the leader of all the monkeys."},
-            {"chinese": "他教猴子们怎么找到更多的食物。", "english": "He taught the monkeys how to find more food."},
-            {"chinese": "他教猴子们怎么保护自己。", "english": "He taught the monkeys how to protect themselves."},
-            {"chinese": "他教猴子们怎么一起工作。", "english": "He taught the monkeys how to work together."},
-            {"chinese": "所有的猴子都很尊敬美猴王。", "english": "All the monkeys respected the Beautiful Monkey King very much."}
+            {"target": "猴王的诞生      我亲爱的孩子，我知道时间很晚了。", "english": "The Rise of the Monkey King. My dear child, I know that the hour is late."},
+            {"target": "你玩了一天，累了，现在是睡觉的时候了。", "english": "You've been playing all day and you are tired, and now it is bedtime."},
+            {"target": "但是你说你想在睡觉前听一个故事。", "english": "But you say you want to hear a story before you sleep."},
+            {"target": "所以现在我给你讲一个很老的关于猴子的故事。", "english": "So now I will tell you an old story about a monkey."},
+            {"target": "这只猴子很强大，也很聪明，但是有的时候他也很淘气。", "english": "He was very strong and very smart, but sometimes he was also very naughty."},
+            {"target": "他需要去学习什么是爱，去学习怎么去帮助别人。", "english": "He needed to learn about love and helping others."},
+            {"target": "几千年以前这只猴子生活在中国的北方。", "english": "This monkey lived a thousand years ago in northern China."},
+            {"target": "在他很长的一生中他有很多名字，但是他最有名的名字是孙悟空。", "english": "He had many names during his long life, but most people know him as Sun Wukong."},
+            {"target": "人们讲了很多关于孙悟空的故事。", "english": "People tell many stories about Sun Wukong."},
+            {"target": "如果我告诉你所有这些故事，需要讲很多天！", "english": "If I told you all those stories, I would have to talk for many days!"},
+            {"target": "所以今天晚上我会告诉你一点点关于他的出生和他怎么成为一个大王的故事。", "english": "So tonight I will just tell you a little bit about his birth and how he became a great king."},
+            {"target": "很久很久以前，在中国的一座高山上，有一块神奇的石头。", "english": "Long, long ago, on a high mountain in China, there was a magical stone."},
+            {"target": "这块石头很大，很漂亮，它在山顶上站了很多很多年。", "english": "This stone was very large and very beautiful, and it stood on the mountain peak for many, many years."},
+            {"target": "它每天吸收太阳和月亮的能量。", "english": "Every day it absorbed the energy of the sun and the moon."},
+            {"target": "过了一百年，这块石头开始发生变化。", "english": "After one hundred years, the stone began to change."},
+            {"target": "它开始动起来，就像有一个生命在里面。", "english": "It began to move, as if there was a life inside it."},
+            {"target": "然后有一天，突然，石头裂开了！", "english": "Then one day, suddenly, the stone cracked open!"},
+            {"target": "从石头里跳出来一只小猴子。", "english": "Out jumped a little monkey."},
+            {"target": "这只猴子不是普通的猴子，他是一个有魔法的猴子。", "english": "This was no ordinary monkey - he was a magical monkey."},
+            {"target": "他天生就有神奇的力量。", "english": "He was born with magical powers."},
+            {"target": "小猴子睁开眼睛，第一次看到这个世界。", "english": "The little monkey opened his eyes and saw the world for the first time."},
+            {"target": "他看看天空，看看山，看看树。", "english": "He looked at the sky, the mountains, and the trees."},
+            {"target": "然后他做了第一件事：他深深地吸了一口气，然后开始跳跃和欢笑。", "english": "Then he did the first thing: he took a deep breath and began to jump and laugh."},
+            {"target": "其他的猴子都来看这个新来的小猴子。", "english": "All the other monkeys came to see this new little monkey."},
+            {"target": "他们从来没有见过这么有活力的猴子。", "english": "They had never seen such an energetic monkey before."},
+            {"target": "小猴子很快就学会了怎么爬树和怎么跳跃。", "english": "The little monkey quickly learned how to climb trees and how to jump."},
+            {"target": "他比其他任何猴子跳得都高。", "english": "He could jump higher than any other monkey."},
+            {"target": "他比其他任何猴子跑得都快。", "english": "He could run faster than any other monkey."},
+            {"target": "其他的猴子都说：\"这只小猴子真特别！\"", "english": "The other monkeys said: \"This little monkey is really special!\""},
+            {"target": "小猴子每天都在山上玩耍。", "english": "The little monkey played on the mountain every day."},
+            {"target": "他跟其他猴子一起玩耍，一起吃饭，一起睡觉。", "english": "He played with the other monkeys, ate with them, and slept with them."},
+            {"target": "他过得很快乐。", "english": "He lived a very happy life."},
+            {"target": "但是小猴子不知道，他将来会成为一个伟大的王。", "english": "But the little monkey did not know that he would become a great king in the future."},
+            {"target": "一天，小猴子跟其他的猴子一起在山上玩。", "english": "One day, the little monkey was playing with the other monkeys on the mountain."},
+            {"target": "他们发现了一个瀑布。", "english": "They discovered a waterfall."},
+            {"target": "这个瀑布很漂亮，水从很高的地方流下来。", "english": "This waterfall was very beautiful, with water flowing down from a very high place."},
+            {"target": "猴子们都想知道瀑布后面有什么。", "english": "The monkeys all wanted to know what was behind the waterfall."},
+            {"target": "但是水太大了，他们不敢过去。", "english": "But the water was too strong, and they did not dare to go through it."},
+            {"target": "小猴子说：\"让我来试试！\"", "english": "The little monkey said: \"Let me try!\""},
+            {"target": "其他的猴子都很担心。", "english": "The other monkeys were very worried."},
+            {"target": "他们喊：\"小心点！\"", "english": "They shouted: \"Be careful!\""},
+            {"target": "小猴子勇敢地走向瀑布。", "english": "The little monkey bravely walked toward the waterfall."},
+            {"target": "他穿过瀑布的水，发现瀑布后面有一个洞。", "english": "He passed through the waterfall's water and discovered there was a cave behind it."},
+            {"target": "这个洞很大，很干燥，非常适合居住。", "english": "This cave was very large, very dry, and perfect for living in."},
+            {"target": "小猴子很高兴，他跑回去告诉其他的猴子。", "english": "The little monkey was very happy, and he ran back to tell the other monkeys."},
+            {"target": "所有的猴子都很兴奋。", "english": "All the monkeys were very excited."},
+            {"target": "他们跟着小猴子穿过瀑布，进入洞里。", "english": "They followed the little monkey through the waterfall and into the cave."},
+            {"target": "这个洞成了他们的新家。", "english": "This cave became their new home."},
+            {"target": "猴子们都很感谢小猴子。", "english": "The monkeys were all very grateful to the little monkey."},
+            {"target": "他们说：\"小猴子，你真勇敢！\"", "english": "They said: \"Little monkey, you are so brave!\""},
+            {"target": "从那天开始，猴子们叫小猴子\"美猴王\"。", "english": "From that day on, the monkeys called the little monkey \"Beautiful Monkey King.\""},
+            {"target": "小猴子很高兴有这个新名字。", "english": "The little monkey was very happy to have this new name."},
+            {"target": "他跳起来说：\"我是美猴王！\"", "english": "He jumped up and said: \"I am the Beautiful Monkey King!\""},
+            {"target": "所有的猴子都欢呼起来。", "english": "All the monkeys cheered."},
+            {"target": "美猴王成了所有猴子的领导者。", "english": "The Beautiful Monkey King became the leader of all the monkeys."},
+            {"target": "他教猴子们怎么找到更多的食物。", "english": "He taught the monkeys how to find more food."},
+            {"target": "他教猴子们怎么保护自己。", "english": "He taught the monkeys how to protect themselves."},
+            {"target": "他教猴子们怎么一起工作。", "english": "He taught the monkeys how to work together."},
+            {"target": "所有的猴子都很尊敬美猴王。", "english": "All the monkeys respected the Beautiful Monkey King very much."}
         ];
 
         // ==========================================
@@ -1185,20 +1222,22 @@
         let isPlaying = false;
         let repetitionsPerSentence = 3;
         let sentencesPerSet = 5;
-        let selectedVoices = {
-            chinese: 'chinese-female',
-            english: 'english-female'
-        };
+        let selectedTargetLanguage = 'zh-CN';  // Default to Simplified Mandarin
+        let selectedTargetVoice = null;
+        let selectedEnglishVoice = null;
+        let targetVoiceDisabled = false;
+        let englishVoiceDisabled = false;
         let textDisplay = {
-            chinese: true,
+            target: true,
             english: true
         };
         let speakingSpeed = 0.8;
         let autoplayMode = false;
         let selectedSectionStart = 0;  // Track which section to start from
 
-        // Initialize voices
-        let chineseVoices = [];
+        // Store all available voices
+        let allVoices = [];
+        let targetLanguageVoices = [];
         let englishVoices = [];
 
         // ==========================================
@@ -1206,17 +1245,86 @@
         // ==========================================
         
         function loadVoices() {
-            const voices = speechSynthesis.getVoices();
-            chineseVoices = voices.filter(voice => 
-                voice.lang.includes('zh') || voice.lang.includes('cn') || voice.name.includes('Chinese')
-            );
-            englishVoices = voices.filter(voice => 
-                voice.lang.includes('en') && !voice.lang.includes('zh')
-            );
-            console.log('Available Chinese voices:', chineseVoices.length);
-            console.log('Available English voices:', englishVoices.length);
+            allVoices = speechSynthesis.getVoices();
+            console.log('Total voices available:', allVoices.length);
+            
+            // Populate voice dropdowns based on current language selection
+            updateVoiceDropdowns();
         }
 
+        function updateVoiceDropdowns() {
+            const targetLang = document.getElementById('targetLanguage').value;
+            const targetVoiceSelect = document.getElementById('targetVoiceSelect');
+            const englishVoiceSelect = document.getElementById('englishVoiceSelect');
+            
+            // Get language code prefix (e.g., 'zh' from 'zh-CN')
+            const targetLangPrefix = targetLang.split('-')[0];
+            
+            // Filter voices for target language
+            targetLanguageVoices = allVoices.filter(voice => {
+                const voiceLang = voice.lang.toLowerCase();
+                return voiceLang.startsWith(targetLangPrefix.toLowerCase()) || 
+                       voiceLang.includes(targetLang.toLowerCase());
+            });
+            
+            // Filter voices for English
+            englishVoices = allVoices.filter(voice => {
+                const voiceLang = voice.lang.toLowerCase();
+                return voiceLang.startsWith('en') && !voiceLang.includes('zh');
+            });
+            
+            // Populate target language dropdown
+            targetVoiceSelect.innerHTML = '';
+            if (targetLanguageVoices.length === 0) {
+                targetVoiceSelect.innerHTML = '<option value="">No voices available for this language</option>';
+                targetVoiceSelect.disabled = true;
+            } else {
+                targetVoiceSelect.disabled = false;
+                targetLanguageVoices.forEach((voice, index) => {
+                    const option = document.createElement('option');
+                    option.value = index;
+                    option.textContent = `${voice.name} (${voice.lang})`;
+                    targetVoiceSelect.appendChild(option);
+                });
+            }
+            
+            // Populate English dropdown
+            englishVoiceSelect.innerHTML = '';
+            if (englishVoices.length === 0) {
+                englishVoiceSelect.innerHTML = '<option value="">No English voices available</option>';
+                englishVoiceSelect.disabled = true;
+            } else {
+                englishVoiceSelect.disabled = false;
+                englishVoices.forEach((voice, index) => {
+                    const option = document.createElement('option');
+                    option.value = index;
+                    option.textContent = `${voice.name} (${voice.lang})`;
+                    englishVoiceSelect.appendChild(option);
+                });
+            }
+            
+            console.log(`Target language (${targetLang}) voices:`, targetLanguageVoices.length);
+            console.log('English voices:', englishVoices.length);
+        }
+
+        // Handle language change
+        document.getElementById('targetLanguage').addEventListener('change', function() {
+            selectedTargetLanguage = this.value;
+            updateVoiceDropdowns();
+        });
+
+        // Handle voice disable toggles
+        document.getElementById('targetVoiceDisabled').addEventListener('change', function() {
+            targetVoiceDisabled = this.checked;
+            document.getElementById('targetVoiceSelect').disabled = this.checked || targetLanguageVoices.length === 0;
+        });
+
+        document.getElementById('englishVoiceDisabled').addEventListener('change', function() {
+            englishVoiceDisabled = this.checked;
+            document.getElementById('englishVoiceSelect').disabled = this.checked || englishVoices.length === 0;
+        });
+
+        // Initialize voices
         if (speechSynthesis.getVoices().length > 0) {
             loadVoices();
         } else {
@@ -1233,19 +1341,19 @@
             
             // First pass: look for explicit section markers in the text
             for (let i = 0; i < sentences.length; i++) {
-                const chinese = sentences[i].chinese.toLowerCase();
+                const target = sentences[i].target.toLowerCase();
                 const english = sentences[i].english.toLowerCase();
                 
                 // Check for section markers (case insensitive)
                 const sectionMatch = english.match(/^(section|chapter|part|第.*[章节部分])\s*(\d+|[一二三四五六七八九十]+)?[:\s]*/i) ||
-                                    chinese.match(/^(第.*[章节部分]|section|chapter|part)\s*(\d+|[一二三四五六七八九十]+)?[:\s]*/i);
+                                    target.match(/^(第.*[章节部分]|section|chapter|part)\s*(\d+|[一二三四五六七八九十]+)?[:\s]*/i);
                 
-                if (sectionMatch || english.includes('section ') || chinese.includes('第') && (chinese.includes('章') || chinese.includes('节') || chinese.includes('部分'))) {
+                if (sectionMatch || english.includes('section ') || target.includes('第') && (target.includes('章') || target.includes('节') || target.includes('部分'))) {
                     hasExplicitSections = true;
                     sections.push({
                         startIndex: i,
                         title: sentences[i].english.substring(0, 50) + (sentences[i].english.length > 50 ? '...' : ''),
-                        preview: sentences[i].chinese.substring(0, 30),
+                        preview: sentences[i].target.substring(0, 30),
                         isExplicit: true
                     });
                 }
@@ -1266,13 +1374,13 @@
             
             for (let i = 0; i < sentences.length; i += SENTENCES_PER_SECTION) {
                 const endIndex = Math.min(i + SENTENCES_PER_SECTION, sentences.length);
-                const chinesePreview = sentences[i].chinese.substring(0, 20);
+                const targetPreview = sentences[i].target.substring(0, 20);
                 const englishPreview = sentences[i].english.substring(0, 35);
                 
                 sections.push({
                     startIndex: i,
                     title: `Sentences ${i + 1}-${endIndex}`,
-                    preview: chinesePreview + (sentences[i].chinese.length > 20 ? '…' : ''),
+                    preview: targetPreview + (sentences[i].target.length > 20 ? '…' : ''),
                     englishPreview: englishPreview + (sentences[i].english.length > 35 ? '…' : ''),
                     sentenceCount: endIndex - i,
                     isExplicit: false
@@ -1332,8 +1440,26 @@
         // DIGLOT PARSER
         // ==========================================
         
-        function hasChinese(text) {
-            return /[\u4e00-\u9fff]/.test(text);
+        function hasTargetLanguageChars(text) {
+            // Check for various non-Latin scripts
+            // Chinese
+            if (/[\u4e00-\u9fff]/.test(text)) return true;
+            // Japanese (Hiragana, Katakana, Kanji)
+            if (/[\u3040-\u309f\u30a0-\u30ff]/.test(text)) return true;
+            // Korean
+            if (/[\uac00-\ud7af\u1100-\u11ff]/.test(text)) return true;
+            // Arabic
+            if (/[\u0600-\u06ff]/.test(text)) return true;
+            // Cyrillic (Russian, etc.)
+            if (/[\u0400-\u04ff]/.test(text)) return true;
+            // Thai
+            if (/[\u0e00-\u0e7f]/.test(text)) return true;
+            // Devanagari (Hindi)
+            if (/[\u0900-\u097f]/.test(text)) return true;
+            // Vietnamese diacritics (still uses Latin but with special chars)
+            if (/[àáảãạăằắẳẵặâầấẩẫậèéẻẽẹêềếểễệìíỉĩịòóỏõọôồốổỗộơờớởỡợùúủũụưừứửữựỳýỷỹỵđ]/i.test(text)) return true;
+            
+            return false;
         }
         
         function hasKorean(text) {
@@ -1341,7 +1467,7 @@
         }
         
         function isMostlyEnglish(text) {
-            if (hasChinese(text)) return false;
+            if (hasTargetLanguageChars(text)) return false;
             const englishChars = (text.match(/[a-zA-Z]/g) || []).length;
             return englishChars > 5;
         }
@@ -1382,7 +1508,8 @@
                 if (pattern.test(trimmed)) return true;
             }
             
-            if (hasKorean(trimmed) && !hasChinese(trimmed) && !isMostlyEnglish(trimmed)) {
+            // Skip Korean-only lines when not learning Korean
+            if (hasKorean(trimmed) && !hasTargetLanguageChars(trimmed) && !isMostlyEnglish(trimmed)) {
                 return true;
             }
             
@@ -1412,7 +1539,7 @@
             }
             
             const sentences = [];
-            let unpairedChinese = 0;
+            let unpairedTarget = 0;
             let unpairedEnglish = 0;
             let i = 0;
             
@@ -1420,14 +1547,14 @@
                 const line1 = filteredLines[i];
                 const line2 = filteredLines[i + 1];
                 
-                if (hasChinese(line1) && !hasChinese(line2) && isMostlyEnglish(line2)) {
+                if (hasTargetLanguageChars(line1) && !hasTargetLanguageChars(line2) && isMostlyEnglish(line2)) {
                     sentences.push({
-                        chinese: line1,
+                        target: line1,
                         english: line2
                     });
                     i += 2;
-                } else if (hasChinese(line1)) {
-                    unpairedChinese++;
+                } else if (hasTargetLanguageChars(line1)) {
+                    unpairedTarget++;
                     i++;
                 } else if (isMostlyEnglish(line1)) {
                     unpairedEnglish++;
@@ -1442,7 +1569,7 @@
                 filteredLines: filteredLines.length,
                 validPairs: sentences.length,
                 skippedTotal: skippedCount,
-                unpairedChinese: unpairedChinese,
+                unpairedTarget: unpairedTarget,
                 unpairedEnglish: unpairedEnglish
             };
             
@@ -1461,13 +1588,13 @@
                         <span>Skipped: ${stats.skippedTotal}</span>
                     </div>
                 `;
-            } else if (stats.unpairedChinese > 10 || stats.unpairedEnglish > 10) {
+            } else if (stats.unpairedTarget > 10 || stats.unpairedEnglish > 10) {
                 infoDiv.className = 'parse-info warning';
                 infoDiv.innerHTML = `
                     <strong>⚡ Loaded ${stats.validPairs} sentence pairs</strong>
                     <div class="parse-stats">
                         <span>Skipped ${stats.skippedTotal} lines</span>
-                        <span>${stats.unpairedChinese} unpaired CN</span>
+                        <span>${stats.unpairedTarget} unpaired target</span>
                         <span>${stats.unpairedEnglish} unpaired EN</span>
                     </div>
                 `;
@@ -1692,23 +1819,6 @@
             }
         });
 
-        document.querySelectorAll('.voice-option').forEach(option => {
-            option.addEventListener('click', function() {
-                const voiceType = this.dataset.voice;
-                const isChinese = voiceType.includes('chinese');
-                
-                if (isChinese) {
-                    document.querySelectorAll('[data-voice*="chinese"]').forEach(opt => opt.classList.remove('selected'));
-                    selectedVoices.chinese = voiceType;
-                } else {
-                    document.querySelectorAll('[data-voice*="english"]').forEach(opt => opt.classList.remove('selected'));
-                    selectedVoices.english = voiceType;
-                }
-                
-                this.classList.add('selected');
-            });
-        });
-
         // ==========================================
         // STUDY SESSION
         // ==========================================
@@ -1718,6 +1828,16 @@
             
             repetitionsPerSentence = parseInt(document.getElementById('repetitions').value);
             autoplayMode = document.getElementById('autoplayToggle').checked;
+            
+            // Get selected voices
+            const targetVoiceIndex = document.getElementById('targetVoiceSelect').value;
+            const englishVoiceIndex = document.getElementById('englishVoiceSelect').value;
+            
+            selectedTargetVoice = targetVoiceIndex !== '' ? targetLanguageVoices[parseInt(targetVoiceIndex)] : null;
+            selectedEnglishVoice = englishVoiceIndex !== '' ? englishVoices[parseInt(englishVoiceIndex)] : null;
+            
+            targetVoiceDisabled = document.getElementById('targetVoiceDisabled').checked;
+            englishVoiceDisabled = document.getElementById('englishVoiceDisabled').checked;
             
             // Determine starting position
             const startPositionSetting = document.getElementById('startPosition').value;
@@ -1749,17 +1869,17 @@
         function updateDisplay() {
             const currentPair = sentencePairs[currentSentenceIndex];
             
-            const chineseElement = document.getElementById('chineseSentence');
+            const targetElement = document.getElementById('targetSentence');
             const englishElement = document.getElementById('englishSentence');
             
-            chineseElement.classList.add('fade-in');
+            targetElement.classList.add('fade-in');
             englishElement.classList.add('fade-in');
             
-            if (textDisplay.chinese) {
-                chineseElement.textContent = currentPair.chinese;
-                chineseElement.classList.remove('hidden');
+            if (textDisplay.target) {
+                targetElement.textContent = currentPair.target;
+                targetElement.classList.remove('hidden');
             } else {
-                chineseElement.classList.add('hidden');
+                targetElement.classList.add('hidden');
             }
             
             if (textDisplay.english) {
@@ -1770,7 +1890,7 @@
             }
             
             setTimeout(() => {
-                chineseElement.classList.remove('fade-in');
+                targetElement.classList.remove('fade-in');
                 englishElement.classList.remove('fade-in');
             }, 500);
             
@@ -1793,25 +1913,26 @@
             document.getElementById('nextArrow').disabled = currentSet >= totalSets;
         }
 
-        function speakText(text, lang) {
+        function speakText(text, isTarget) {
             return new Promise((resolve) => {
                 const utterance = new SpeechSynthesisUtterance(text);
                 utterance.rate = speakingSpeed;
                 utterance.pitch = 1;
                 
-                if (lang === 'zh') {
-                    if (chineseVoices.length > 0) {
-                        utterance.voice = chineseVoices[0];
+                if (isTarget) {
+                    if (selectedTargetVoice) {
+                        utterance.voice = selectedTargetVoice;
                     }
-                    utterance.lang = 'zh-CN';
+                    utterance.lang = selectedTargetLanguage;
                 } else {
-                    if (englishVoices.length > 0) {
-                        utterance.voice = englishVoices[0];
+                    if (selectedEnglishVoice) {
+                        utterance.voice = selectedEnglishVoice;
                     }
                     utterance.lang = 'en-US';
                 }
                 
                 utterance.onend = resolve;
+                utterance.onerror = resolve; // Also resolve on error to prevent hanging
                 speechSynthesis.speak(utterance);
             });
         }
@@ -1821,12 +1942,14 @@
             
             const currentPair = sentencePairs[currentSentenceIndex];
             
-            if (selectedVoices.chinese !== 'chinese-none' && textDisplay.chinese) {
-                await speakText(currentPair.chinese, 'zh');
+            // Speak target language if not disabled
+            if (!targetVoiceDisabled && textDisplay.target) {
+                await speakText(currentPair.target, true);
             }
             
-            if (selectedVoices.english !== 'english-none' && textDisplay.english) {
-                await speakText(currentPair.english, 'en');
+            // Speak English if not disabled
+            if (!englishVoiceDisabled && textDisplay.english) {
+                await speakText(currentPair.english, false);
             }
             
             currentRepetition++;
@@ -1884,6 +2007,20 @@
         function nextSentence() {
             if (currentSentenceIndex < sentencePairs.length - 1) {
                 currentSentenceIndex++;
+                currentRepetition = 0;
+                updateDisplay();
+                
+                if (isPlaying) {
+                    speechSynthesis.cancel();
+                    setTimeout(() => startCurrentSentence(), 500);
+                }
+            }
+        }
+
+        function skipSentences(count) {
+            const newIndex = Math.min(currentSentenceIndex + count, sentencePairs.length - 1);
+            if (newIndex !== currentSentenceIndex) {
+                currentSentenceIndex = newIndex;
                 currentRepetition = 0;
                 updateDisplay();
                 
