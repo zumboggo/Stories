@@ -3,2107 +3,731 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Sentence Drilling Pro - Language Learning</title>
+    <title>Sentence Drilling Pro</title>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
     <style>
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
+        :root {
+            /* Dark Theme Variables */
+            --bg-gradient: linear-gradient(135deg, #0f172a 0%, #1e293b 100%);
+            --card-bg: rgba(30, 41, 59, 0.7);
+            --text-main: #f8fafc;
+            --text-sub: #94a3b8;
+            --primary: #3b82f6;
+            --primary-hover: #2563eb;
+            --highlight: #fbbf24; /* Amber for Karaoke */
+            --border: rgba(255, 255, 255, 0.1);
         }
 
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+
         body {
-            font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
-            background: linear-gradient(135deg, #e3f2fd 0%, #bbdefb 50%, #90caf9 100%);
+            font-family: 'Inter', sans-serif;
+            background: var(--bg-gradient);
             min-height: 100vh;
             display: flex;
             align-items: center;
             justify-content: center;
-            color: #1d1d1f;
-            -webkit-font-smoothing: antialiased;
-            -moz-osx-font-smoothing: grayscale;
+            color: var(--text-main);
+            padding: 20px;
         }
 
         .container {
-            background: rgba(255, 255, 255, 0.95);
-            border-radius: 18px;
+            background: var(--card-bg);
+            border-radius: 24px;
             padding: 40px;
-            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.06);
+            box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.5);
             max-width: 900px;
-            width: 90%;
+            width: 100%;
             backdrop-filter: blur(20px);
-            border: 1px solid rgba(255, 255, 255, 0.2);
+            border: 1px solid var(--border);
         }
 
-        .setup-screen {
-            text-align: center;
-        }
-
-        .study-screen {
-            display: none;
-            text-align: center;
-            min-height: 60vh;
-            display: flex;
-            flex-direction: column;
-            justify-content: center;
-        }
-
-        h1 {
-            font-size: 2.75rem;
-            margin-bottom: 8px;
-            color: #1d1d1f;
-            font-weight: 700;
-            letter-spacing: -0.02em;
-        }
-
-        .subtitle {
-            font-size: 1.1rem;
-            color: #86868b;
-            margin-bottom: 40px;
-            font-weight: 400;
-        }
-
-        .setup-options {
-            display: grid;
-            gap: 28px;
-            margin-bottom: 40px;
-        }
-
-        .option-group {
-            text-align: left;
-        }
-
-        .option-label {
-            display: block;
-            font-weight: 600;
-            margin-bottom: 10px;
-            color: #1d1d1f;
-            font-size: 1.1rem;
-            letter-spacing: -0.01em;
-        }
-
-        .option-input {
-            width: 100%;
-            padding: 14px 18px;
-            border: 1px solid #d2d2d7;
-            border-radius: 12px;
-            font-size: 1rem;
-            transition: all 0.2s ease;
-            background: #ffffff;
-            color: #1d1d1f;
-        }
-
-        .option-input:focus {
-            outline: none;
-            border-color: #007aff;
-            box-shadow: 0 0 0 3px rgba(0, 122, 255, 0.1);
-        }
-
-        .text-display-options {
-            display: flex;
-            gap: 16px;
-            margin-top: 12px;
-        }
-
-        .text-toggle {
-            flex: 1;
-            padding: 16px;
-            border: 1px solid #d2d2d7;
-            border-radius: 12px;
-            cursor: pointer;
-            transition: all 0.2s ease;
-            background: #ffffff;
-            text-align: center;
-            font-weight: 600;
-            font-size: 1rem;
-        }
-
-        .text-toggle:hover {
-            border-color: #007aff;
-            background: rgba(0, 122, 255, 0.04);
-        }
-
-        .text-toggle.active {
-            border-color: #007aff;
-            background: rgba(0, 122, 255, 0.08);
-            color: #007aff;
-        }
-
-        .text-toggle.inactive {
-            opacity: 0.5;
-            background: #f2f2f7;
-            color: #86868b;
-        }
-
-        .speed-control {
-            margin-top: 12px;
-        }
-
-        .speed-slider {
-            width: 100%;
-            height: 6px;
-            border-radius: 3px;
-            background: #e2e8f0;
-            outline: none;
-            -webkit-appearance: none;
-            appearance: none;
-        }
-
-        .speed-slider::-webkit-slider-thumb {
-            -webkit-appearance: none;
-            appearance: none;
-            width: 20px;
-            height: 20px;
-            border-radius: 50%;
-            background: #007aff;
-            cursor: pointer;
-            box-shadow: 0 2px 6px rgba(0, 122, 255, 0.3);
-        }
-
-        .speed-slider::-moz-range-thumb {
-            width: 20px;
-            height: 20px;
-            border-radius: 50%;
-            background: #007aff;
-            cursor: pointer;
-            border: none;
-            box-shadow: 0 2px 6px rgba(0, 122, 255, 0.3);
-        }
-
-        .speed-display {
-            text-align: center;
-            margin-top: 8px;
-            font-size: 0.9rem;
-            color: #86868b;
-            font-weight: 500;
-        }
-
-        .voice-select-container {
-            margin-top: 12px;
-        }
-
-        .voice-select {
-            width: 100%;
-            padding: 14px 18px;
-            border: 1px solid #d2d2d7;
-            border-radius: 12px;
-            font-size: 1rem;
-            transition: all 0.2s ease;
-            background: #ffffff;
-            color: #1d1d1f;
-            cursor: pointer;
-        }
-
-        .voice-select:focus {
-            outline: none;
-            border-color: #007aff;
-            box-shadow: 0 0 0 3px rgba(0, 122, 255, 0.1);
-        }
-
-        .voice-select:disabled {
-            background: #f2f2f7;
-            color: #86868b;
-            cursor: not-allowed;
-        }
-
-        .no-voice-toggle {
-            display: flex;
-            align-items: center;
-            gap: 12px;
-            margin-top: 12px;
-            padding: 12px 16px;
-            border: 1px solid #d2d2d7;
-            border-radius: 12px;
-            background: #ffffff;
-        }
-
-        .no-voice-toggle label {
-            font-size: 0.95rem;
-            color: #1d1d1f;
-            cursor: pointer;
-        }
-
-        .file-upload {
-            position: relative;
-            display: inline-block;
-            width: 100%;
-        }
-
-        .file-input {
-            display: none;
-        }
-
-        .file-upload-btn {
-            background: #007aff;
-            color: white;
-            border: none;
-            padding: 14px 24px;
-            border-radius: 12px;
-            font-size: 1rem;
-            font-weight: 600;
-            cursor: pointer;
-            transition: all 0.2s ease;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            gap: 8px;
-            width: 100%;
-        }
-
-        .file-upload-btn:hover {
-            background: #0056cc;
-            transform: translateY(-1px);
-        }
-
-        .text-selector {
-            margin-top: 20px;
-        }
-
-        .text-options {
-            display: grid;
-            gap: 12px;
-            margin-top: 12px;
-        }
-
-        .text-option {
-            padding: 16px;
-            border: 1px solid #d2d2d7;
-            border-radius: 12px;
-            cursor: pointer;
-            transition: all 0.2s ease;
-            background: #ffffff;
-            display: flex;
-            align-items: center;
-            gap: 12px;
-        }
-
-        .text-option:hover {
-            border-color: #007aff;
-            background: rgba(0, 122, 255, 0.04);
-        }
-
-        .text-option.selected {
-            border-color: #007aff;
-            background: rgba(0, 122, 255, 0.08);
-        }
+        /* --- Setup Screen --- */
+        .setup-screen { text-align: center; }
         
-        .text-option.loading {
-            opacity: 0.6;
-            pointer-events: none;
-        }
+        h1 { font-size: 2.5rem; margin-bottom: 10px; letter-spacing: -0.03em; background: linear-gradient(to right, #fff, #94a3b8); -webkit-background-clip: text; -webkit-text-fill-color: transparent; }
+        .subtitle { color: var(--text-sub); margin-bottom: 40px; font-size: 1.1rem; }
 
-        /* Section selector styles */
-        .section-selector {
-            margin-top: 16px;
-            padding: 20px;
-            background: linear-gradient(135deg, #f8fafc 0%, #f1f5f9 100%);
-            border: 1px solid #e2e8f0;
-            border-radius: 16px;
-            display: none;
-            box-shadow: inset 0 1px 2px rgba(0, 0, 0, 0.02);
-        }
-
-        .section-selector.visible {
-            display: block;
-            animation: slideDown 0.3s ease;
-        }
-
-        @keyframes slideDown {
-            from { opacity: 0; transform: translateY(-10px); }
-            to { opacity: 1; transform: translateY(0); }
-        }
-
-        .section-header {
-            display: flex;
-            align-items: center;
-            gap: 10px;
-            margin-bottom: 16px;
-            font-weight: 600;
-            color: #374151;
-            font-size: 0.95rem;
-            padding-bottom: 12px;
-            border-bottom: 1px solid #e5e7eb;
-        }
-
-        .section-header i {
-            color: #007aff;
-        }
-
-        .section-list {
-            display: flex;
-            flex-direction: column;
-            gap: 10px;
-            max-height: 280px;
-            overflow-y: auto;
-            padding-right: 8px;
-        }
-
-        /* Custom scrollbar */
-        .section-list::-webkit-scrollbar {
-            width: 6px;
-        }
-
-        .section-list::-webkit-scrollbar-track {
-            background: #f1f5f9;
-            border-radius: 3px;
-        }
-
-        .section-list::-webkit-scrollbar-thumb {
-            background: #cbd5e1;
-            border-radius: 3px;
-        }
-
-        .section-list::-webkit-scrollbar-thumb:hover {
-            background: #94a3b8;
-        }
-
-        .section-item {
-            padding: 14px 16px;
-            background: #ffffff;
-            border: 1px solid #e5e7eb;
-            border-radius: 12px;
-            cursor: pointer;
-            transition: all 0.2s ease;
+        .grid-options {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 24px;
             text-align: left;
-            position: relative;
-            overflow: hidden;
+            margin-bottom: 30px;
         }
 
-        .section-item::before {
-            content: '';
-            position: absolute;
-            left: 0;
-            top: 0;
-            bottom: 0;
-            width: 4px;
-            background: transparent;
-            transition: background 0.2s ease;
-            border-radius: 4px 0 0 4px;
-        }
+        .full-width { grid-column: span 2; }
 
-        .section-item:hover {
-            border-color: #007aff;
-            background: #fafcff;
-            transform: translateX(2px);
-            box-shadow: 0 2px 8px rgba(0, 122, 255, 0.08);
-        }
-
-        .section-item:hover::before {
-            background: rgba(0, 122, 255, 0.3);
-        }
-
-        .section-item.selected {
-            border-color: #007aff;
-            background: linear-gradient(135deg, #eff6ff 0%, #dbeafe 100%);
-            box-shadow: 0 2px 12px rgba(0, 122, 255, 0.15);
-        }
-
-        .section-item.selected::before {
-            background: #007aff;
-        }
-
-        .section-title {
+        .option-group label {
+            display: block;
             font-weight: 600;
-            color: #1f2937;
+            margin-bottom: 8px;
             font-size: 0.95rem;
-            margin-bottom: 6px;
-            display: flex;
-            align-items: center;
-            gap: 8px;
+            color: var(--text-sub);
         }
 
-        .section-number {
-            display: inline-flex;
-            align-items: center;
-            justify-content: center;
-            width: 22px;
-            height: 22px;
-            background: linear-gradient(135deg, #007aff 0%, #0056cc 100%);
-            color: white;
-            font-size: 0.75rem;
-            font-weight: 700;
-            border-radius: 6px;
-            flex-shrink: 0;
-        }
-
-        .section-item.selected .section-number {
-            background: linear-gradient(135deg, #0056cc 0%, #003d99 100%);
-            box-shadow: 0 2px 4px rgba(0, 86, 204, 0.3);
-        }
-
-        .section-preview {
-            font-size: 1rem;
-            color: #1f2937;
-            white-space: nowrap;
-            overflow: hidden;
-            text-overflow: ellipsis;
-            padding-left: 30px;
-            margin-bottom: 2px;
-        }
-
-        .section-english-preview {
-            font-size: 0.8rem;
-            color: #6b7280;
-            white-space: nowrap;
-            overflow: hidden;
-            text-overflow: ellipsis;
-            padding-left: 30px;
-            font-style: italic;
-        }
-
-        .section-meta {
-            font-size: 0.75rem;
-            color: #9ca3af;
-            margin-top: 6px;
-            padding-left: 30px;
-            display: flex;
-            align-items: center;
-            gap: 4px;
-        }
-
-        .section-meta::before {
-            content: '📄';
-            font-size: 0.7rem;
-        }
-
-        .section-count {
-            margin-left: auto;
-            background: #e0e7ff;
-            color: #4f46e5;
-            font-size: 0.75rem;
-            font-weight: 600;
-            padding: 4px 10px;
+        select {
+            width: 100%;
+            padding: 12px;
+            border: 1px solid var(--border);
             border-radius: 12px;
-        }
-
-        .text-icon {
-            font-size: 1.5rem;
-        }
-
-        .text-info {
-            flex: 1;
-        }
-
-        .text-name {
-            font-weight: 600;
-            color: #1d1d1f;
             font-size: 1rem;
+            background: rgba(15, 23, 42, 0.5);
+            color: var(--text-main);
+            transition: border 0.2s;
         }
 
-        .text-stats {
-            font-size: 0.85rem;
-            color: #86868b;
+        select:focus { outline: none; border-color: var(--primary); }
+
+        /* Book Library */
+        .library-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+            gap: 12px;
+            margin-top: 10px;
         }
 
-        .toggle-switch {
+        .book-card {
+            border: 1px solid var(--border);
+            border-radius: 12px;
+            padding: 16px;
+            cursor: pointer;
+            transition: all 0.2s;
+            background: rgba(255, 255, 255, 0.03);
+            text-align: left;
+        }
+
+        .book-card:hover { border-color: var(--primary); background: rgba(59, 130, 246, 0.1); transform: translateY(-2px); }
+        .book-card.selected { background: rgba(59, 130, 246, 0.2); border-color: var(--primary); }
+        
+        .book-icon { font-size: 1.5rem; margin-bottom: 8px; display: block; }
+        .book-title { font-weight: 600; font-size: 0.95rem; color: var(--text-main); }
+        .book-status { font-size: 0.8rem; color: var(--text-sub); margin-top: 4px; }
+
+        /* Toggles */
+        .toggle-row {
             display: flex;
             align-items: center;
             justify-content: space-between;
-            padding: 16px;
-            border: 1px solid #d2d2d7;
+            padding: 12px 16px;
+            background: rgba(255, 255, 255, 0.03);
             border-radius: 12px;
-            background: #ffffff;
-            margin-top: 12px;
-        }
-
-        .toggle-switch .label {
-            font-weight: 600;
-            color: #1d1d1f;
-            font-size: 1rem;
-        }
-
-        .toggle-switch .description {
-            font-size: 0.85rem;
-            color: #86868b;
-            margin-top: 4px;
+            margin-bottom: 10px;
+            border: 1px solid var(--border);
         }
 
         .switch {
             position: relative;
             display: inline-block;
-            width: 50px;
-            height: 30px;
+            width: 44px;
+            height: 24px;
         }
-
-        .switch input {
-            opacity: 0;
-            width: 0;
-            height: 0;
-        }
-
+        .switch input { opacity: 0; width: 0; height: 0; }
         .slider {
             position: absolute;
             cursor: pointer;
-            top: 0;
-            left: 0;
-            right: 0;
-            bottom: 0;
-            background-color: #ccc;
+            top: 0; left: 0; right: 0; bottom: 0;
+            background-color: #475569;
             transition: .4s;
-            border-radius: 30px;
+            border-radius: 24px;
         }
-
         .slider:before {
             position: absolute;
             content: "";
-            height: 22px;
-            width: 22px;
-            left: 4px;
-            bottom: 4px;
+            height: 18px; width: 18px;
+            left: 3px; bottom: 3px;
             background-color: white;
             transition: .4s;
             border-radius: 50%;
-            box-shadow: 0 2px 4px rgba(0,0,0,0.2);
         }
+        input:checked + .slider { background-color: var(--primary); }
+        input:checked + .slider:before { transform: translateX(20px); }
 
-        input:checked + .slider {
-            background-color: #007aff;
-        }
-
-        input:checked + .slider:before {
-            transform: translateX(20px);
-        }
-
-        .start-button {
-            background: linear-gradient(135deg, #007aff 0%, #0056cc 100%);
-            color: white;
-            border: none;
-            padding: 18px 44px;
-            border-radius: 50px;
-            font-size: 1.2rem;
-            font-weight: 600;
-            cursor: pointer;
-            transition: all 0.3s ease;
-            box-shadow: 0 4px 16px rgba(0, 122, 255, 0.3);
-            letter-spacing: -0.01em;
-        }
-
-        .start-button:hover {
-            transform: translateY(-2px);
-            box-shadow: 0 8px 24px rgba(0, 122, 255, 0.4);
-        }
+        /* --- Study Screen --- */
+        .study-screen { display: none; flex-direction: column; align-items: center; }
         
-        .start-button:disabled {
-            background: #ccc;
-            cursor: not-allowed;
-            transform: none;
-            box-shadow: none;
-        }
-
-        .sentence-display {
-            margin-bottom: 40px;
-        }
-
-        .target-sentence {
-            font-size: 3.75rem;
-            font-weight: 700;
-            color: #1d1d1f;
-            margin-bottom: 24px;
-            line-height: 1.25;
-            min-height: 120px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            letter-spacing: -0.02em;
-        }
-
-        .english-sentence {
-            font-size: 2.25rem;
-            color: #424245;
-            font-weight: 400;
-            line-height: 1.35;
-            min-height: 80px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            letter-spacing: -0.01em;
-        }
-
-        .sentence.hidden {
-            display: none;
-        }
-
-        .sentence.dimmed {
-            opacity: 0.3;
-        }
-
-        .controls {
-            display: flex;
-            justify-content: center;
-            gap: 20px;
-            margin-top: 40px;
-        }
-
-        .control-btn {
-            background: rgba(0, 122, 255, 0.1);
-            border: 1px solid #007aff;
-            color: #007aff;
-            padding: 14px 28px;
-            border-radius: 50px;
-            cursor: pointer;
-            transition: all 0.2s ease;
-            font-size: 1rem;
-            font-weight: 600;
-            display: flex;
-            align-items: center;
-            gap: 8px;
-        }
-
-        .control-btn:hover {
-            background: #007aff;
-            color: white;
-            transform: translateY(-1px);
-        }
-
-        .control-btn.active {
-            background: #007aff;
-            color: white;
-        }
-
-        .progress-bar {
+        .progress-container {
             width: 100%;
-            height: 6px;
-            background: rgba(0, 122, 255, 0.2);
-            border-radius: 3px;
             margin-bottom: 30px;
+        }
+        .progress-bar-bg {
+            height: 6px;
+            background: rgba(255,255,255,0.1);
+            border-radius: 3px;
             overflow: hidden;
         }
-
-        .progress-fill {
+        .progress-bar-fill {
             height: 100%;
-            background: linear-gradient(90deg, #007aff 0%, #0056cc 100%);
-            border-radius: 3px;
-            transition: width 0.5s ease;
+            background: var(--primary);
+            width: 0%;
+            transition: width 0.3s ease;
+            box-shadow: 0 0 10px rgba(59, 130, 246, 0.5);
         }
-
         .progress-text {
-            font-size: 1rem;
-            color: #86868b;
-            margin-bottom: 20px;
+            display: flex;
+            justify-content: space-between;
+            margin-top: 8px;
+            font-size: 0.85rem;
+            color: var(--text-sub);
             font-weight: 500;
         }
 
-        .repetition-counter {
-            font-size: 1.3rem;
-            color: #007aff;
-            font-weight: 600;
-            margin-top: 20px;
-        }
-
-        .set-navigation {
+        /* Sentence Display & Karaoke */
+        .sentence-box {
+            margin: 20px 0;
+            width: 100%;
+            min-height: 150px;
             display: flex;
-            align-items: center;
+            flex-direction: column;
             justify-content: center;
-            gap: 16px;
-            margin-top: 30px;
+            align-items: center;
+            padding: 20px;
+            background: rgba(0,0,0,0.2);
+            border-radius: 16px;
+            border: 1px solid var(--border);
         }
 
-        .nav-arrow {
-            background: none;
-            border: none;
-            color: #007aff;
-            font-size: 2rem;
-            cursor: pointer;
-            padding: 8px;
-            transition: all 0.2s ease;
-            border-radius: 50%;
-        }
-
-        .nav-arrow:hover {
-            background: rgba(0, 122, 255, 0.1);
-        }
-
-        .nav-arrow:disabled {
-            color: #d2d2d7;
-            cursor: not-allowed;
-        }
-
-        .set-info {
-            font-size: 1rem;
-            color: #86868b;
-            min-width: 180px;
+        .target-text {
+            font-size: 3rem;
+            font-weight: 700;
+            color: var(--text-main);
+            margin-bottom: 20px;
             text-align: center;
+            line-height: 1.4;
+            transition: all 0.2s;
         }
 
-        .sentence-navigation {
+        /* Karaoke Highlighting Styles */
+        .char-span {
+            transition: color 0.1s;
+            opacity: 0.8;
+        }
+        .char-span.active {
+            color: var(--highlight);
+            opacity: 1;
+            text-shadow: 0 0 15px rgba(251, 191, 36, 0.4);
+            transform: scale(1.05);
+            display: inline-block;
+        }
+
+        .english-text {
+            font-size: 1.5rem;
+            color: var(--text-sub);
+            text-align: center;
+            font-style: italic;
+        }
+
+        /* Controls */
+        .controls-area {
+            width: 100%;
+            margin-top: 30px;
+            border-top: 1px solid var(--border);
+            padding-top: 20px;
+        }
+
+        .main-controls {
             display: flex;
-            align-items: center;
             justify-content: center;
-            gap: 12px;
-            margin-top: 16px;
+            gap: 20px;
+            margin-bottom: 20px;
         }
 
-        .sentence-nav-btn {
-            background: none;
-            border: 1px solid #d2d2d7;
-            color: #86868b;
-            font-size: 0.9rem;
-            cursor: pointer;
-            padding: 8px 16px;
-            border-radius: 20px;
-            transition: all 0.2s ease;
-        }
-
-        .sentence-nav-btn:hover {
-            border-color: #007aff;
-            color: #007aff;
-        }
-
-        .sentence-nav-btn:disabled {
-            opacity: 0.4;
-            cursor: not-allowed;
-        }
-
-        .skip-controls {
-            display: flex;
-            justify-content: center;
-            gap: 16px;
-            margin-top: 20px;
-        }
-
-        .skip-btn {
-            background: rgba(255, 149, 0, 0.1);
-            border: 1px solid #ff9500;
-            color: #ff9500;
+        .btn {
             padding: 12px 24px;
             border-radius: 50px;
-            cursor: pointer;
-            transition: all 0.2s ease;
-            font-size: 0.95rem;
+            border: none;
             font-weight: 600;
+            cursor: pointer;
             display: flex;
             align-items: center;
             gap: 8px;
-        }
-
-        .skip-btn:hover {
-            background: #ff9500;
-            color: white;
-            transform: translateY(-1px);
-        }
-
-        .skip-btn:disabled {
-            opacity: 0.4;
-            cursor: not-allowed;
-            transform: none;
-        }
-
-        .stop-button {
-            background: #ff3b30;
-            color: white;
-            border: none;
-            padding: 12px 24px;
-            border-radius: 50px;
+            transition: all 0.2s;
             font-size: 1rem;
+        }
+
+        .btn-primary { 
+            background: var(--primary); 
+            color: white; 
+            box-shadow: 0 4px 12px rgba(59, 130, 246, 0.4); 
+        }
+        .btn-primary:hover { background: var(--primary-hover); transform: translateY(-2px); }
+        
+        .btn-secondary { 
+            background: rgba(255,255,255,0.05); 
+            border: 1px solid var(--border); 
+            color: var(--text-main); 
+        }
+        .btn-secondary:hover { background: rgba(255,255,255,0.1); border-color: var(--text-sub); }
+
+        .skip-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 10px;
+            max-width: 400px;
+            margin: 0 auto 20px auto;
+        }
+
+        .btn-skip {
+            background: rgba(255,255,255,0.03);
+            color: var(--text-sub);
+            font-size: 0.9rem;
+            padding: 8px;
+            justify-content: center;
+            border: 1px solid var(--border);
+        }
+        .btn-skip:hover { background: rgba(255,255,255,0.1); color: var(--text-main); }
+
+        .repetition-badge {
+            background: rgba(59, 130, 246, 0.15);
+            color: #60a5fa;
+            padding: 6px 16px;
+            border-radius: 20px;
             font-weight: 600;
-            cursor: pointer;
-            transition: all 0.2s ease;
-            margin-top: 30px;
-        }
-
-        .stop-button:hover {
-            background: #d63029;
-            transform: translateY(-1px);
-        }
-
-        .fade-in {
-            animation: fadeIn 0.5s ease;
-        }
-
-        @keyframes fadeIn {
-            from { opacity: 0; transform: translateY(10px); }
-            to { opacity: 1; transform: translateY(0); }
+            font-size: 0.9rem;
+            margin-bottom: 10px;
+            display: inline-block;
+            border: 1px solid rgba(59, 130, 246, 0.3);
         }
 
         @media (max-width: 768px) {
-            .container {
-                padding: 24px;
-            }
-
-            h1 {
-                font-size: 2rem;
-            }
-
-            .target-sentence {
-                font-size: 2rem;
-            }
-
-            .english-sentence {
-                font-size: 1.25rem;
-            }
-        }
-
-        /* Parser info styles */
-        .parse-info {
-            background: #f0f9ff;
-            border: 1px solid #007aff;
-            border-radius: 8px;
-            padding: 12px;
-            margin-top: 12px;
-            font-size: 0.85rem;
-            color: #1d1d1f;
-        }
-        
-        .parse-info.warning {
-            background: #fff7ed;
-            border-color: #f97316;
-        }
-        
-        .parse-info.error {
-            background: #fef2f2;
-            border-color: #ef4444;
-        }
-        
-        .parse-stats {
-            display: flex;
-            gap: 16px;
-            margin-top: 8px;
-            font-size: 0.8rem;
-            color: #86868b;
-        }
-        
-        /* Library section styles */
-        .library-section {
-            border: 2px dashed #d2d2d7;
-            border-radius: 12px;
-            padding: 16px;
-            margin-bottom: 16px;
-        }
-        
-        .library-header {
-            display: flex;
-            align-items: center;
-            gap: 8px;
-            margin-bottom: 12px;
-            font-weight: 600;
-            color: #1d1d1f;
-        }
-        
-        .or-divider {
-            text-align: center;
-            color: #86868b;
-            margin: 16px 0;
-            font-size: 0.9rem;
-        }
-        
-        .loading-spinner {
-            display: inline-block;
-            width: 16px;
-            height: 16px;
-            border: 2px solid #007aff;
-            border-radius: 50%;
-            border-top-color: transparent;
-            animation: spin 1s linear infinite;
-            margin-left: 8px;
-        }
-        
-        @keyframes spin {
-            to { transform: rotate(360deg); }
+            .grid-options { grid-template-columns: 1fr; }
+            .full-width { grid-column: span 1; }
+            .target-text { font-size: 2rem; }
         }
     </style>
 </head>
 <body>
-    <div class="container">
-        <div id="setupScreen" class="setup-screen">
-            <h1>Sentence Drilling Pro</h1>
-            <p class="subtitle">Master languages through repetition and immersion</p>
-            
-            <div class="setup-options">
-                <!-- Target Language Selection - at the top -->
-                <div class="option-group">
-                    <label class="option-label">🌍 Target Language</label>
-                    <select id="targetLanguage" class="option-input">
-                        <option value="zh-CN">Simplified Mandarin (Chinese)</option>
-                        <option value="zh-TW">Traditional Chinese (Taiwan)</option>
-                        <option value="ja-JP">Japanese</option>
-                        <option value="ko-KR">Korean</option>
-                        <option value="es-ES">Spanish (Spain)</option>
-                        <option value="es-MX">Spanish (Mexico)</option>
-                        <option value="fr-FR">French</option>
-                        <option value="de-DE">German</option>
-                        <option value="it-IT">Italian</option>
-                        <option value="pt-BR">Portuguese (Brazil)</option>
-                        <option value="pt-PT">Portuguese (Portugal)</option>
-                        <option value="ru-RU">Russian</option>
-                        <option value="ar-SA">Arabic</option>
-                        <option value="hi-IN">Hindi</option>
-                        <option value="th-TH">Thai</option>
-                        <option value="vi-VN">Vietnamese</option>
-                        <option value="nl-NL">Dutch</option>
-                        <option value="pl-PL">Polish</option>
-                        <option value="tr-TR">Turkish</option>
-                        <option value="sv-SE">Swedish</option>
-                    </select>
-                </div>
 
-                <div class="option-group">
-                    <label class="option-label">📚 Select Text</label>
-                    
-                    <!-- Library Books Section -->
-                    <div class="library-section">
-                        <div class="library-header">
-                            <i class="fas fa-book"></i> Book Library
-                        </div>
-                        <div id="textOptions" class="text-options">
-                            <!-- Books will be populated here -->
-                        </div>
-                    </div>
-                    
-                    <!-- Section Selector (appears after book selection) -->
-                    <div id="sectionSelector" class="section-selector">
-                        <div class="section-header">
-                            <i class="fas fa-bookmark"></i> 
-                            <span>Start from Section</span>
-                            <span id="sectionCount" class="section-count"></span>
-                        </div>
-                        <div id="sectionList" class="section-list">
-                            <!-- Sections will be populated here -->
-                        </div>
-                    </div>
-                    
-                    <div class="or-divider">— or upload your own —</div>
-                    
-                    <!-- Custom Upload Section -->
-                    <div class="file-upload">
-                        <input type="file" id="fileInput" class="file-input" accept=".txt">
-                        <label for="fileInput" class="file-upload-btn">
-                            <i class="fas fa-upload"></i> Upload Diglot Text File
-                        </label>
-                    </div>
-                    <div id="parseInfo" class="parse-info" style="display: none;"></div>
-                </div>
+<div class="container">
+    <!-- SETUP SCREEN -->
+    <div id="setupScreen" class="setup-screen">
+        <h1>Sentence Drilling Pro</h1>
+        <p class="subtitle">Master languages through immersion</p>
 
-                <div class="option-group">
-                    <label class="option-label">🔄 Repetitions per Sentence</label>
-                    <select id="repetitions" class="option-input">
-                        <option value="1">1 time</option>
-                        <option value="2">2 times</option>
-                        <option value="3" selected>3 times</option>
-                        <option value="5">5 times</option>
-                        <option value="10">10 times</option>
-                    </select>
-                </div>
+        <div class="grid-options">
+            <!-- Language -->
+            <div class="option-group full-width">
+                <label>Target Language</label>
+                <select id="targetLanguage">
+                    <option value="zh-CN">Chinese (Simplified)</option>
+                    <option value="zh-TW">Chinese (Traditional)</option>
+                    <option value="ja-JP">Japanese</option>
+                    <option value="ko-KR">Korean</option>
+                    <option value="es-ES">Spanish</option>
+                    <option value="fr-FR">French</option>
+                </select>
+            </div>
 
-                <div class="option-group">
-                    <label class="option-label">📖 Text Display</label>
-                    <div class="text-display-options">
-                        <div id="targetToggle" class="text-toggle active" onclick="toggleTextDisplay('target')">
-                            🎯 Target Language
-                        </div>
-                        <div id="englishToggle" class="text-toggle active" onclick="toggleTextDisplay('english')">
-                            🇺🇸 English Text
-                        </div>
-                    </div>
+            <!-- Book Selection -->
+            <div class="option-group full-width">
+                <label>Select Text</label>
+                <div id="libraryGrid" class="library-grid">
+                    <!-- Populated by JS -->
                 </div>
-
-                <div class="option-group">
-                    <label class="option-label">🎙️ Target Language Voice</label>
-                    <div class="voice-select-container">
-                        <select id="targetVoiceSelect" class="voice-select">
-                            <option value="">Loading voices...</option>
-                        </select>
-                    </div>
-                    <div class="no-voice-toggle">
-                        <input type="checkbox" id="targetVoiceDisabled">
-                        <label for="targetVoiceDisabled">🔇 Disable target language voice</label>
-                    </div>
+                <div style="margin-top: 15px; text-align: center; color: var(--text-sub); font-size: 0.9rem;">
+                    — or upload custom .txt —
                 </div>
+                <input type="file" id="fileUpload" accept=".txt" style="margin-top: 10px; width: 100%; padding: 10px; background: rgba(0,0,0,0.2); border-radius: 8px; color: white; border: 1px solid var(--border);">
+            </div>
 
-                <div class="option-group">
-                    <label class="option-label">🔊 English Voice</label>
-                    <div class="voice-select-container">
-                        <select id="englishVoiceSelect" class="voice-select">
-                            <option value="">Loading voices...</option>
-                        </select>
-                    </div>
-                    <div class="no-voice-toggle">
-                        <input type="checkbox" id="englishVoiceDisabled">
-                        <label for="englishVoiceDisabled">🔇 Disable English voice</label>
-                    </div>
-                </div>
+            <!-- Settings Column 1 -->
+            <div class="option-group">
+                <label>Repetitions</label>
+                <select id="repetitionsSelect">
+                    <option value="1">1 Time</option>
+                    <option value="2">2 Times</option>
+                    <option value="3" selected>3 Times</option>
+                    <option value="4">4 Times</option>
+                </select>
+            </div>
 
-                <div class="option-group">
-                    <label class="option-label">⚡ Speaking Speed</label>
-                    <div class="speed-control">
-                        <input type="range" id="speedSlider" class="speed-slider" min="0.5" max="1.5" step="0.1" value="0.8">
-                        <div id="speedDisplay" class="speed-display">0.8x (Normal)</div>
-                    </div>
-                </div>
+            <!-- Settings Column 2 -->
+            <div class="option-group">
+                <label>Start Position</label>
+                <select id="startPosition">
+                    <option value="beginning">Beginning</option>
+                    <option value="continue">Continue Last Session</option>
+                </select>
+            </div>
 
-                <div class="option-group">
-                    <label class="option-label">🚀 Start Position</label>
-                    <select id="startPosition" class="option-input">
-                        <option value="beginning">From Beginning</option>
-                        <option value="continue">Continue from Last Session</option>
-                    </select>
-                </div>
-
-                <div class="toggle-switch">
-                    <div>
-                        <div class="label">Auto-play Mode</div>
-                        <div class="description">Automatically advance through sentences</div>
-                    </div>
+            <!-- Toggles -->
+            <div class="option-group full-width">
+                <div class="toggle-row">
+                    <span>Auto-Advance Sentences</span>
                     <label class="switch">
-                        <input type="checkbox" id="autoplayToggle" checked>
+                        <input type="checkbox" id="autoAdvanceToggle" checked>
+                        <span class="slider"></span>
+                    </label>
+                </div>
+                <div class="toggle-row">
+                    <span>Show English Translation</span>
+                    <label class="switch">
+                        <input type="checkbox" id="showEnglishToggle" checked>
                         <span class="slider"></span>
                     </label>
                 </div>
             </div>
-
-            <button class="start-button" id="startButton" onclick="startStudy()">
-                Start Learning
-            </button>
         </div>
 
-        <div id="studyScreen" class="study-screen" style="display: none;">
-            <div class="progress-text" id="progressText">Sentence 1 of 10</div>
-            <div class="progress-bar">
-                <div class="progress-fill" id="progressFill" style="width: 10%;"></div>
+        <button class="btn btn-primary" style="width: 100%; justify-content: center; padding: 16px; font-size: 1.1rem;" onclick="startSession()">
+            Start Learning <i class="fas fa-arrow-right"></i>
+        </button>
+    </div>
+
+    <!-- STUDY SCREEN -->
+    <div id="studyScreen" class="study-screen">
+        <div class="progress-container">
+            <div class="progress-bar-bg">
+                <div id="progressFill" class="progress-bar-fill"></div>
             </div>
-            
-            <div class="sentence-display">
-                <div id="targetSentence" class="target-sentence sentence">
-                    你好世界
-                </div>
-                <div id="englishSentence" class="english-sentence sentence">
-                    Hello World
-                </div>
+            <div class="progress-text">
+                <span id="progressLabel">Sentence 1 / 100</span>
+                <span id="bookLabel">Monkey King</span>
             </div>
-            
-            <div class="repetition-counter" id="repetitionCounter">repetition 1 of 3</div>
-            
-            <div class="controls">
-                <button class="control-btn" id="playPauseBtn" onclick="togglePlayPause()">
+        </div>
+
+        <div class="repetition-badge" id="repBadge">Repetition 1 of 3</div>
+
+        <div class="sentence-box">
+            <!-- Target Text with Karaoke Spans -->
+            <div id="targetText" class="target-text"></div>
+            <div id="englishText" class="english-text"></div>
+        </div>
+
+        <div class="controls-area">
+            <div class="main-controls">
+                <button class="btn btn-secondary" onclick="prevSentence()"><i class="fas fa-chevron-left"></i></button>
+                <button id="playBtn" class="btn btn-primary" onclick="togglePlay()">
                     <i class="fas fa-play"></i> Play
                 </button>
+                <button class="btn btn-secondary" onclick="nextSentence()"><i class="fas fa-chevron-right"></i></button>
             </div>
 
-            <div class="skip-controls">
-                <button class="skip-btn" id="skip1Btn" onclick="skipSentences(1)">
-                    <i class="fas fa-forward-step"></i> Skip 1
-                </button>
-                <button class="skip-btn" id="skip5Btn" onclick="skipSentences(5)">
-                    <i class="fas fa-forward-fast"></i> Skip 5
-                </button>
+            <div class="skip-grid">
+                <button class="btn btn-skip" onclick="skipAhead(5)">Skip 5</button>
+                <button class="btn btn-skip" onclick="skipAhead(10)">Skip 10</button>
+                <button class="btn btn-skip" onclick="skipAhead(15)">Skip 15</button>
             </div>
 
-            <div class="sentence-navigation">
-                <button class="sentence-nav-btn" id="prevSentenceBtn" onclick="previousSentence()">
-                    <i class="fas fa-chevron-left"></i> Previous
-                </button>
-                <button class="sentence-nav-btn" id="nextSentenceBtn" onclick="nextSentence()">
-                    Next <i class="fas fa-chevron-right"></i>
-                </button>
-            </div>
-            
-            <div class="set-navigation">
-                <button class="nav-arrow" id="prevArrow" onclick="previousSet()">
-                    <i class="fas fa-arrow-left"></i>
-                </button>
-                <span class="set-info" id="setInfo">Sentences 1-5 of 10</span>
-                <button class="nav-arrow" id="nextArrow" onclick="nextSet()">
-                    <i class="fas fa-arrow-right"></i>
-                </button>
-            </div>
-            
-            <button class="stop-button" onclick="stopStudy()">
-                <i class="fas fa-stop"></i> Stop & Save
+            <button class="btn btn-secondary" style="width: 100%; justify-content: center; margin-top: 10px; color: #ef4444; border-color: rgba(239, 68, 68, 0.3);" onclick="stopSession()">
+                Stop & Save
             </button>
         </div>
     </div>
+</div>
 
-    <script>
-        // ==========================================
-        // BOOK LIBRARY CONFIGURATION
-        // ==========================================
-        // To add a new book:
-        // 1. Add your cleaned .txt file to the same folder as this HTML
-        // 2. Add an entry to this array with the filename
-        // ==========================================
-        
-        const bookLibrary = [
-            {
-                id: 'monkey-king',
-                name: 'Monkey King Story',
-                icon: '🐒',
-                file: null,  // null = built-in, no file to fetch
-                builtin: true
-            },
-            {
-                id: 'moonlight-sculptor-v02',
-                name: 'Legendary Moonlight Sculptor Vol. 2',
-                icon: '⚔️',
-                file: 'Legendary_Moonlight_Sculptor_Vol02_cleaned.txt'
-            },
-            {
-                id: 'gospel-of-john',
-                name: 'Gospel of John',
-                icon: '✝️',
-                file: 'John.txt'
-            },
-            // ==========================================
-            // ADD MORE BOOKS HERE:
-            // ==========================================
-            // {
-            //     id: 'my-book',
-            //     name: 'My Book Title',
-            //     icon: '📖',
-            //     file: 'my_book_diglot.txt'
-            // },
-        ];
+<script>
+    // --- CONFIGURATION ---
+    const bookLibrary = [
+        { id: 'monkey', name: 'Monkey King', icon: '🐒', file: null, builtin: true },
+        { id: 'john', name: 'Gospel of John', icon: '📖', file: 'John.txt' },
+        { id: 'short', name: 'Short Stories', icon: '📚', file: 'ShortStories.txt' },
+        { id: 'moonlight', name: 'Moonlight Sculptor', icon: '⚔️', file: 'Legendary_Moonlight_Sculptor_Vol02_cleaned.txt' }
+    ];
 
-        // Built-in Monkey King data
-        const monkeyKingData = [
-            {"target": "猴王的诞生      我亲爱的孩子，我知道时间很晚了。", "english": "The Rise of the Monkey King. My dear child, I know that the hour is late."},
-            {"target": "你玩了一天，累了，现在是睡觉的时候了。", "english": "You've been playing all day and you are tired, and now it is bedtime."},
-            {"target": "但是你说你想在睡觉前听一个故事。", "english": "But you say you want to hear a story before you sleep."},
-            {"target": "所以现在我给你讲一个很老的关于猴子的故事。", "english": "So now I will tell you an old story about a monkey."},
-            {"target": "这只猴子很强大，也很聪明，但是有的时候他也很淘气。", "english": "He was very strong and very smart, but sometimes he was also very naughty."},
-            {"target": "他需要去学习什么是爱，去学习怎么去帮助别人。", "english": "He needed to learn about love and helping others."},
-            {"target": "几千年以前这只猴子生活在中国的北方。", "english": "This monkey lived a thousand years ago in northern China."},
-            {"target": "在他很长的一生中他有很多名字，但是他最有名的名字是孙悟空。", "english": "He had many names during his long life, but most people know him as Sun Wukong."},
-            {"target": "人们讲了很多关于孙悟空的故事。", "english": "People tell many stories about Sun Wukong."},
-            {"target": "如果我告诉你所有这些故事，需要讲很多天！", "english": "If I told you all those stories, I would have to talk for many days!"},
-            {"target": "所以今天晚上我会告诉你一点点关于他的出生和他怎么成为一个大王的故事。", "english": "So tonight I will just tell you a little bit about his birth and how he became a great king."},
-            {"target": "很久很久以前，在中国的一座高山上，有一块神奇的石头。", "english": "Long, long ago, on a high mountain in China, there was a magical stone."},
-            {"target": "这块石头很大，很漂亮，它在山顶上站了很多很多年。", "english": "This stone was very large and very beautiful, and it stood on the mountain peak for many, many years."},
-            {"target": "它每天吸收太阳和月亮的能量。", "english": "Every day it absorbed the energy of the sun and the moon."},
-            {"target": "过了一百年，这块石头开始发生变化。", "english": "After one hundred years, the stone began to change."},
-            {"target": "它开始动起来，就像有一个生命在里面。", "english": "It began to move, as if there was a life inside it."},
-            {"target": "然后有一天，突然，石头裂开了！", "english": "Then one day, suddenly, the stone cracked open!"},
-            {"target": "从石头里跳出来一只小猴子。", "english": "Out jumped a little monkey."},
-            {"target": "这只猴子不是普通的猴子，他是一个有魔法的猴子。", "english": "This was no ordinary monkey - he was a magical monkey."},
-            {"target": "他天生就有神奇的力量。", "english": "He was born with magical powers."},
-            {"target": "小猴子睁开眼睛，第一次看到这个世界。", "english": "The little monkey opened his eyes and saw the world for the first time."},
-            {"target": "他看看天空，看看山，看看树。", "english": "He looked at the sky, the mountains, and the trees."},
-            {"target": "然后他做了第一件事：他深深地吸了一口气，然后开始跳跃和欢笑。", "english": "Then he did the first thing: he took a deep breath and began to jump and laugh."},
-            {"target": "其他的猴子都来看这个新来的小猴子。", "english": "All the other monkeys came to see this new little monkey."},
-            {"target": "他们从来没有见过这么有活力的猴子。", "english": "They had never seen such an energetic monkey before."},
-            {"target": "小猴子很快就学会了怎么爬树和怎么跳跃。", "english": "The little monkey quickly learned how to climb trees and how to jump."},
-            {"target": "他比其他任何猴子跳得都高。", "english": "He could jump higher than any other monkey."},
-            {"target": "他比其他任何猴子跑得都快。", "english": "He could run faster than any other monkey."},
-            {"target": "其他的猴子都说：\"这只小猴子真特别！\"", "english": "The other monkeys said: \"This little monkey is really special!\""},
-            {"target": "小猴子每天都在山上玩耍。", "english": "The little monkey played on the mountain every day."},
-            {"target": "他跟其他猴子一起玩耍，一起吃饭，一起睡觉。", "english": "He played with the other monkeys, ate with them, and slept with them."},
-            {"target": "他过得很快乐。", "english": "He lived a very happy life."},
-            {"target": "但是小猴子不知道，他将来会成为一个伟大的王。", "english": "But the little monkey did not know that he would become a great king in the future."},
-            {"target": "一天，小猴子跟其他的猴子一起在山上玩。", "english": "One day, the little monkey was playing with the other monkeys on the mountain."},
-            {"target": "他们发现了一个瀑布。", "english": "They discovered a waterfall."},
-            {"target": "这个瀑布很漂亮，水从很高的地方流下来。", "english": "This waterfall was very beautiful, with water flowing down from a very high place."},
-            {"target": "猴子们都想知道瀑布后面有什么。", "english": "The monkeys all wanted to know what was behind the waterfall."},
-            {"target": "但是水太大了，他们不敢过去。", "english": "But the water was too strong, and they did not dare to go through it."},
-            {"target": "小猴子说：\"让我来试试！\"", "english": "The little monkey said: \"Let me try!\""},
-            {"target": "其他的猴子都很担心。", "english": "The other monkeys were very worried."},
-            {"target": "他们喊：\"小心点！\"", "english": "They shouted: \"Be careful!\""},
-            {"target": "小猴子勇敢地走向瀑布。", "english": "The little monkey bravely walked toward the waterfall."},
-            {"target": "他穿过瀑布的水，发现瀑布后面有一个洞。", "english": "He passed through the waterfall's water and discovered there was a cave behind it."},
-            {"target": "这个洞很大，很干燥，非常适合居住。", "english": "This cave was very large, very dry, and perfect for living in."},
-            {"target": "小猴子很高兴，他跑回去告诉其他的猴子。", "english": "The little monkey was very happy, and he ran back to tell the other monkeys."},
-            {"target": "所有的猴子都很兴奋。", "english": "All the monkeys were very excited."},
-            {"target": "他们跟着小猴子穿过瀑布，进入洞里。", "english": "They followed the little monkey through the waterfall and into the cave."},
-            {"target": "这个洞成了他们的新家。", "english": "This cave became their new home."},
-            {"target": "猴子们都很感谢小猴子。", "english": "The monkeys were all very grateful to the little monkey."},
-            {"target": "他们说：\"小猴子，你真勇敢！\"", "english": "They said: \"Little monkey, you are so brave!\""},
-            {"target": "从那天开始，猴子们叫小猴子\"美猴王\"。", "english": "From that day on, the monkeys called the little monkey \"Beautiful Monkey King.\""},
-            {"target": "小猴子很高兴有这个新名字。", "english": "The little monkey was very happy to have this new name."},
-            {"target": "他跳起来说：\"我是美猴王！\"", "english": "He jumped up and said: \"I am the Beautiful Monkey King!\""},
-            {"target": "所有的猴子都欢呼起来。", "english": "All the monkeys cheered."},
-            {"target": "美猴王成了所有猴子的领导者。", "english": "The Beautiful Monkey King became the leader of all the monkeys."},
-            {"target": "他教猴子们怎么找到更多的食物。", "english": "He taught the monkeys how to find more food."},
-            {"target": "他教猴子们怎么保护自己。", "english": "He taught the monkeys how to protect themselves."},
-            {"target": "他教猴子们怎么一起工作。", "english": "He taught the monkeys how to work together."},
-            {"target": "所有的猴子都很尊敬美猴王。", "english": "All the monkeys respected the Beautiful Monkey King very much."}
-        ];
+    // --- STATE ---
+    let sentences = [];
+    let currentIndex = 0;
+    let currentRep = 1;
+    let maxReps = 3;
+    let isPlaying = false;
+    let autoAdvance = true;
+    let showEnglish = true;
+    let currentBookId = null;
+    let synth = window.speechSynthesis;
+    let voices = [];
+    let currentUtterance = null;
 
-        // ==========================================
-        // STATE VARIABLES
-        // ==========================================
-        
-        let availableTexts = {};
-        let sentencePairs = [];
-        let currentTextKey = null;
-        let currentSentenceIndex = 0;
-        let currentRepetition = 0;
-        let isPlaying = false;
-        let repetitionsPerSentence = 3;
-        let sentencesPerSet = 5;
-        let selectedTargetLanguage = 'zh-CN';  // Default to Simplified Mandarin
-        let selectedTargetVoice = null;
-        let selectedEnglishVoice = null;
-        let targetVoiceDisabled = false;
-        let englishVoiceDisabled = false;
-        let textDisplay = {
-            target: true,
-            english: true
-        };
-        let speakingSpeed = 0.8;
-        let autoplayMode = false;
-        let selectedSectionStart = 0;  // Track which section to start from
-
-        // Store all available voices
-        let allVoices = [];
-        let targetLanguageVoices = [];
-        let englishVoices = [];
-
-        // ==========================================
-        // VOICE INITIALIZATION
-        // ==========================================
-        
-        function loadVoices() {
-            allVoices = speechSynthesis.getVoices();
-            console.log('Total voices available:', allVoices.length);
-            
-            // Populate voice dropdowns based on current language selection
-            updateVoiceDropdowns();
+    // --- INITIALIZATION ---
+    function init() {
+        voices = synth.getVoices();
+        if (speechSynthesis.onvoiceschanged !== undefined) {
+            speechSynthesis.onvoiceschanged = () => { voices = synth.getVoices(); };
         }
 
-        function updateVoiceDropdowns() {
-            const targetLang = document.getElementById('targetLanguage').value;
-            const targetVoiceSelect = document.getElementById('targetVoiceSelect');
-            const englishVoiceSelect = document.getElementById('englishVoiceSelect');
-            
-            // Get language code prefix (e.g., 'zh' from 'zh-CN')
-            const targetLangPrefix = targetLang.split('-')[0];
-            
-            // Filter voices for target language
-            targetLanguageVoices = allVoices.filter(voice => {
-                const voiceLang = voice.lang.toLowerCase();
-                return voiceLang.startsWith(targetLangPrefix.toLowerCase()) || 
-                       voiceLang.includes(targetLang.toLowerCase());
-            });
-            
-            // Filter voices for English
-            englishVoices = allVoices.filter(voice => {
-                const voiceLang = voice.lang.toLowerCase();
-                return voiceLang.startsWith('en') && !voiceLang.includes('zh');
-            });
-            
-            // Populate target language dropdown
-            targetVoiceSelect.innerHTML = '';
-            if (targetLanguageVoices.length === 0) {
-                targetVoiceSelect.innerHTML = '<option value="">No voices available for this language</option>';
-                targetVoiceSelect.disabled = true;
-            } else {
-                targetVoiceSelect.disabled = false;
-                targetLanguageVoices.forEach((voice, index) => {
-                    const option = document.createElement('option');
-                    option.value = index;
-                    option.textContent = `${voice.name} (${voice.lang})`;
-                    targetVoiceSelect.appendChild(option);
-                });
+        const grid = document.getElementById('libraryGrid');
+        grid.innerHTML = '';
+        bookLibrary.forEach(book => {
+            const card = document.createElement('div');
+            card.className = 'book-card';
+            card.onclick = () => selectBook(book.id, card);
+            card.innerHTML = `
+                <span class="book-icon">${book.icon}</span>
+                <div class="book-title">${book.name}</div>
+                <div class="book-status">${book.builtin ? 'Built-in' : 'Click to Load'}</div>
+            `;
+            grid.appendChild(card);
+        });
+
+        document.getElementById('startPosition').addEventListener('change', (e) => {
+            if(e.target.value === 'continue') {
+                const saved = localStorage.getItem('drill_progress');
+                if(saved) {
+                    const data = JSON.parse(saved);
+                    const book = bookLibrary.find(b => b.id === data.bookId);
+                    if(book) selectBook(book.id, document.querySelector(`.book-card[onclick*="${book.id}"]`));
+                }
             }
-            
-            // Populate English dropdown
-            englishVoiceSelect.innerHTML = '';
-            if (englishVoices.length === 0) {
-                englishVoiceSelect.innerHTML = '<option value="">No English voices available</option>';
-                englishVoiceSelect.disabled = true;
-            } else {
-                englishVoiceSelect.disabled = false;
-                englishVoices.forEach((voice, index) => {
-                    const option = document.createElement('option');
-                    option.value = index;
-                    option.textContent = `${voice.name} (${voice.lang})`;
-                    englishVoiceSelect.appendChild(option);
-                });
-            }
-            
-            console.log(`Target language (${targetLang}) voices:`, targetLanguageVoices.length);
-            console.log('English voices:', englishVoices.length);
-        }
-
-        // Handle language change
-        document.getElementById('targetLanguage').addEventListener('change', function() {
-            selectedTargetLanguage = this.value;
-            updateVoiceDropdowns();
         });
+    }
 
-        // Handle voice disable toggles
-        document.getElementById('targetVoiceDisabled').addEventListener('change', function() {
-            targetVoiceDisabled = this.checked;
-            document.getElementById('targetVoiceSelect').disabled = this.checked || targetLanguageVoices.length === 0;
-        });
+    // --- BOOK LOADING LOGIC ---
+    async function selectBook(id, cardElement) {
+        document.querySelectorAll('.book-card').forEach(c => c.classList.remove('selected'));
+        if(cardElement) cardElement.classList.add('selected');
+        currentBookId = id;
 
-        document.getElementById('englishVoiceDisabled').addEventListener('change', function() {
-            englishVoiceDisabled = this.checked;
-            document.getElementById('englishVoiceSelect').disabled = this.checked || englishVoices.length === 0;
-        });
-
-        // Initialize voices
-        if (speechSynthesis.getVoices().length > 0) {
-            loadVoices();
+        const book = bookLibrary.find(b => b.id === id);
+        
+        if (book.builtin) {
+            sentences = getMonkeyKingData(); 
+            finishLoading(book.name);
         } else {
-            speechSynthesis.addEventListener('voiceschanged', loadVoices);
-        }
-
-        // ==========================================
-        // SECTION DETECTION
-        // ==========================================
-        
-        function detectSections(sentences) {
-            const sections = [];
-            let hasExplicitSections = false;
-            
-            // First pass: look for explicit section markers in the text
-            for (let i = 0; i < sentences.length; i++) {
-                const target = sentences[i].target.toLowerCase();
-                const english = sentences[i].english.toLowerCase();
-                
-                // Check for section markers (case insensitive)
-                const sectionMatch = english.match(/^(section|chapter|part|第.*[章节部分])\s*(\d+|[一二三四五六七八九十]+)?[:\s]*/i) ||
-                                    target.match(/^(第.*[章节部分]|section|chapter|part)\s*(\d+|[一二三四五六七八九十]+)?[:\s]*/i);
-                
-                if (sectionMatch || english.includes('section ') || target.includes('第') && (target.includes('章') || target.includes('节') || target.includes('部分'))) {
-                    hasExplicitSections = true;
-                    sections.push({
-                        startIndex: i,
-                        title: sentences[i].english.substring(0, 50) + (sentences[i].english.length > 50 ? '...' : ''),
-                        preview: sentences[i].target.substring(0, 30),
-                        isExplicit: true
-                    });
-                }
-            }
-            
-            // If explicit sections found, return them
-            if (hasExplicitSections && sections.length > 0) {
-                // Calculate sentence counts for each section
-                for (let i = 0; i < sections.length; i++) {
-                    const nextStart = i < sections.length - 1 ? sections[i + 1].startIndex : sentences.length;
-                    sections[i].sentenceCount = nextStart - sections[i].startIndex;
-                }
-                return sections;
-            }
-            
-            // Second pass: create automatic sections every 10 sentences
-            const SENTENCES_PER_SECTION = 10;
-            
-            for (let i = 0; i < sentences.length; i += SENTENCES_PER_SECTION) {
-                const endIndex = Math.min(i + SENTENCES_PER_SECTION, sentences.length);
-                const targetPreview = sentences[i].target.substring(0, 20);
-                const englishPreview = sentences[i].english.substring(0, 35);
-                
-                sections.push({
-                    startIndex: i,
-                    title: `Sentences ${i + 1}-${endIndex}`,
-                    preview: targetPreview + (sentences[i].target.length > 20 ? '…' : ''),
-                    englishPreview: englishPreview + (sentences[i].english.length > 35 ? '…' : ''),
-                    sentenceCount: endIndex - i,
-                    isExplicit: false
-                });
-            }
-            
-            return sections;
-        }
-        
-        function displaySectionSelector(sections) {
-            const container = document.getElementById('sectionList');
-            const selectorDiv = document.getElementById('sectionSelector');
-            
-            if (!sections || sections.length <= 1) {
-                selectorDiv.classList.remove('visible');
-                selectedSectionStart = 0;
-                return;
-            }
-            
-            container.innerHTML = '';
-            
-            sections.forEach((section, index) => {
-                const item = document.createElement('div');
-                item.className = 'section-item' + (index === 0 ? ' selected' : '');
-                item.dataset.startIndex = section.startIndex;
-                
-                const englishLine = section.englishPreview ? 
-                    `<div class="section-english-preview">${section.englishPreview}</div>` : '';
-                
-                item.innerHTML = `
-                    <div class="section-title">
-                        <span class="section-number">${index + 1}</span>
-                        ${section.title}
-                    </div>
-                    <div class="section-preview">${section.preview}</div>
-                    ${englishLine}
-                    <div class="section-meta">${section.sentenceCount} sentences</div>
-                `;
-                
-                item.addEventListener('click', () => {
-                    document.querySelectorAll('.section-item').forEach(s => s.classList.remove('selected'));
-                    item.classList.add('selected');
-                    selectedSectionStart = section.startIndex;
-                });
-                
-                container.appendChild(item);
-            });
-            
-            selectorDiv.classList.add('visible');
-            selectedSectionStart = sections[0].startIndex;
-            
-            // Update section count badge
-            document.getElementById('sectionCount').textContent = `${sections.length} sections`;
-        }
-
-        // ==========================================
-        // DIGLOT PARSER
-        // ==========================================
-        
-        function hasTargetLanguageChars(text) {
-            // Check for various non-Latin scripts
-            // Chinese
-            if (/[\u4e00-\u9fff]/.test(text)) return true;
-            // Japanese (Hiragana, Katakana, Kanji)
-            if (/[\u3040-\u309f\u30a0-\u30ff]/.test(text)) return true;
-            // Korean
-            if (/[\uac00-\ud7af\u1100-\u11ff]/.test(text)) return true;
-            // Arabic
-            if (/[\u0600-\u06ff]/.test(text)) return true;
-            // Cyrillic (Russian, etc.)
-            if (/[\u0400-\u04ff]/.test(text)) return true;
-            // Thai
-            if (/[\u0e00-\u0e7f]/.test(text)) return true;
-            // Devanagari (Hindi)
-            if (/[\u0900-\u097f]/.test(text)) return true;
-            // Vietnamese diacritics (still uses Latin but with special chars)
-            if (/[àáảãạăằắẳẵặâầấẩẫậèéẻẽẹêềếểễệìíỉĩịòóỏõọôồốổỗộơờớởỡợùúủũụưừứửữựỳýỷỹỵđ]/i.test(text)) return true;
-            
-            return false;
-        }
-        
-        function hasKorean(text) {
-            return /[\uac00-\ud7af\u1100-\u11ff]/.test(text);
-        }
-        
-        function isMostlyEnglish(text) {
-            if (hasTargetLanguageChars(text)) return false;
-            const englishChars = (text.match(/[a-zA-Z]/g) || []).length;
-            return englishChars > 5;
-        }
-        
-        function shouldSkipLine(line) {
-            const trimmed = line.trim();
-            if (!trimmed) return true;
-            
-            const skipPatterns = [
-                /^Thinking\.\.\./i,
-                /^\.\.\.(done thinking|thinking)\./i,
-                /^Chinese translation:/i,
-                /^\*\* ?Chinese translation:?\*\*/i,
-                /^\[中国\]/,
-                /^Original Epub:/i,
-                /^Revised Epub:/i,
-                /^Translation by/i,
-                /^Translation Quality:/i,
-                /^\* \* \*$/,
-                /^#\s*$/,
-                /^Okay,? so I have/i,
-                /^The sentence given is/i,
-                /^First,/,
-                /^Next up is/,
-                /^Then there's/,
-                /^Putting the whole/i,
-                /^I also need to ensure/i,
-                /^Let'?s break it down/i,
-                /^In Chinese translations/i,
-                /^The word for/i,
-                /^So I'?ll use/i,
-                /^For hope,/i,
-                /^meantime,/i,
-                /^roar$/i,
-            ];
-            
-            for (const pattern of skipPatterns) {
-                if (pattern.test(trimmed)) return true;
-            }
-            
-            // Skip Korean-only lines when not learning Korean
-            if (hasKorean(trimmed) && !hasTargetLanguageChars(trimmed) && !isMostlyEnglish(trimmed)) {
-                return true;
-            }
-            
-            if (/^\*\s*[\u4e00-\u9fff]+\s*\*?$/.test(trimmed)) {
-                return true;
-            }
-            
-            if (trimmed.length < 3 && !/[a-zA-Z\u4e00-\u9fff]/.test(trimmed)) {
-                return true;
-            }
-            
-            return false;
-        }
-
-        function parseTextFile(content) {
-            const lines = content.split('\n');
-            const filteredLines = [];
-            let skippedCount = 0;
-            
-            for (const line of lines) {
-                const trimmed = line.trim();
-                if (shouldSkipLine(trimmed)) {
-                    skippedCount++;
-                    continue;
-                }
-                filteredLines.push(trimmed);
-            }
-            
-            const sentences = [];
-            let unpairedTarget = 0;
-            let unpairedEnglish = 0;
-            let i = 0;
-            
-            while (i < filteredLines.length - 1) {
-                const line1 = filteredLines[i];
-                const line2 = filteredLines[i + 1];
-                
-                if (hasTargetLanguageChars(line1) && !hasTargetLanguageChars(line2) && isMostlyEnglish(line2)) {
-                    sentences.push({
-                        target: line1,
-                        english: line2
-                    });
-                    i += 2;
-                } else if (hasTargetLanguageChars(line1)) {
-                    unpairedTarget++;
-                    i++;
-                } else if (isMostlyEnglish(line1)) {
-                    unpairedEnglish++;
-                    i++;
-                } else {
-                    i++;
-                }
-            }
-            
-            window.lastParseStats = {
-                originalLines: lines.length,
-                filteredLines: filteredLines.length,
-                validPairs: sentences.length,
-                skippedTotal: skippedCount,
-                unpairedTarget: unpairedTarget,
-                unpairedEnglish: unpairedEnglish
-            };
-            
-            return sentences;
-        }
-        
-        function showParseInfo(stats, filename) {
-            const infoDiv = document.getElementById('parseInfo');
-            
-            if (stats.validPairs === 0) {
-                infoDiv.className = 'parse-info error';
-                infoDiv.innerHTML = `
-                    <strong>⚠️ No valid pairs found in ${filename}</strong>
-                    <div class="parse-stats">
-                        <span>Original lines: ${stats.originalLines}</span>
-                        <span>Skipped: ${stats.skippedTotal}</span>
-                    </div>
-                `;
-            } else if (stats.unpairedTarget > 10 || stats.unpairedEnglish > 10) {
-                infoDiv.className = 'parse-info warning';
-                infoDiv.innerHTML = `
-                    <strong>⚡ Loaded ${stats.validPairs} sentence pairs</strong>
-                    <div class="parse-stats">
-                        <span>Skipped ${stats.skippedTotal} lines</span>
-                        <span>${stats.unpairedTarget} unpaired target</span>
-                        <span>${stats.unpairedEnglish} unpaired EN</span>
-                    </div>
-                `;
-            } else {
-                infoDiv.className = 'parse-info';
-                infoDiv.innerHTML = `
-                    <strong>✅ Loaded ${stats.validPairs} sentence pairs</strong>
-                    <div class="parse-stats">
-                        <span>From ${stats.originalLines} lines</span>
-                        <span>Filtered ${stats.skippedTotal} lines</span>
-                    </div>
-                `;
-            }
-            
-            infoDiv.style.display = 'block';
-        }
-
-        // ==========================================
-        // LIBRARY LOADING
-        // ==========================================
-        
-        async function loadBookFromFile(book) {
+            if(cardElement) cardElement.querySelector('.book-status').textContent = 'Loading...';
             try {
                 const response = await fetch(book.file);
-                if (!response.ok) {
-                    throw new Error(`HTTP ${response.status}`);
-                }
-                const content = await response.text();
-                const sentences = parseTextFile(content);
-                return sentences;
-            } catch (error) {
-                console.error(`Failed to load ${book.file}:`, error);
-                return null;
+                if (!response.ok) throw new Error('File not found');
+                const text = await response.text();
+                sentences = parseDiglot(text);
+                finishLoading(book.name);
+            } catch (err) {
+                alert(`Error loading ${book.name}: ${err.message}. Ensure file is in same folder.`);
+                if(cardElement) cardElement.querySelector('.book-status').textContent = 'Error';
             }
         }
-        
-        async function initializeLibrary() {
-            const container = document.getElementById('textOptions');
-            container.innerHTML = '';
-            
-            for (const book of bookLibrary) {
-                // Create the option element
-                const option = document.createElement('div');
-                option.className = 'text-option';
-                option.dataset.bookId = book.id;
-                
-                if (book.builtin) {
-                    // Built-in book - load immediately
-                    availableTexts[book.id] = {
-                        name: book.name,
-                        sentences: monkeyKingData,
-                        icon: book.icon,
-                        loaded: true
-                    };
-                    
-                    option.innerHTML = `
-                        <div class="text-icon">${book.icon}</div>
-                        <div class="text-info">
-                            <div class="text-name">${book.name}</div>
-                            <div class="text-stats">${monkeyKingData.length} sentences</div>
-                        </div>
-                    `;
-                } else {
-                    // External book - show as loadable
-                    availableTexts[book.id] = {
-                        name: book.name,
-                        sentences: [],
-                        icon: book.icon,
-                        file: book.file,
-                        loaded: false
-                    };
-                    
-                    option.innerHTML = `
-                        <div class="text-icon">${book.icon}</div>
-                        <div class="text-info">
-                            <div class="text-name">${book.name}</div>
-                            <div class="text-stats">Click to load</div>
-                        </div>
-                    `;
-                }
-                
-                option.addEventListener('click', () => selectBook(book.id));
-                container.appendChild(option);
-            }
-            
-            // Select first book by default
-            if (bookLibrary.length > 0) {
-                selectBook(bookLibrary[0].id);
+    }
+
+    function finishLoading(name) {
+        document.getElementById('bookLabel').textContent = name;
+        if(document.getElementById('startPosition').value === 'beginning') {
+            currentIndex = 0;
+        } else {
+            const saved = localStorage.getItem('drill_progress');
+            if(saved) {
+                const data = JSON.parse(saved);
+                if(data.bookId === currentBookId) currentIndex = data.index;
+                else currentIndex = 0;
             }
         }
-        
-        async function selectBook(bookId) {
-            const book = availableTexts[bookId];
-            if (!book) return;
-            
-            // Update UI selection
-            document.querySelectorAll('.text-option').forEach(opt => {
-                opt.classList.remove('selected');
-                if (opt.dataset.bookId === bookId) {
-                    opt.classList.add('selected');
-                }
-            });
-            
-            // If not loaded yet, load it
-            if (!book.loaded && book.file) {
-                const option = document.querySelector(`[data-book-id="${bookId}"]`);
-                option.classList.add('loading');
-                
-                const statsDiv = option.querySelector('.text-stats');
-                statsDiv.innerHTML = 'Loading... <span class="loading-spinner"></span>';
-                
-                const bookConfig = bookLibrary.find(b => b.id === bookId);
-                const sentences = await loadBookFromFile(bookConfig);
-                
-                option.classList.remove('loading');
-                
-                if (sentences && sentences.length > 0) {
-                    book.sentences = sentences;
-                    book.loaded = true;
-                    statsDiv.textContent = `${sentences.length} sentences`;
-                } else {
-                    statsDiv.textContent = '⚠️ Failed to load';
-                    return;
-                }
+    }
+
+    function parseDiglot(text) {
+        const lines = text.split('\n').map(l => l.trim()).filter(l => l.length > 0);
+        const pairs = [];
+        for (let i = 0; i < lines.length - 1; i++) {
+            const line1 = lines[i];
+            const line2 = lines[i+1];
+            if (hasChinese(line1) && !hasChinese(line2)) {
+                pairs.push({ target: line1, english: line2 });
+                i++; 
             }
-            
-            // Set as current
-            currentTextKey = bookId;
-            sentencePairs = book.sentences;
-            
-            // Detect and display sections
-            const sections = detectSections(sentencePairs);
-            displaySectionSelector(sections);
-            
-            // Enable start button
-            document.getElementById('startButton').disabled = sentencePairs.length === 0;
+        }
+        return pairs;
+    }
+
+    function hasChinese(str) {
+        return /[\u4e00-\u9fa5]/.test(str);
+    }
+
+    // --- SESSION CONTROL ---
+    function startSession() {
+        if (sentences.length === 0) {
+            alert("Please select a book first!");
+            return;
         }
 
-        // ==========================================
-        // FILE UPLOAD
-        // ==========================================
+        maxReps = parseInt(document.getElementById('repetitionsSelect').value);
+        autoAdvance = document.getElementById('autoAdvanceToggle').checked;
+        showEnglish = document.getElementById('showEnglishToggle').checked;
+
+        document.getElementById('setupScreen').style.display = 'none';
+        document.getElementById('studyScreen').style.display = 'flex';
         
-        document.getElementById('fileInput').addEventListener('change', function(e) {
-            const file = e.target.files[0];
-            if (file && file.type === 'text/plain') {
-                const reader = new FileReader();
-                reader.onload = function(e) {
-                    const content = e.target.result;
-                    const newSentences = parseTextFile(content);
-                    
-                    showParseInfo(window.lastParseStats, file.name);
-                    
-                    if (newSentences.length > 0) {
-                        const textKey = 'custom_' + Date.now();
-                        availableTexts[textKey] = {
-                            name: file.name.replace('.txt', ''),
-                            sentences: newSentences,
-                            icon: '📄',
-                            loaded: true
-                        };
-                        
-                        // Add to options
-                        const container = document.getElementById('textOptions');
-                        const option = document.createElement('div');
-                        option.className = 'text-option selected';
-                        option.dataset.bookId = textKey;
-                        option.innerHTML = `
-                            <div class="text-icon">📄</div>
-                            <div class="text-info">
-                                <div class="text-name">${file.name.replace('.txt', '')}</div>
-                                <div class="text-stats">${newSentences.length} sentences</div>
-                            </div>
-                        `;
-                        option.addEventListener('click', () => selectBook(textKey));
-                        container.appendChild(option);
-                        
-                        // Deselect others and select this one
-                        document.querySelectorAll('.text-option').forEach(opt => opt.classList.remove('selected'));
-                        option.classList.add('selected');
-                        
-                        currentTextKey = textKey;
-                        sentencePairs = newSentences;
-                        
-                        // Detect and display sections for uploaded file
-                        const sections = detectSections(sentencePairs);
-                        displaySectionSelector(sections);
-                        
-                        document.getElementById('startButton').disabled = false;
-                    }
-                };
-                reader.readAsText(file);
-            }
+        updateDisplay();
+        
+        if(autoAdvance) {
+            togglePlay();
+        }
+    }
+
+    function stopSession() {
+        synth.cancel();
+        isPlaying = false;
+        updatePlayButton();
+        
+        localStorage.setItem('drill_progress', JSON.stringify({
+            bookId: currentBookId,
+            index: currentIndex
+        }));
+
+        document.getElementById('studyScreen').style.display = 'none';
+        document.getElementById('setupScreen').style.display = 'block';
+    }
+
+    // --- DISPLAY & KARAOKE ---
+    function updateDisplay() {
+        if (currentIndex >= sentences.length) {
+            alert("Book Complete! Great job.");
+            stopSession();
+            return;
+        }
+
+        const pair = sentences[currentIndex];
+        const targetEl = document.getElementById('targetText');
+        const englishEl = document.getElementById('englishText');
+
+        // Split text into spans for highlighting
+        targetEl.innerHTML = '';
+        pair.target.split('').forEach((char, index) => {
+            const span = document.createElement('span');
+            span.textContent = char;
+            span.className = 'char-span';
+            span.dataset.index = index;
+            targetEl.appendChild(span);
         });
 
-        // ==========================================
-        // UI CONTROLS
-        // ==========================================
+        englishEl.textContent = pair.english;
+        englishEl.style.display = showEnglish ? 'block' : 'none';
+
+        const pct = ((currentIndex) / sentences.length) * 100;
+        document.getElementById('progressFill').style.width = `${pct}%`;
+        document.getElementById('progressLabel').textContent = `Sentence ${currentIndex + 1} / ${sentences.length}`;
         
-        function toggleTextDisplay(language) {
-            textDisplay[language] = !textDisplay[language];
-            const toggle = document.getElementById(language + 'Toggle');
-            
-            if (textDisplay[language]) {
-                toggle.classList.add('active');
-                toggle.classList.remove('inactive');
-            } else {
-                toggle.classList.remove('active');
-                toggle.classList.add('inactive');
-            }
-        }
+        updateRepBadge();
+    }
 
-        document.getElementById('speedSlider').addEventListener('input', function(e) {
-            speakingSpeed = parseFloat(e.target.value);
-            const display = document.getElementById('speedDisplay');
-            
-            if (speakingSpeed < 0.8) {
-                display.textContent = speakingSpeed.toFixed(1) + 'x (Slower)';
-            } else if (speakingSpeed > 0.8) {
-                display.textContent = speakingSpeed.toFixed(1) + 'x (Faster)';
-            } else {
-                display.textContent = speakingSpeed.toFixed(1) + 'x (Normal)';
-            }
-        });
+    function updateRepBadge() {
+        document.getElementById('repBadge').textContent = `Repetition ${currentRep} of ${maxReps}`;
+    }
 
-        // ==========================================
-        // STUDY SESSION
-        // ==========================================
+    function highlightChar(charIndex) {
+        const spans = document.querySelectorAll('.char-span');
+        spans.forEach(s => s.classList.remove('active'));
         
-        function startStudy() {
-            if (sentencePairs.length === 0) return;
-            
-            repetitionsPerSentence = parseInt(document.getElementById('repetitions').value);
-            autoplayMode = document.getElementById('autoplayToggle').checked;
-            
-            // Get selected voices
-            const targetVoiceIndex = document.getElementById('targetVoiceSelect').value;
-            const englishVoiceIndex = document.getElementById('englishVoiceSelect').value;
-            
-            selectedTargetVoice = targetVoiceIndex !== '' ? targetLanguageVoices[parseInt(targetVoiceIndex)] : null;
-            selectedEnglishVoice = englishVoiceIndex !== '' ? englishVoices[parseInt(englishVoiceIndex)] : null;
-            
-            targetVoiceDisabled = document.getElementById('targetVoiceDisabled').checked;
-            englishVoiceDisabled = document.getElementById('englishVoiceDisabled').checked;
-            
-            // Determine starting position
-            const startPositionSetting = document.getElementById('startPosition').value;
-            
-            if (startPositionSetting === 'continue') {
-                const savedProgress = localStorage.getItem('sentenceDrillingProgress_' + currentTextKey);
-                if (savedProgress) {
-                    currentSentenceIndex = parseInt(savedProgress);
-                    if (currentSentenceIndex >= sentencePairs.length) {
-                        currentSentenceIndex = 0;
-                    }
-                } else {
-                    currentSentenceIndex = selectedSectionStart;
-                }
-            } else {
-                // Use the selected section start
-                currentSentenceIndex = selectedSectionStart;
-            }
-            
-            document.getElementById('setupScreen').style.display = 'none';
-            document.getElementById('studyScreen').style.display = 'flex';
-            
-            updateDisplay();
-            if (autoplayMode) {
-                togglePlayPause();
-            }
+        // Safety check for index
+        if (charIndex >= 0 && charIndex < spans.length) {
+            spans[charIndex].classList.add('active');
+        } else {
+            // Fallback visual if index is invalid (browser limitation)
+            targetEl.style.textShadow = "0 0 20px rgba(251, 191, 36, 0.5)";
+            setTimeout(() => targetEl.style.textShadow = "none", 200);
         }
+    }
 
-        function updateDisplay() {
-            const currentPair = sentencePairs[currentSentenceIndex];
-            
-            const targetElement = document.getElementById('targetSentence');
-            const englishElement = document.getElementById('englishSentence');
-            
-            targetElement.classList.add('fade-in');
-            englishElement.classList.add('fade-in');
-            
-            if (textDisplay.target) {
-                targetElement.textContent = currentPair.target;
-                targetElement.classList.remove('hidden');
-            } else {
-                targetElement.classList.add('hidden');
-            }
-            
-            if (textDisplay.english) {
-                englishElement.textContent = currentPair.english;
-                englishElement.classList.remove('hidden');
-            } else {
-                englishElement.classList.add('hidden');
-            }
-            
-            setTimeout(() => {
-                targetElement.classList.remove('fade-in');
-                englishElement.classList.remove('fade-in');
-            }, 500);
-            
-            const progress = ((currentSentenceIndex + 1) / sentencePairs.length) * 100;
-            document.getElementById('progressText').textContent = `Sentence ${currentSentenceIndex + 1} of ${sentencePairs.length}`;
-            document.getElementById('progressFill').style.width = `${progress}%`;
-            
-            document.getElementById('repetitionCounter').textContent = `repetition ${currentRepetition + 1} of ${repetitionsPerSentence}`;
-            
-            const currentSet = Math.floor(currentSentenceIndex / sentencesPerSet) + 1;
-            const totalSets = Math.ceil(sentencePairs.length / sentencesPerSet);
-            const setStart = Math.floor(currentSentenceIndex / sentencesPerSet) * sentencesPerSet + 1;
-            const setEnd = Math.min(setStart + sentencesPerSet - 1, sentencePairs.length);
-            
-            document.getElementById('setInfo').textContent = `Sentences ${setStart}-${setEnd} of ${sentencePairs.length}`;
-            
-            document.getElementById('prevSentenceBtn').disabled = currentSentenceIndex === 0;
-            document.getElementById('nextSentenceBtn').disabled = currentSentenceIndex >= sentencePairs.length - 1;
-            document.getElementById('prevArrow').disabled = currentSet === 1;
-            document.getElementById('nextArrow').disabled = currentSet >= totalSets;
-        }
-
-        function speakText(text, isTarget) {
-            return new Promise((resolve) => {
-                const utterance = new SpeechSynthesisUtterance(text);
-                utterance.rate = speakingSpeed;
-                utterance.pitch = 1;
-                
-                if (isTarget) {
-                    if (selectedTargetVoice) {
-                        utterance.voice = selectedTargetVoice;
-                    }
-                    utterance.lang = selectedTargetLanguage;
-                } else {
-                    if (selectedEnglishVoice) {
-                        utterance.voice = selectedEnglishVoice;
-                    }
-                    utterance.lang = 'en-US';
-                }
-                
-                utterance.onend = resolve;
-                utterance.onerror = resolve; // Also resolve on error to prevent hanging
-                speechSynthesis.speak(utterance);
-            });
-        }
-
-        async function startCurrentSentence() {
-            if (!isPlaying) return;
-            
-            const currentPair = sentencePairs[currentSentenceIndex];
-            
-            // Speak target language if not disabled
-            if (!targetVoiceDisabled && textDisplay.target) {
-                await speakText(currentPair.target, true);
-            }
-            
-            // Speak English if not disabled
-            if (!englishVoiceDisabled && textDisplay.english) {
-                await speakText(currentPair.english, false);
-            }
-            
-            currentRepetition++;
-            
-            if (currentRepetition >= repetitionsPerSentence) {
-                currentRepetition = 0;
-                
-                if (currentSentenceIndex < sentencePairs.length - 1) {
-                    currentSentenceIndex++;
-                    updateDisplay();
-                    setTimeout(() => startCurrentSentence(), 1000);
-                } else {
-                    if (autoplayMode) {
-                        alert('Congratulations! You have completed all sentences!');
-                    }
-                    stopStudy();
-                }
-            } else {
-                document.getElementById('repetitionCounter').textContent = `repetition ${currentRepetition + 1} of ${repetitionsPerSentence}`;
-                setTimeout(() => startCurrentSentence(), 1000);
-            }
-        }
-
-        function togglePlayPause() {
-            isPlaying = !isPlaying;
-            const btn = document.getElementById('playPauseBtn');
-            
-            if (isPlaying) {
-                btn.innerHTML = '<i class="fas fa-pause"></i> Pause';
-                btn.classList.add('active');
-                startCurrentSentence();
-            } else {
-                btn.innerHTML = '<i class="fas fa-play"></i> Play';
-                btn.classList.remove('active');
-                speechSynthesis.cancel();
-            }
-        }
-
-        function stopStudy() {
+    // --- AUDIO & PLAYBACK ---
+    function togglePlay() {
+        if (isPlaying) {
+            synth.cancel();
             isPlaying = false;
-            speechSynthesis.cancel();
-            
-            localStorage.setItem('sentenceDrillingProgress_' + currentTextKey, currentSentenceIndex);
-            
-            document.getElementById('studyScreen').style.display = 'none';
-            document.getElementById('setupScreen').style.display = 'block';
-            
-            currentSentenceIndex = 0;
-            currentRepetition = 0;
-            
-            document.getElementById('playPauseBtn').innerHTML = '<i class="fas fa-play"></i> Play';
-            document.getElementById('playPauseBtn').classList.remove('active');
+        } else {
+            isPlaying = true;
+            playCurrentSentence();
         }
+        updatePlayButton();
+    }
 
-        function nextSentence() {
-            if (currentSentenceIndex < sentencePairs.length - 1) {
-                currentSentenceIndex++;
-                currentRepetition = 0;
-                updateDisplay();
-                
-                if (isPlaying) {
-                    speechSynthesis.cancel();
-                    setTimeout(() => startCurrentSentence(), 500);
-                }
+    function updatePlayButton() {
+        const btn = document.getElementById('playBtn');
+        btn.innerHTML = isPlaying ? '<i class="fas fa-pause"></i> Pause' : '<i class="fas fa-play"></i> Play';
+    }
+
+    function playCurrentSentence() {
+        if (!isPlaying) return;
+
+        const pair = sentences[currentIndex];
+        currentUtterance = new SpeechSynthesisUtterance(pair.target);
+        
+        const lang = document.getElementById('targetLanguage').value;
+        currentUtterance.lang = lang;
+        
+        const voice = voices.find(v => v.lang.includes(lang.split('-')[0]));
+        if (voice) currentUtterance.voice = voice;
+
+        // KARAOKE EVENT
+        currentUtterance.onboundary = (event) => {
+            // event.charIndex is the character position in the string
+            console.log("Boundary event:", event.charIndex); 
+            highlightChar(event.charIndex);
+        };
+
+        currentUtterance.onend = () => {
+            document.querySelectorAll('.char-span').forEach(s => s.classList.remove('active'));
+            handleSentenceEnd();
+        };
+
+        synth.speak(currentUtterance);
+    }
+
+    function handleSentenceEnd() {
+        if (!isPlaying) return;
+
+        if (currentRep < maxReps) {
+            currentRep++;
+            updateRepBadge();
+            setTimeout(() => {
+                if(isPlaying) playCurrentSentence();
+            }, 800);
+        } else {
+            if (autoAdvance) {
+                setTimeout(() => {
+                    nextSentence();
+                    if(isPlaying) playCurrentSentence();
+                }, 1000);
+            } else {
+                isPlaying = false;
+                updatePlayButton();
             }
         }
+    }
 
-        function skipSentences(count) {
-            const newIndex = Math.min(currentSentenceIndex + count, sentencePairs.length - 1);
-            if (newIndex !== currentSentenceIndex) {
-                currentSentenceIndex = newIndex;
-                currentRepetition = 0;
-                updateDisplay();
-                
-                if (isPlaying) {
-                    speechSynthesis.cancel();
-                    setTimeout(() => startCurrentSentence(), 500);
-                }
+    // --- NAVIGATION ---
+    function nextSentence() {
+        if (currentIndex < sentences.length - 1) {
+            currentIndex++;
+            currentRep = 1;
+            updateDisplay();
+        }
+    }
+
+    function prevSentence() {
+        if (currentIndex > 0) {
+            currentIndex--;
+            currentRep = 1;
+            updateDisplay();
+        }
+    }
+
+    function skipAhead(count) {
+        const newIndex = Math.min(currentIndex + count, sentences.length - 1);
+        if (newIndex !== currentIndex) {
+            currentIndex = newIndex;
+            currentRep = 1;
+            updateDisplay();
+            if (isPlaying) {
+                synth.cancel();
+                setTimeout(() => playCurrentSentence(), 500);
             }
         }
+    }
 
-        function previousSentence() {
-            if (currentSentenceIndex > 0) {
-                currentSentenceIndex--;
-                currentRepetition = 0;
-                updateDisplay();
-                
-                if (isPlaying) {
-                    speechSynthesis.cancel();
-                    setTimeout(() => startCurrentSentence(), 500);
-                }
-            }
-        }
+    function getMonkeyKingData() {
+        return [
+            { target: "猴王的诞生 我亲爱的孩子，我知道时间很晚了。", english: "The Rise of the Monkey King. My dear child, I know that the hour is late." },
+            { target: "你玩了一天，累了，现在是睡觉的时候了。", english: "You've been playing all day and you are tired, and now it is bedtime." },
+            { target: "但是你说你想在睡觉前听一个故事。", english: "But you say you want to hear a story before you sleep." },
+            { target: "所以现在我给你讲一个很老的关于猴子的故事。", english: "So now I will tell you an old story about a monkey." },
+            { target: "这只猴子很强大，也很聪明，但是有的时候他也很淘气。", english: "He was very strong and very smart, but sometimes he was also very naughty." },
+            { target: "他需要去学习什么是爱，去学习怎么去帮助别人。", english: "He needed to learn about love and helping others." },
+            { target: "几千年以前这只猴子生活在中国的北方。", english: "This monkey lived a thousand years ago in northern China." },
+            { target: "在他很长的一生中他有很多名字，但是他最有名的名字是孙悟空。", english: "He had many names during his long life, but most people know him as Sun Wukong." },
+            { target: "人们讲了很多关于孙悟空的故事。", english: "People tell many stories about Sun Wukong." },
+            { target: "如果我告诉你所有这些故事，需要讲很多天！", english: "If I told you all those stories, I would have to talk for many days!" }
+        ];
+    }
 
-        function nextSet() {
-            const nextSetStart = Math.ceil((currentSentenceIndex + 1) / sentencesPerSet) * sentencesPerSet;
-            if (nextSetStart < sentencePairs.length) {
-                currentSentenceIndex = nextSetStart;
-                currentRepetition = 0;
-                updateDisplay();
-                
-                if (isPlaying) {
-                    speechSynthesis.cancel();
-                    setTimeout(() => startCurrentSentence(), 500);
-                }
-            }
-        }
-
-        function previousSet() {
-            const currentSet = Math.floor(currentSentenceIndex / sentencesPerSet);
-            if (currentSet > 0) {
-                currentSentenceIndex = (currentSet - 1) * sentencesPerSet;
-                currentRepetition = 0;
-                updateDisplay();
-                
-                if (isPlaying) {
-                    speechSynthesis.cancel();
-                    setTimeout(() => startCurrentSentence(), 500);
-                }
-            }
-        }
-
-        // Keyboard shortcuts
-        document.addEventListener('keydown', function(e) {
-            if (document.getElementById('studyScreen').style.display === 'flex') {
-                switch(e.code) {
-                    case 'Space':
-                        e.preventDefault();
-                        togglePlayPause();
-                        break;
-                    case 'ArrowRight':
-                        e.preventDefault();
-                        nextSentence();
-                        break;
-                    case 'ArrowLeft':
-                        e.preventDefault();
-                        previousSentence();
-                        break;
-                    case 'Escape':
-                        e.preventDefault();
-                        stopStudy();
-                        break;
-                }
-            }
-        });
-
-        // Initialize on page load
-        initializeLibrary();
-    </script>
+    init();
+</script>
 </body>
 </html>
+```
