@@ -8,13 +8,15 @@
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
     <style>
         :root {
-            --primary: #007aff;
-            --primary-dark: #0056cc;
-            --bg-gradient: linear-gradient(135deg, #f0f4f8 0%, #dbeafe 100%);
-            --card-bg: rgba(255, 255, 255, 0.95);
-            --text-main: #1d1d1f;
-            --text-sub: #86868b;
-            --highlight: #ff9500;
+            /* Dark Theme Variables */
+            --bg-gradient: linear-gradient(135deg, #0f172a 0%, #1e293b 100%);
+            --card-bg: rgba(30, 41, 59, 0.7);
+            --text-main: #f8fafc;
+            --text-sub: #94a3b8;
+            --primary: #3b82f6;
+            --primary-hover: #2563eb;
+            --highlight: #fbbf24; /* Amber for Karaoke */
+            --border: rgba(255, 255, 255, 0.1);
         }
 
         * { margin: 0; padding: 0; box-sizing: border-box; }
@@ -34,17 +36,17 @@
             background: var(--card-bg);
             border-radius: 24px;
             padding: 40px;
-            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.1);
+            box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.5);
             max-width: 900px;
             width: 100%;
             backdrop-filter: blur(20px);
-            border: 1px solid rgba(255, 255, 255, 0.5);
+            border: 1px solid var(--border);
         }
 
         /* --- Setup Screen --- */
         .setup-screen { text-align: center; }
         
-        h1 { font-size: 2.5rem; margin-bottom: 10px; letter-spacing: -0.03em; }
+        h1 { font-size: 2.5rem; margin-bottom: 10px; letter-spacing: -0.03em; background: linear-gradient(to right, #fff, #94a3b8); -webkit-background-clip: text; -webkit-text-fill-color: transparent; }
         .subtitle { color: var(--text-sub); margin-bottom: 40px; font-size: 1.1rem; }
 
         .grid-options {
@@ -62,15 +64,17 @@
             font-weight: 600;
             margin-bottom: 8px;
             font-size: 0.95rem;
+            color: var(--text-sub);
         }
 
-        select, input[type="text"] {
+        select {
             width: 100%;
             padding: 12px;
-            border: 1px solid #e0e0e0;
+            border: 1px solid var(--border);
             border-radius: 12px;
             font-size: 1rem;
-            background: #fff;
+            background: rgba(15, 23, 42, 0.5);
+            color: var(--text-main);
             transition: border 0.2s;
         }
 
@@ -85,21 +89,21 @@
         }
 
         .book-card {
-            border: 1px solid #e0e0e0;
+            border: 1px solid var(--border);
             border-radius: 12px;
             padding: 16px;
             cursor: pointer;
             transition: all 0.2s;
-            background: #fff;
+            background: rgba(255, 255, 255, 0.03);
             text-align: left;
         }
 
-        .book-card:hover { border-color: var(--primary); transform: translateY(-2px); }
-        .book-card.selected { background: #eff6ff; border-color: var(--primary); }
+        .book-card:hover { border-color: var(--primary); background: rgba(59, 130, 246, 0.1); transform: translateY(-2px); }
+        .book-card.selected { background: rgba(59, 130, 246, 0.2); border-color: var(--primary); }
         
         .book-icon { font-size: 1.5rem; margin-bottom: 8px; display: block; }
-        .book-title { font-weight: 600; font-size: 0.95rem; }
-        .book-status { font-size: 0.8rem; color: var(--text-sub); }
+        .book-title { font-weight: 600; font-size: 0.95rem; color: var(--text-main); }
+        .book-status { font-size: 0.8rem; color: var(--text-sub); margin-top: 4px; }
 
         /* Toggles */
         .toggle-row {
@@ -107,9 +111,10 @@
             align-items: center;
             justify-content: space-between;
             padding: 12px 16px;
-            background: #f8f9fa;
+            background: rgba(255, 255, 255, 0.03);
             border-radius: 12px;
             margin-bottom: 10px;
+            border: 1px solid var(--border);
         }
 
         .switch {
@@ -123,7 +128,7 @@
             position: absolute;
             cursor: pointer;
             top: 0; left: 0; right: 0; bottom: 0;
-            background-color: #ccc;
+            background-color: #475569;
             transition: .4s;
             border-radius: 24px;
         }
@@ -148,7 +153,7 @@
         }
         .progress-bar-bg {
             height: 6px;
-            background: #e0e0e0;
+            background: rgba(255,255,255,0.1);
             border-radius: 3px;
             overflow: hidden;
         }
@@ -157,6 +162,7 @@
             background: var(--primary);
             width: 0%;
             transition: width 0.3s ease;
+            box-shadow: 0 0 10px rgba(59, 130, 246, 0.5);
         }
         .progress-text {
             display: flex;
@@ -176,6 +182,10 @@
             flex-direction: column;
             justify-content: center;
             align-items: center;
+            padding: 20px;
+            background: rgba(0,0,0,0.2);
+            border-radius: 16px;
+            border: 1px solid var(--border);
         }
 
         .target-text {
@@ -185,15 +195,20 @@
             margin-bottom: 20px;
             text-align: center;
             line-height: 1.4;
+            transition: all 0.2s;
         }
 
         /* Karaoke Highlighting Styles */
         .char-span {
             transition: color 0.1s;
+            opacity: 0.8;
         }
         .char-span.active {
             color: var(--highlight);
-            text-shadow: 0 0 10px rgba(255, 149, 0, 0.3);
+            opacity: 1;
+            text-shadow: 0 0 15px rgba(251, 191, 36, 0.4);
+            transform: scale(1.05);
+            display: inline-block;
         }
 
         .english-text {
@@ -207,7 +222,7 @@
         .controls-area {
             width: 100%;
             margin-top: 30px;
-            border-top: 1px solid #eee;
+            border-top: 1px solid var(--border);
             padding-top: 20px;
         }
 
@@ -231,11 +246,19 @@
             font-size: 1rem;
         }
 
-        .btn-primary { background: var(--primary); color: white; box-shadow: 0 4px 12px rgba(0, 122, 255, 0.3); }
-        .btn-primary:hover { background: var(--primary-dark); transform: translateY(-2px); }
+        .btn-primary { 
+            background: var(--primary); 
+            color: white; 
+            box-shadow: 0 4px 12px rgba(59, 130, 246, 0.4); 
+        }
+        .btn-primary:hover { background: var(--primary-hover); transform: translateY(-2px); }
         
-        .btn-secondary { background: white; border: 1px solid #ddd; color: var(--text-main); }
-        .btn-secondary:hover { background: #f5f5f5; border-color: #ccc; }
+        .btn-secondary { 
+            background: rgba(255,255,255,0.05); 
+            border: 1px solid var(--border); 
+            color: var(--text-main); 
+        }
+        .btn-secondary:hover { background: rgba(255,255,255,0.1); border-color: var(--text-sub); }
 
         .skip-grid {
             display: grid;
@@ -246,23 +269,25 @@
         }
 
         .btn-skip {
-            background: #f0f0f0;
-            color: #555;
+            background: rgba(255,255,255,0.03);
+            color: var(--text-sub);
             font-size: 0.9rem;
             padding: 8px;
             justify-content: center;
+            border: 1px solid var(--border);
         }
-        .btn-skip:hover { background: #e0e0e0; }
+        .btn-skip:hover { background: rgba(255,255,255,0.1); color: var(--text-main); }
 
         .repetition-badge {
-            background: #eff6ff;
-            color: var(--primary);
+            background: rgba(59, 130, 246, 0.15);
+            color: #60a5fa;
             padding: 6px 16px;
             border-radius: 20px;
             font-weight: 600;
             font-size: 0.9rem;
             margin-bottom: 10px;
             display: inline-block;
+            border: 1px solid rgba(59, 130, 246, 0.3);
         }
 
         @media (max-width: 768px) {
@@ -300,10 +325,10 @@
                 <div id="libraryGrid" class="library-grid">
                     <!-- Populated by JS -->
                 </div>
-                <div style="margin-top: 15px; text-align: center; color: #888; font-size: 0.9rem;">
+                <div style="margin-top: 15px; text-align: center; color: var(--text-sub); font-size: 0.9rem;">
                     — or upload custom .txt —
                 </div>
-                <input type="file" id="fileUpload" accept=".txt" style="margin-top: 10px;">
+                <input type="file" id="fileUpload" accept=".txt" style="margin-top: 10px; width: 100%; padding: 10px; background: rgba(0,0,0,0.2); border-radius: 8px; color: white; border: 1px solid var(--border);">
             </div>
 
             <!-- Settings Column 1 -->
@@ -345,7 +370,7 @@
             </div>
         </div>
 
-        <button class="btn btn-primary" style="width: 100%; justify-content: center; padding: 16px;" onclick="startSession()">
+        <button class="btn btn-primary" style="width: 100%; justify-content: center; padding: 16px; font-size: 1.1rem;" onclick="startSession()">
             Start Learning <i class="fas fa-arrow-right"></i>
         </button>
     </div>
@@ -385,7 +410,7 @@
                 <button class="btn btn-skip" onclick="skipAhead(15)">Skip 15</button>
             </div>
 
-            <button class="btn btn-secondary" style="width: 100%; justify-content: center; margin-top: 10px; color: #ff3b30; border-color: #ffcccc;" onclick="stopSession()">
+            <button class="btn btn-secondary" style="width: 100%; justify-content: center; margin-top: 10px; color: #ef4444; border-color: rgba(239, 68, 68, 0.3);" onclick="stopSession()">
                 Stop & Save
             </button>
         </div>
@@ -394,7 +419,6 @@
 
 <script>
     // --- CONFIGURATION ---
-    // Matches your GitHub filenames exactly
     const bookLibrary = [
         { id: 'monkey', name: 'Monkey King', icon: '🐒', file: null, builtin: true },
         { id: 'john', name: 'Gospel of John', icon: '📖', file: 'John.txt' },
@@ -413,16 +437,15 @@
     let currentBookId = null;
     let synth = window.speechSynthesis;
     let voices = [];
+    let currentUtterance = null;
 
     // --- INITIALIZATION ---
     function init() {
-        // Load Voices
         voices = synth.getVoices();
         if (speechSynthesis.onvoiceschanged !== undefined) {
             speechSynthesis.onvoiceschanged = () => { voices = synth.getVoices(); };
         }
 
-        // Render Library
         const grid = document.getElementById('libraryGrid');
         grid.innerHTML = '';
         bookLibrary.forEach(book => {
@@ -437,13 +460,11 @@
             grid.appendChild(card);
         });
 
-        // Load saved progress if "Continue" is selected later
         document.getElementById('startPosition').addEventListener('change', (e) => {
             if(e.target.value === 'continue') {
                 const saved = localStorage.getItem('drill_progress');
                 if(saved) {
                     const data = JSON.parse(saved);
-                    // Pre-select the book if possible
                     const book = bookLibrary.find(b => b.id === data.bookId);
                     if(book) selectBook(book.id, document.querySelector(`.book-card[onclick*="${book.id}"]`));
                 }
@@ -453,7 +474,6 @@
 
     // --- BOOK LOADING LOGIC ---
     async function selectBook(id, cardElement) {
-        // UI Update
         document.querySelectorAll('.book-card').forEach(c => c.classList.remove('selected'));
         if(cardElement) cardElement.classList.add('selected');
         currentBookId = id;
@@ -461,11 +481,9 @@
         const book = bookLibrary.find(b => b.id === id);
         
         if (book.builtin) {
-            // Load Monkey King Data (Hardcoded for demo, usually fetched)
             sentences = getMonkeyKingData(); 
             finishLoading(book.name);
         } else {
-            // Fetch from GitHub
             if(cardElement) cardElement.querySelector('.book-status').textContent = 'Loading...';
             try {
                 const response = await fetch(book.file);
@@ -474,7 +492,7 @@
                 sentences = parseDiglot(text);
                 finishLoading(book.name);
             } catch (err) {
-                alert(`Error loading ${book.name}: ${err.message}. Make sure the file exists in the same folder.`);
+                alert(`Error loading ${book.name}: ${err.message}. Ensure file is in same folder.`);
                 if(cardElement) cardElement.querySelector('.book-status').textContent = 'Error';
             }
         }
@@ -482,38 +500,27 @@
 
     function finishLoading(name) {
         document.getElementById('bookLabel').textContent = name;
-        // Reset progress if starting fresh
         if(document.getElementById('startPosition').value === 'beginning') {
             currentIndex = 0;
         } else {
-            // Try load saved
             const saved = localStorage.getItem('drill_progress');
             if(saved) {
                 const data = JSON.parse(saved);
-                if(data.bookId === currentBookId) {
-                    currentIndex = data.index;
-                } else {
-                    currentIndex = 0;
-                }
+                if(data.bookId === currentBookId) currentIndex = data.index;
+                else currentIndex = 0;
             }
         }
     }
 
-    // --- PARSER (Simple Diglot Parser) ---
     function parseDiglot(text) {
         const lines = text.split('\n').map(l => l.trim()).filter(l => l.length > 0);
         const pairs = [];
-        
-        // Heuristic: Look for alternating Target/English lines
-        // This is a basic parser. Real diglots might need regex.
         for (let i = 0; i < lines.length - 1; i++) {
             const line1 = lines[i];
             const line2 = lines[i+1];
-            
-            // Simple check: Line 1 has Chinese chars, Line 2 is mostly English
             if (hasChinese(line1) && !hasChinese(line2)) {
                 pairs.push({ target: line1, english: line2 });
-                i++; // Skip next line as it's used
+                i++; 
             }
         }
         return pairs;
@@ -549,7 +556,6 @@
         isPlaying = false;
         updatePlayButton();
         
-        // Save Progress
         localStorage.setItem('drill_progress', JSON.stringify({
             bookId: currentBookId,
             index: currentIndex
@@ -571,8 +577,7 @@
         const targetEl = document.getElementById('targetText');
         const englishEl = document.getElementById('englishText');
 
-        // 1. Render Target Text with Spans for Karaoke
-        // We split by character for Chinese to allow precise highlighting
+        // Split text into spans for highlighting
         targetEl.innerHTML = '';
         pair.target.split('').forEach((char, index) => {
             const span = document.createElement('span');
@@ -582,11 +587,9 @@
             targetEl.appendChild(span);
         });
 
-        // 2. Render English
         englishEl.textContent = pair.english;
         englishEl.style.display = showEnglish ? 'block' : 'none';
 
-        // 3. Update Progress
         const pct = ((currentIndex) / sentences.length) * 100;
         document.getElementById('progressFill').style.width = `${pct}%`;
         document.getElementById('progressLabel').textContent = `Sentence ${currentIndex + 1} / ${sentences.length}`;
@@ -601,8 +604,14 @@
     function highlightChar(charIndex) {
         const spans = document.querySelectorAll('.char-span');
         spans.forEach(s => s.classList.remove('active'));
-        if (spans[charIndex]) {
+        
+        // Safety check for index
+        if (charIndex >= 0 && charIndex < spans.length) {
             spans[charIndex].classList.add('active');
+        } else {
+            // Fallback visual if index is invalid (browser limitation)
+            targetEl.style.textShadow = "0 0 20px rgba(251, 191, 36, 0.5)";
+            setTimeout(() => targetEl.style.textShadow = "none", 200);
         }
     }
 
@@ -627,31 +636,27 @@
         if (!isPlaying) return;
 
         const pair = sentences[currentIndex];
-        const utterance = new SpeechSynthesisUtterance(pair.target);
+        currentUtterance = new SpeechSynthesisUtterance(pair.target);
         
-        // Voice Selection
         const lang = document.getElementById('targetLanguage').value;
-        utterance.lang = lang;
-        // Try to find a good voice
+        currentUtterance.lang = lang;
+        
         const voice = voices.find(v => v.lang.includes(lang.split('-')[0]));
-        if (voice) utterance.voice = voice;
+        if (voice) currentUtterance.voice = voice;
 
         // KARAOKE EVENT
-        utterance.onboundary = (event) => {
-            if (event.name === 'word' || event.name === 'sentence') {
-                // charIndex gives us the position in the string
-                highlightChar(event.charIndex);
-            }
+        currentUtterance.onboundary = (event) => {
+            // event.charIndex is the character position in the string
+            console.log("Boundary event:", event.charIndex); 
+            highlightChar(event.charIndex);
         };
 
-        utterance.onend = () => {
-            // Clear highlight when done
+        currentUtterance.onend = () => {
             document.querySelectorAll('.char-span').forEach(s => s.classList.remove('active'));
-            
             handleSentenceEnd();
         };
 
-        synth.speak(utterance);
+        synth.speak(currentUtterance);
     }
 
     function handleSentenceEnd() {
@@ -660,12 +665,10 @@
         if (currentRep < maxReps) {
             currentRep++;
             updateRepBadge();
-            // Small pause before repeating
             setTimeout(() => {
                 if(isPlaying) playCurrentSentence();
             }, 800);
         } else {
-            // Repetitions done
             if (autoAdvance) {
                 setTimeout(() => {
                     nextSentence();
@@ -701,7 +704,6 @@
             currentIndex = newIndex;
             currentRep = 1;
             updateDisplay();
-            // If playing, restart audio for new sentence
             if (isPlaying) {
                 synth.cancel();
                 setTimeout(() => playCurrentSentence(), 500);
@@ -709,7 +711,6 @@
         }
     }
 
-    // --- HARDCODED DATA (Monkey King) ---
     function getMonkeyKingData() {
         return [
             { target: "猴王的诞生 我亲爱的孩子，我知道时间很晚了。", english: "The Rise of the Monkey King. My dear child, I know that the hour is late." },
@@ -725,9 +726,7 @@
         ];
     }
 
-    // Run Init
     init();
-
 </script>
 </body>
 </html>
