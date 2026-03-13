@@ -111,7 +111,7 @@
         /* Book Library Cards */
         .library-grid {
             display: grid;
-            grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+            grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
             gap: 16px;
             margin-bottom: 20px;
         }
@@ -126,6 +126,8 @@
             display: flex;
             align-items: center;
             gap: 12px;
+            position: relative;
+            overflow: hidden;
         }
 
         .book-card:hover {
@@ -137,12 +139,32 @@
         .book-card.selected {
             background: rgba(59, 130, 246, 0.15);
             border-color: var(--primary);
+            box-shadow: 0 0 15px rgba(59, 130, 246, 0.2);
         }
 
         .book-icon { font-size: 1.5rem; }
-        .book-info { text-align: left; }
-        .book-title { font-weight: 600; font-size: 0.95rem; }
+        .book-info { text-align: left; flex: 1; }
+        .book-title { font-weight: 600; font-size: 0.95rem; margin-bottom: 4px;}
         .book-meta { font-size: 0.8rem; color: var(--text-muted); }
+        
+        .loading-indicator {
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            width: 100%;
+            height: 3px;
+            background: var(--primary);
+            display: none;
+        }
+        .book-card.loading .loading-indicator {
+            display: block;
+            animation: loadingBar 1s infinite linear;
+        }
+
+        @keyframes loadingBar {
+            0% { transform: translateX(-100%); }
+            100% { transform: translateX(100%); }
+        }
 
         /* Toggle Switch */
         .toggle-row {
@@ -408,13 +430,13 @@
 
                 <!-- Library -->
                 <div class="option-group library-section" style="grid-column: 1 / -1;">
-                    <label class="option-label">Select Content</label>
+                    <label class="option-label">Select Content (From GitHub)</label>
                     <div id="bookLibrary" class="library-grid">
                         <!-- Populated by JS -->
                     </div>
                     
                     <div style="margin-top: 20px; border-top: 1px solid var(--bg-card-border); padding-top: 20px;">
-                        <label class="option-label">Or Upload File (.txt, .csv, .json)</label>
+                        <label class="option-label">Or Upload Local File (.txt, .csv, .json)</label>
                         <input type="file" id="fileInput" class="input-dark" accept=".txt,.csv,.json">
                     </div>
                 </div>
@@ -480,6 +502,9 @@
 
     <script>
         // --- DATA & CONFIG ---
+        // GitHub Raw URL Base
+        const GITHUB_RAW_BASE = "https://raw.githubusercontent.com/zumboggo/Stories/main/";
+
         const bookLibrary = [
             {
                 id: 'monkey-king',
@@ -500,22 +525,26 @@
                 ]
             },
             {
-                id: 'spanish-basics',
-                name: 'Spanish Basics',
-                icon: '🇪🇸',
-                builtin: true,
-                data: [
-                    {"target": "Hola, ¿cómo estás?", "english": "Hello, how are you?"},
-                    {"target": "Me llamo Juan.", "english": "My name is Juan."},
-                    {"target": "Mucho gusto.", "english": "Nice to meet you."},
-                    {"target": "¿De dónde eres?", "english": "Where are you from?"},
-                    {"target": "Soy de España.", "english": "I am from Spain."},
-                    {"target": "¿Hablas inglés?", "english": "Do you speak English?"},
-                    {"target": "Sí, hablo un poco de inglés.", "english": "Yes, I speak a little English."},
-                    {"target": "¿Qué hora es?", "english": "What time is it?"},
-                    {"target": "Son las tres de la tarde.", "english": "It is three in the afternoon."},
-                    {"target": "Adiós, hasta luego.", "english": "Goodbye, see you later."}
-                ]
+                id: 'john',
+                name: 'Gospel of John',
+                icon: '✝️',
+                builtin: false,
+                file: 'John.txt'
+            },
+            {
+                id: 'moonlight',
+                name: 'Moonlight Sculptor Vol 2',
+                icon: '⚔️',
+                builtin: false,
+                // Note: Ensure this filename matches EXACTLY what is on GitHub
+                file: 'Legendary_Moonlight_Sculptor_Vol02_cleaned.txt' 
+            },
+            {
+                id: 'short-stories',
+                name: 'Short Stories',
+                icon: '📚',
+                builtin: false,
+                file: 'ShortStories.txt'
             }
         ];
 
@@ -562,13 +591,18 @@
             bookLibrary.forEach(book => {
                 const card = document.createElement('div');
                 card.className = 'book-card';
+                card.id = `book-card-${book.id}`;
                 card.onclick = () => selectBook(book.id);
+                
+                let metaText = book.builtin ? `${book.data.length} sentences` : 'Click to load';
+                
                 card.innerHTML = `
                     <div class="book-icon">${book.icon}</div>
                     <div class="book-info">
                         <div class="book-title">${book.name}</div>
-                        <div class="book-meta">${book.data.length} sentences</div>
+                        <div class="book-meta" id="meta-${book.id}">${metaText}</div>
                     </div>
+                    <div class="loading-indicator"></div>
                 `;
                 container.appendChild(card);
             });
@@ -577,15 +611,66 @@
             if(bookLibrary.length > 0) selectBook(bookLibrary[0].id);
         }
 
-        function selectBook(id) {
+        async function selectBook(id) {
+            // UI Selection
             document.querySelectorAll('.book-card').forEach(c => c.classList.remove('selected'));
-            const card = Array.from(document.querySelectorAll('.book-card')).find(c => 
-                c.querySelector('.book-title').textContent === bookLibrary.find(b => b.id === id).name
-            );
-            if(card) card.classList.add('selected');
+            const selectedCard = document.getElementById(`book-card-${id}`);
+            if(selectedCard) selectedCard.classList.add('selected');
             
             const book = bookLibrary.find(b => b.id === id);
-            currentSentences = [...book.data]; // Clone array
+
+            if (book.builtin) {
+                currentSentences = [...book.data];
+                updateMetaText(id, `${book.data.length} sentences`);
+            } else {
+                // Fetch from GitHub
+                selectedCard.classList.add('loading');
+                updateMetaText(id, 'Loading...');
+                
+                try {
+                    const response = await fetch(GITHUB_RAW_BASE + book.file);
+                    if (!response.ok) throw new Error('File not found');
+                    
+                    const text = await response.text();
+                    const parsed = parseTextFile(text);
+                    
+                    if (parsed.length > 0) {
+                        currentSentences = parsed;
+                        updateMetaText(id, `${parsed.length} sentences loaded`);
+                    } else {
+                        updateMetaText(id, 'Error: No valid pairs found');
+                        currentSentences = [];
+                    }
+                } catch (error) {
+                    console.error(error);
+                    updateMetaText(id, 'Error loading file');
+                    currentSentences = [];
+                } finally {
+                    selectedCard.classList.remove('loading');
+                }
+            }
+        }
+
+        function updateMetaText(id, text) {
+            const el = document.getElementById(`meta-${id}`);
+            if(el) el.textContent = text;
+        }
+
+        // Parser for standard diglot text files (Target line, English line, Target line, English line...)
+        function parseTextFile(content) {
+            const lines = content.split('\n').map(l => l.trim()).filter(l => l);
+            const sentences = [];
+            
+            // Simple alternating parser
+            for(let i = 0; i < lines.length; i += 2) {
+                if(lines[i+1]) {
+                    sentences.push({ 
+                        target: lines[i], 
+                        english: lines[i+1] 
+                    });
+                }
+            }
+            return sentences;
         }
 
         document.getElementById('fileInput').addEventListener('change', (e) => {
@@ -608,18 +693,15 @@
                         }
                     });
                 } else {
-                    // TXT Parser (Assumes alternating lines: Target, English)
-                    const lines = content.split('\n').map(l => l.trim()).filter(l => l);
-                    for(let i=0; i<lines.length; i+=2) {
-                        if(lines[i+1]) parsed.push({ target: lines[i], english: lines[i+1] });
-                    }
+                    // TXT Parser
+                    parsed = parseTextFile(content);
                 }
 
                 if(parsed.length > 0) {
                     currentSentences = parsed;
                     alert(`Loaded ${parsed.length} sentences!`);
                 } else {
-                    alert('Could not parse file. Ensure format is correct.');
+                    alert('Could not parse file. Ensure format is correct (alternating lines).');
                 }
             };
             reader.readAsText(file);
@@ -628,7 +710,10 @@
         // --- CORE LOGIC ---
 
         function startStudy() {
-            if(currentSentences.length === 0) return;
+            if(currentSentences.length === 0) {
+                alert("Please select a book or upload a file first.");
+                return;
+            }
             
             // Check streak
             const today = new Date().toDateString();
@@ -690,7 +775,6 @@
 
         function wrapWords(text, className) {
             // Simple regex to split by spaces/punctuation but keep punctuation
-            // This is a basic implementation. Complex scripts might need better tokenization.
             return text.split(/(\s+)/).map(part => {
                 if(part.trim() === '') return part;
                 return `<span class="word-span ${className}">${part}</span>`;
@@ -733,8 +817,6 @@
                         };
 
                         enUtterance.onend = () => {
-                            // Auto advance logic could go here, but we wait for user or manual next
-                            // For now, we just stop highlighting
                             clearHighlights();
                         };
                         speechSynthesis.speak(enUtterance);
@@ -751,8 +833,6 @@
             clearHighlights();
             const spans = document.querySelectorAll(`.${className}`);
             
-            // Find which span contains this character index
-            // Note: charIndex is relative to the whole text string
             let currentCharCount = 0;
             
             for(let span of spans) {
@@ -762,8 +842,6 @@
                 
                 if(charIndex >= start && charIndex < end) {
                     span.classList.add('active');
-                    // Optional: Scroll into view if needed
-                    // span.scrollIntoView({ behavior: 'smooth', block: 'center' });
                     break;
                 }
                 currentCharCount += text.length;
@@ -797,11 +875,9 @@
         }
 
         function markAsHard() {
-            // Add current sentence to review queue (at the end)
             const current = currentSentences[currentIndex];
             reviewQueue.push(current);
             
-            // Visual feedback
             const btn = document.querySelector('.btn-circle[onclick="markAsHard()"]');
             const originalHTML = btn.innerHTML;
             btn.innerHTML = '<i class="fas fa-check"></i>';
@@ -817,7 +893,6 @@
         }
 
         function finishSession() {
-            // If we have reviews, do them now
             if(reviewQueue.length > 0) {
                 alert(`Session Complete! Starting review of ${reviewQueue.length} difficult sentences.`);
                 currentSentences = reviewQueue;
